@@ -4,7 +4,6 @@ import { doc, setDoc, getDoc } from 'firebase/firestore';
 
 /**
  * Initialize and return a GoogleAuthProvider restricted to university accounts.
- * @returns {GoogleAuthProvider}
  */
 function getGoogleProvider() {
   const provider = new GoogleAuthProvider();
@@ -14,8 +13,6 @@ function getGoogleProvider() {
 
 /**
  * Attempt to sign in a user using Google Sign-In.
- * @param {GoogleAuthProvider} provider
- * @returns {Promise<object>} Firebase user object
  */
 async function signInWithGooglePopup(provider) {
   const result = await signInWithPopup(auth, provider);
@@ -34,7 +31,6 @@ async function userExistsInFirestore(uid) {
 
 /**
  * Create a new Firestore document for a Google-authenticated user.
- * @param {object} user
  */
 async function createGoogleUserInFirestore(user) {
   const userRef = doc(db, 'ProfileUsers', user.uid);

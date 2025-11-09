@@ -1,22 +1,12 @@
 import { auth } from '../firebaseConfig.js';
 import { signInWithEmailAndPassword } from 'firebase/auth';
 
-/**
- * Validate the email format using a regular expression.
- * @param {string} email
- * @returns {boolean}
- */
+
 function isValidEmail(email) {
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
   return emailRegex.test(email);
 }
 
-/**
- * Attempt to authenticate a user using Firebase Auth.
- * @param {string} email
- * @param {string} password
- * @returns {Promise<object>} Firebase user object
- */
 async function authenticateUser(email, password) {
   const userCredential = await signInWithEmailAndPassword(auth, email, password);
   return userCredential.user;
