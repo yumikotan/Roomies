@@ -1,0 +1,125 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Roomies</title>
+  <link rel="stylesheet" href="./styles.css" />
+</head>
+<body>
+  <div class="container">
+    <div class="wave1"></div>
+    <div class="wave2"></div>
+
+    <section id="view-login" class="view">
+      <div class="brand center">
+        <div class="brand-logo">
+          <img src="./img/otter.png" alt="Roomies Otter" />
+        </div>
+        <h1 class="big">Welcome to<br/>Roomies!</h1>
+      </div>
+
+      <div style="margin-top:24px;">
+        <label>
+          <span>School Email</span>
+          <input id="login-email" type="email" placeholder="asmith@scu.edu"/>
+        </label>
+
+        <label>
+          <span>Password</span>
+          <input id="login-password" type="password" placeholder="••••••••"/>
+        </label>
+
+        <div style="margin-top:22px; display:grid; gap:14px;">
+          <button id="btn-login" class="btn">Log in</button>
+          <div class="auth-links" style="margin-top:4px;">
+            <a href="#" id="btn-forgot">Forgot password?</a>
+          </div>
+          <button id="btn-create-account" class="btn ghost">Create Account</button>
+        </div>
+
+        <p class="footer">ROOMIES</p>
+      </div>
+    </section>
+
+    <section id="view-verify" class="view hidden">
+      <div class="brand center">
+        <div class="brand-logo">
+          <img src="./img/otter.png" alt="Roomies Otter" />
+        </div>
+        <h1 class="big">Become a Roomie!</h1>
+      </div>
+
+      <p style="margin-top:16px;max-width:52ch;line-height:1.5;">
+        At Roomies, we care about your safety! That’s why we verify every user’s school email,
+        so you can be confident you’re connecting with real college students.
+      </p>
+
+      <div style="margin-top:8px;">
+        <label>
+          <span>School Email</span>
+          <input id="verify-email" type="email" placeholder="asmith@scu.edu"/>
+        </label>
+        <label>
+          <span>Choose Password</span>
+          <input id="verify-password" type="password" placeholder="••••••••"/>
+        </label>
+        <div style="margin-top:14px; display:grid; gap:12px;">
+          <button id="btn-verify" class="btn">Verify</button>
+          <button id="btn-go-back-from-verify" class="btn ghost">Go back</button>
+        </div>
+      </div>
+
+      <p class="footer">ROOMIES</p>
+    </section>
+
+    <section id="view-inuse" class="view hidden">
+      <div class="brand center">
+        <div class="brand-logo"><img src="./img/otter.png" alt="Roomies Otter" /></div>
+        <h1 class="big">Uh Oh…</h1>
+      </div>
+
+      <p style="margin-top:10px;color:#db6262;font-weight:700;">
+        This email is associated with an active account.
+      </p>
+
+      <p id="inuse-email" style="margin-top:24px;opacity:.95;"></p>
+      <div style="height:1px;background:rgba(255,255,255,.6);margin-top:8px;"></div>
+
+      <div style="margin-top:18px; display:grid; gap:12px;">
+        <button id="btn-inuse-verify" class="btn">Verify</button>
+        <button id="btn-go-back-from-inuse" class="btn ghost">Go back</button>
+      </div>
+
+      <p class="footer">ROOMIES</p>
+    </section>
+
+    <section id="view-dashboard" class="view hidden">
+      <div style="display:flex;align-items:center;justify-content:space-between;gap:16px;">
+        <div style="display:flex;align-items:center;gap:16px;">
+          <div class="brand-logo" style="width:68px;height:68px;">
+            <img src="./img/otter.png" alt="Roomies Otter" />
+          </div>
+          <div>
+            <div style="font-size:28px;font-weight:800;">Roomies</div>
+            <div style="opacity:.9;">Welcome back!</div>
+          </div>
+        </div>
+        <button id="btn-logout" class="btn" style="width:auto;padding:10px 16px;">Log out</button>
+      </div>
+
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px;margin-top:18px;">
+        <div class="card"><b>Scheduling</b><div>Plan events with roommates.</div></div>
+        <div class="card"><b>Chores</b><div>Assign and track tasks.</div></div>
+        <div class="card"><b>Expenses</b><div>Split and settle costs.</div></div>
+        <div class="card"><b>Messages</b><div>Chat & status updates.</div></div>
+        <div class="card"><b>Matches</b><div>Find compatible roommates.</div></div>
+      </div>
+    </section>
+  </div>
+
+  <script type="module" src="./firebaseClient.js"></script>
+  <script type="module" src="./auth.js"></script>
+  <script src="./app.js"></script>
+</body>
+</html>
