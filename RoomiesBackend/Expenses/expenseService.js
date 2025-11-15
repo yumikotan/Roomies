@@ -1,7 +1,7 @@
 import { db } from "../firebaseConfig.js";
 import { collection, addDoc, getDocs, doc, getDoc, updateDoc } from "firebase/firestore";
-import { calculateSplits } from "../Expenses/splitHelper.js";
-import { calculateOverallExpenseStatus } from "../Expenses/statusHelper.js";
+import { calculateSplits } from "./splitHelper.js";
+import { calculateOverallExpenseStatus } from "./statusHelper.js";
 
 //Validate that all required fields are present.
  
