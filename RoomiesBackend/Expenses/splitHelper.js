@@ -1,13 +1,14 @@
 // Expenses/splitHelper.js
 export function calculateSplits(method, total, sharedWith) {
   if (!Array.isArray(sharedWith) || sharedWith.length === 0) {
-    throw new Error("sharedWith must be a non-empty array.");
+    throw new Error("sharedWith must be a non-empty array of UIDs.");
   }
 
   if (method === "even") {
     const splitAmount = Number((total / sharedWith.length).toFixed(2));
-    return sharedWith.map((user) => ({
-      userId: user.userId || user, 
+
+    return sharedWith.map((uid) => ({
+      userId: uid,
       amount: splitAmount,
     }));
   }

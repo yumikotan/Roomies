@@ -3,18 +3,17 @@ import { collection, addDoc, getDocs, doc, getDoc, updateDoc } from "firebase/fi
 import { calculateSplits } from "./splitHelper.js";
 import { calculateOverallExpenseStatus } from "./statusHelper.js";
 
-//Validate that all required fields are present.
- 
-function validateExpenseFields(groupId, payerId, amount) {
-  if (!groupId || !payerId || !amount) {
-    throw new Error("Missing required fields (groupId, payerId, or amount)");
+// validate required fields
+function validateExpenseFields(householdId, payerId, amount) {
+  if (!householdId || !payerId || !amount) {
+    throw new Error("Missing required fields (householdId, payerId, or amount)");
   }
 }
-//Build the expense data object to be stored in Firestore.
+
 function buildExpenseData(payerId, amount, description, splitMethod, sharedWith, splits_result) {
   const splitsWithStatus = splits_result.map((split) => ({
     ...split,
-    overallStatus: "unpaid",
+    overallStatus: "unpaid", // default
   }));
 
   return {
@@ -30,15 +29,27 @@ function buildExpenseData(payerId, amount, description, splitMethod, sharedWith,
   };
 }
 
-// Add a new expense to a group's expenses collection.
-export async function addExpense(groupId, payerId, amount, description, splitMethod, sharedWith) {
+export async function addExpense(householdId, payerId, amount, description, splitMethod, sharedWith) {
   try {
-    validateExpenseFields(groupId, payerId, amount);
+    validateExpenseFields(householdId, payerId, amount);
 
+    // sharedWith MUST be an array of UIDs
     const splits_result = calculateSplits(splitMethod || "even", amount, sharedWith);
-    const expenseData = buildExpenseData(payerId, amount, description, splitMethod, sharedWith, splits_result);
 
-    const docRef = await addDoc(collection(db, "Groups", groupId, "Expenses"), expenseData);
+    const expenseData = buildExpenseData(
+      payerId,
+      amount,
+      description,
+      splitMethod,
+      sharedWith,
+      splits_result
+    );
+
+    // Save in Households -> householdId -> Expenses
+    const docRef = await addDoc(
+      collection(db, "Households", householdId, "Expenses"),
+      expenseData
+    );
 
     return { success: true, id: docRef.id, splits_result: expenseData.splits_result };
   } catch (error) {
@@ -47,12 +58,12 @@ export async function addExpense(groupId, payerId, amount, description, splitMet
   }
 }
 
-// Retrieve all expenses for a specific group.
-export async function getGroupExpenses(groupId) {
+// get All expenses for a household
+export async function getHouseholdExpenses(householdId) {
   try {
-    if (!groupId) throw new Error("Missing groupId");
+    if (!householdId) throw new Error("Missing householdId");
 
-    const snapshot = await getDocs(collection(db, "Groups", groupId, "Expenses"));
+    const snapshot = await getDocs(collection(db, "Households", householdId, "Expenses"));
     const expenses = snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
 
     return { success: true, expenses };
@@ -62,10 +73,10 @@ export async function getGroupExpenses(groupId) {
   }
 }
 
-// Update a specific user's payment status for an expense.
-export async function updateUserPaymentStatus(groupId, expenseId, userId, newStatus) {
+// Update a user's payment status for a specific expense
+export async function updateUserPaymentStatus(householdId, expenseId, userId, newStatus) {
   try {
-    const expenseRef = doc(db, "Groups", groupId, "Expenses", expenseId);
+    const expenseRef = doc(db, "Households", householdId, "Expenses", expenseId);
     const expenseSnap = await getDoc(expenseRef);
 
     if (!expenseSnap.exists()) {
@@ -73,8 +84,11 @@ export async function updateUserPaymentStatus(groupId, expenseId, userId, newSta
     }
 
     const expenseData = expenseSnap.data();
+
     const updatedSplits = expenseData.splits_result.map((split) =>
-      split.userId === userId ? { ...split, overallStatus: newStatus } : split
+      split.userId === userId
+        ? { ...split, overallStatus: newStatus }
+        : split
     );
 
     const overallStatus = calculateOverallExpenseStatus(updatedSplits);
