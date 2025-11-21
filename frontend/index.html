@@ -11,37 +11,91 @@
     <div class="wave1"></div>
     <div class="wave2"></div>
 
-    <section id="view-login" class="view">
-      <div class="brand center">
-        <div class="brand-logo">
-          <img src="./img/otter.png" alt="Roomies Otter" />
-        </div>
+    <!-- Household modal--> 
+
+    <div id="household-modal" class="modal hidden"> 
+      <div class="modal-inner card"> 
+        <button id="btn-close-household-modal" class="btn btn-text small">x</button> 
+        <h2 id="household-modal-title" style="margin-bottom:12px;"> Create Household</h2>
+
+        <form id="form-create-household-name" class="form"> 
+          <div class="field"> 
+            <label for="modal-household-name"> Household name</label> 
+            <input type="text" id="modal-household-name" placeholder="Swig Roomies" required />
+    </div>
+
+    <div class="field"> 
+      <label for="modal-household-description">Description</label> 
+      <textarea id="modal-household-description" rows="3" placeholder="household description" ></textarea>
+    </div>
+
+    <button type="submit" class="btn full-width" style="margin-top: 12px;"> Create Household </button>
+  </form>  
+
+    <form id="form-join-household" class="form hidden"> 
+      <div class="field"> 
+        <label for="modal-join-code">Invite code</label> 
+        <input type="text" id="modal-join-code" placeholder="ABC123" required />
+      </div> 
+
+      <button type="submit" class="btn full-width" style="margin-top:12px;"> Join Household </button>
+    </form>
+
+  </div>
+</div>
+
+<!-- Compatibility options--> 
+    <div id="compat-modal" class="modal hidden"> 
+      <div class="modal-inner card"> 
+        <button id="btn-close-compat-modal" class="btn btn-text small"> 
+          x
+        </button>
+        <h2 style="text-align:center;margin-bottom:18px;"> 
+          Find a Roommate
+        </h2> 
+
+        <button id="btn-compat-with-person" class="btn full-width" style="margin-bottom:12px;">
+          See if you're compatible with a potential roommate! 
+        </button>
+
+        <button id="btn-compat-auto-match" class="btn ghost full-width"> 
+          Match with potential roommates! 
+        </button>
+      </div>
+    </div> 
+
+    <!-- Login View--> 
+    <section id="view-login" class="view"> 
+      <div class="brand center"> 
+        <div class="brand-logo"> 
+          <img src="./img/otter.png" alt="Roomies Otter" /> 
+        </div> 
         <h1 class="big">Welcome to<br/>Roomies!</h1>
       </div>
 
-      <div style="margin-top:24px;">
-        <label>
-          <span>School Email</span>
-          <input id="login-email" type="email" placeholder="asmith@scu.edu"/>
-        </label>
+      <div style="margin-top:24px;"> 
+        <label> 
+          <span> School Email</span>
+          <input id="login-email" type="email" placeholder="asmith@scu.edu" /> 
+        </label> 
 
-        <label>
-          <span>Password</span>
-          <input id="login-password" type="password" placeholder="••••••••"/>
-        </label>
+        <label> 
+          <span>Password</span> 
+          <input id="login-password" type="password" placeholder="••••••••" />
+        </label> 
 
-        <div style="margin-top:22px; display:grid; gap:14px;">
-          <button id="btn-login" class="btn">Log in</button>
-          <div class="auth-links" style="margin-top:4px;">
-            <a href="#" id="btn-forgot">Forgot password?</a>
-          </div>
-          <button id="btn-create-account" class="btn ghost">Create Account</button>
-        </div>
-
+        <div style="margin-top:22px; display:grid; gap:14px;"> 
+         <button id="btn-login" class="btn"> Log in</button> 
+         <div class="auth-links" style="margin-top:4px;"> 
+          <a href="#" id="btn-forgot">Forgot password?</a>
+        </div> 
+        <button id="btn-create-account" class="btn ghost">Create Account</button>
+        </div> 
         <p class="footer">ROOMIES</p>
-      </div>
+      </div> 
     </section>
-
+   
+<!-- Sign in and Sign up page --> 
     <section id="view-verify" class="view hidden">
       <div class="brand center">
         <div class="brand-logo">
@@ -73,6 +127,7 @@
       <p class="footer">ROOMIES</p>
     </section>
 
+    <!-- Email already in use-->
     <section id="view-inuse" class="view hidden">
       <div class="brand center">
         <div class="brand-logo"><img src="./img/otter.png" alt="Roomies Otter" /></div>
@@ -94,32 +149,239 @@
       <p class="footer">ROOMIES</p>
     </section>
 
-    <section id="view-dashboard" class="view hidden">
-      <div style="display:flex;align-items:center;justify-content:space-between;gap:16px;">
-        <div style="display:flex;align-items:center;gap:16px;">
-          <div class="brand-logo" style="width:68px;height:68px;">
-            <img src="./img/otter.png" alt="Roomies Otter" />
-          </div>
-          <div>
-            <div style="font-size:28px;font-weight:800;">Roomies</div>
-            <div style="opacity:.9;">Welcome back!</div>
-          </div>
+   <!--Dashboard (Home)--> 
+   <section id="view-dashboard" class="view hidden"> 
+    <header class="dash-title"> 
+      My Dashboard
+    </header> 
+
+    <section class="card household-shell"> 
+      <h2 class="dash">Household</h2> 
+      <div id="household-empty"> 
+        <div class="card" style="margin-top:12px;"> 
+        <p class="small">No household yet</p> 
+        <div style="margin-top:16px; display:grid; gap:10px;"> 
+        <button id="btn-add-household" class="btn"> 
+          Create a Household
+        </button> 
+        <button id="btn-open-join-household" class="btn ghost"> 
+          Join a Household
+        </button>
         </div>
-        <button id="btn-logout" class="btn" style="width:auto;padding:10px 16px;">Log out</button>
+        </div>
       </div>
 
-      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px;margin-top:18px;">
-        <div class="card"><b>Scheduling</b><div>Plan events with roommates.</div></div>
-        <div class="card"><b>Chores</b><div>Assign and track tasks.</div></div>
-        <div class="card"><b>Expenses</b><div>Split and settle costs.</div></div>
-        <div class="card"><b>Messages</b><div>Chat & status updates.</div></div>
-        <div class="card"><b>Matches</b><div>Find compatible roommates.</div></div>
-      </div>
-    </section>
+  <!--Shown by JS once household exists--> 
+  <div id="household-details" class="hidden" style="margin-top:16px;">
+  <h3 id="household-name"></h3> 
+  <p id="household-description" class="subtitle"></p> 
+
+  <div class="members-block" style="margin-top:12px;"> 
+  <h4>Members</h4>
+  <ul id="household-members" class="member-list"></ul> 
   </div>
 
-  <script type="module" src="./firebaseClient.js"></script>
-  <script type="module" src="./auth.js"></script>
-  <script src="./app.js"></script>
+  <div class="invite-block" style="margin-top:12px;"> 
+   <h4>Invite code</h4> 
+   <div class="invite-code-row"> 
+     <span id="household-invite" class="code-pill">---</span>
+     <button id="btn-copy-invite" class="btn btn-text small"> 
+      Copy
+     </button>
+   </div>
+  </div>
+  </div>
+    </section>
+
+  <!--Find a roomate--> 
+  <section class="card FindRoommate-box"> 
+    <h2 class="FindRoommate-title">Find a Roommate</h2> 
+    <button 
+      id="btn-open-compat-modal" 
+      class="btn" 
+      style="margin-top:16px;" 
+      > 
+       Take a Compatibility Test
+    </button>
+  </section> 
+  
+  <p class="footer">ROOMIES</p>
+</section>  
+
+<!--Chores Tab--> 
+<section id="view-chores" class="view hidden"> 
+  <header class="dash-title">Chores</header> 
+  <section class="card" style="margin-top:24px;"> 
+    <p class="subtitle"> 
+      Shared tasks, schedules, and progress
+    </p>
+  </section>
+  <p class="footer">ROOMIES</p>
+</section> 
+
+<!--Expenses tab-->
+<section id="view-expenses" class="view hidden"> 
+  <header class="dash-title">Chores</header> 
+  <section class="card" style="margin-top:24px;"> 
+    <p class="subtitle"> 
+      Track shared bills, and payments here.
+    </p>
+  </section>
+  <p class="footer">ROOMIES</p>
+</section>  
+
+<!--Tips tab-->
+<section id="view-tips" class="view hidden"> 
+  <header class="dash-title">Chores</header> 
+  <section class="card" style="margin-top:24px;"> 
+    <p class="subtitle"> 
+      Tips tab
+    </p>
+  </section>
+  <p class="footer">ROOMIES</p>
+</section>   
+
+<!--Matches--> 
+<section id="view-matches" class="view hidden"> 
+  <header class="dash-title">Matches</header> 
+
+<!--Invite roommate--> 
+<section id="matches-invite-card" class="card" style="margin-top:24px;"> 
+<h2>Invite a roomate to take the test</h2> 
+<p class="subtitle"> 
+  Enter email to send them a Roomies Compatibility test request
+</p> 
+<label> 
+  <span>Roommate's email</span> 
+  <input id="invite-email" type="email" placeholder="asmith@scu.edu" /> 
+</label> 
+<button id="btn-send-invite" class="btn" style="margin-top:10px;"> 
+Send Invite 
+</button>
+</section> 
+
+<!--Check Compatibility--> 
+<section id="matches-requests-card" class="card" style="margin-top:18px;">
+<h2>Test Requests</h2> 
+<p class="subtitle"> 
+  Other students want the check their Compatibility with you.
+</p>
+<ul id="matches-requests-list" class="member-list"> 
+</ul>
+</section> 
+
+<!--Take compatibility test--> 
+<section id="matches-test-card" class="card" style="margin-top:18px;"> 
+  <h2> Take a compatibility test</h2> 
+  <p class="subtitle"> 
+    Start a compatibility test to help Roomies suggest potential matches. 
+  </p> 
+  <button id="btn-start-test" class="btn" style="margin-top:10px;"> 
+    Start Test
+  </button>
+</section> 
+
+<p class="footer">ROOMIES</p> 
+</section> 
+
+<!--Settings Tab--> 
+<section id="view-settings" class="view hidden"> 
+  <header class="dash-title">Settings</header> 
+  <section class="card" style="margin-top:24px;"> 
+  <p class="subtitle" id="settings-user-info"> 
+    Account settings and Profile
+  </p> 
+  <button id="btn-logout" class="btn" style="margin-top:12px;"> 
+  Log out
+  </button>
+  </section>
+  <p class="footer">ROOMIES</p>
+</section> 
+
+<!--Dashboard Icons--> 
+<nav class="bottom-nav"> 
+  <button id="nav-dashboard" class="nav-btn" aria-label="Home">
+    <img src="./img/icon-home.svg" alt="Home" /> 
+  </button>
+  <button id="nav-chores" class="nav-btn" aria-label="Chores">
+    <img src="./img/icon-chores.svg" alt="Chores" /> 
+  </button>
+  <button id="nav-expenses" class="nav-btn" aria-label="Expenses">
+    <img src="./img/icon-expenses.svg" alt="Expenses" />
+  </button>
+  <button id="nav-tips" class="nav-btn" aria-label="Tips">
+    <img src="./img/icon-tips.svg" alt="Tips" /> 
+  </button>
+  <button id="nav-matches" class="nav-btn" aria-label="Matches">
+    <img src="./img/icon-matches.svg" alt="Matches" /> 
+  </button> 
+  <button id="nav-settings" class="nav-btn" aria-label="Settings">
+    <img src="./img/icon-settings.svg" alt="Settings" /> 
+  </button>
+</nav> 
+</div>
+
+
+<script type="module" src="./firebaseClient.js"></script>
+<script type="module" src="./auth.js"></script>
+<script type="module" src="./app.js"></script> 
+
+<script> 
+  const views = Array.from(document.querySelectorAll(".view")); 
+  function showView(id) { 
+    views.forEach(v => v.classList.add("hidden")); 
+    const target = document.getElementById(id); 
+    if (target) target.classList.remove("hidden"); 
+  } 
+
+document.getElementById("nav-dashboard").addEventListener("click", () => showView("view-dashboard")); 
+document.getElementById("nav-chores").addEventListener("click", () => showView("view-chores"));
+document.getElementById("nav-expenses").addEventListener("click", () => showView("view-expenses")); 
+document.getElementById("nav-tips").addEventListener("click", () => showView("view-tips")); 
+document.getElementById("nav-matches").addEventListener("click", () => showView("view-matches")); 
+document.getElementById("nav-settings").addEventListener("click", () => showView("view-settings")); 
+
+showView("view-login"); 
+
+const compatModal = document.getElementById("compat-modal"); 
+const openCompatBtn = document.getElementById("btn-open-compat-modal"); 
+const closeCompatBtn = document.getElementById("btn-close-compat-modal");  
+
+if (openCompatBtn) { 
+  openCompatBtn.addEventListener("click", () => { 
+    compatModal.classList.remove("hidden"); 
+  });
+} 
+
+if (closeCompatBtn) { 
+  closeCompatBtn.addEventListener("click", () => { 
+    compatModal.classList.add("hidden"); 
+  });
+}
+
+document.getElementById("btn-compat-with-person").addEventListener("click", () => {
+  compatModal.classList.add("hidden"); 
+  showView("view-matches"); 
+  const inviteCard = document.getElementById("matches-invite-card"); 
+  if (inviteCard) inviteCard.scrollIntoView({ behavior: "smooth"}); 
+}); 
+
+document.getElementById("btn-compat-auto-match").addEventListener("click", () => {
+  compatModal.classList.add("hidden"); 
+  showView("view-matches"); 
+  const testCard = document.getElementById("matches-test-card"); 
+  if (testCard) testCard.scrollIntoView({ behavior: "smooth"}); 
+});  
+
+//here down is adding in the compatibility test and adding in firebase invite stuff
+document.getElementById("btn-send-invite").addEventListener("click", () => { 
+  alert("invite sent!"); 
+});  
+
+document.getElementById("btn-start-test").addEventListener("click", () => { 
+  alert("Start compatibility test");
+});
+
+</script>
 </body>
 </html>
