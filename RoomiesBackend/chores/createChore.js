@@ -1,41 +1,36 @@
-// makes a new chore but I still need to finish some parts
+
 
 import { db } from '../firebaseConfig.js';
-import { collection, addDoc } from 'firebase/firestore';
-
-/*
-   TODO:
-   - finish validation for rotating chores
-   - add default values?
-*/
+import { collection, addDoc, Timestamp } from 'firebase/firestore';
 
 export async function createChore(householdId, choreData) {
   try {
-    if (!householdId || !choreData) {
-      throw new Error("Missing info for creating a chore.");
+    if (!householdId) throw new Error("Missing household ID.")
+    if (!choreData.title || !choreData) throw new Error("Missing info for creating a chore.");
+
+    let formattedDate = null;
+    if (choreData.due_date) {
+      formattedDate = Timestamp.fromDate(new Date(choreData.due_date));
     }
 
     const newChore = {
-      title: choreData.title || "",
+      title: choreData.title,
       description: choreData.description || "",
-      assignmentType: choreData.assignmentType || "single",
-      assignedMembers: choreData.assignedMembers || [],
-
-      // TODO: figure out how rotation works
-      rotation: choreData.rotation || null,
-
-      dueDate: choreData.dueDate || null,
-      dueTime: choreData.dueTime || null,
-      notes: choreData.notes || "",
+      assignment_type: choreData.assignment_type || "single",
+      assigned_members: choreData.assigned_members || [],
+      due_date: formattedDate,
+      due_time: choreData.due_time || "",
       status: "pending",
+      created_at: new Date().toISOString(),
 
-      createdAt: new Date().toISOString(),
+      rotational_freq: choreData.rotational_freq || null,
+      rotational_order: choreData.rotational_order || [],
     };
 
     const choresRef = collection(db, 'Households', householdId, 'Chores');
     const res = await addDoc(choresRef, newChore);
 
-    console.log("Chore created but still need to test:", res.id);
+    console.log("Chore created:", res.id);
 
     return { success: true, id: res.id };
   } catch (err) {
