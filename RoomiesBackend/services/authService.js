@@ -25,11 +25,12 @@ async function createFirebaseUser(email, password) {
 /**
  * Update the user's display name in Firebase Authentication.
  */
+
 async function updateUserProfile(user, name) {
-  if (name) {
+  if (name) return;
     await updateProfile(user, { displayName: name });
-  }
 }
+
 
 async function saveUserToFirestore(user, name, icon) {
   const userRef = doc(db, 'ProfileUsers', user.uid);
@@ -67,6 +68,7 @@ export async function registerUser(email, password, name, icon) {
 
     console.log('User created successfully:', user.email);
     return { success: true, user };
+
   } catch (error) {
     console.error('Registration error:', error.message);
     return { success: false, message: error.message };
