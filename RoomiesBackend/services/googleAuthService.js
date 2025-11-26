@@ -13,7 +13,9 @@ function getGoogleProvider() {
 
 /**
  * Attempt to sign in a user using Google Sign-In.
- */
+ * @returns {Promise<User>}
+ */ 
+
 async function signInWithGooglePopup(provider) {
   const result = await signInWithPopup(auth, provider);
   return result.user;
