@@ -1,0 +1,305 @@
+:root {
+  --text: #ffffff;
+  --ink: #295e2b;
+}
+
+* { box-sizing: border-box; }
+html, body {
+  height: 100%;
+  margin: 0;
+  font-family: system-ui, -apple-system, Segoe UI, Roboto, Inter, sans-serif;
+  background: #a9ccad;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: var(--text);
+  align-items: flex-start;
+  padding-top: 20px;
+}
+
+.container {
+  background:
+    linear-gradient(160deg, #c9ded1 0%, #9ac5aa 100%),
+    url("./img/background1.png") center/cover no-repeat;
+  background-blend-mode: multiply;
+  position: relative;
+  width: 390px;
+  height: 780px;
+  border-radius: 40px;
+  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.35);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 30px 48px 50px;
+  margin-top: 0;
+}
+
+.view { position: relative; }
+
+.center {
+  display: grid;
+  place-items: center;
+  gap: 16px;
+}
+
+h1.big {
+  font-size: 38px;
+  font-weight: 900;
+  text-align: center;
+  line-height: 1.4;
+  text-shadow: 0 1px 0 rgba(0,0,0,0.08);
+  margin: 0;
+}
+
+button.btn {
+  display: block;
+  width: 100%;
+  padding: 14px 18px;
+  border: 0;
+  border-radius: 999px;
+  background: #fff;
+  color: var(--ink);
+  font-size: 16px;
+  font-weight: 500;
+  box-shadow: 0 8px 18px rgba(0,0,0,0.15);
+  cursor: pointer;
+}
+
+button.btn.ghost {
+  background: rgba(255,255,255,0.92);
+  border: 1px solid rgba(255,255,255,0.4);
+}
+
+label { display: block; margin: 14px 0; }
+label span {
+  display: block;
+  opacity: 0.9;
+  margin-bottom: 8px;
+  font-size: 14px;
+}
+
+input[type="email"],
+input[type="password"],
+input[type="text"] {
+  width: 100%;
+  background: transparent;
+  border: 0;
+  border-bottom: 1px solid rgba(255,255,255,0.7);
+  padding: 5px 2px;
+  color: #fff;
+  font-size: 16px;
+  outline: none;
+}
+
+input::placeholder { color: rgba(255,255,255,0.7); }
+
+.card {
+  background: rgba(255,255,255,0.95);
+  color: #333;
+  border-radius: 18px;
+  box-shadow: 0 6px 18px rgba(0,0,0,0.15);
+  padding: 16px;
+}
+
+.brand {
+  display: grid;
+  place-items: center;
+  gap: 30px;
+}
+
+.brand-logo {
+  width: 100px;
+  height: 100px;
+  border-radius: 24px;
+  background: linear-gradient(135deg, #e9f5ec 0%, #d9f3df 100%);
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.brand-logo img {
+  width: 140%;
+  height: 140%;
+  object-fit: contain;
+  object-position: center;
+  display: block;
+}
+
+.footer {
+  text-align: center;
+  font-size: 12px;
+  letter-spacing: 0.25em;
+  opacity: 0.9;
+  margin-top: 20px;
+}
+
+.small { text-align: center; opacity: 0.9; }
+.hidden { display: none !important; }
+
+.auth-links {
+  text-align: center;
+  margin-top: 4px;
+  padding: 0 36px;
+  line-height: 1.6;
+  font-size: 15px;
+  color: rgba(255, 255, 255, 0.9);
+}
+
+.auth-links a {
+  display: inline-block;
+  color: #ffffff;
+  text-decoration: none;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.7);
+  padding: 4px 6px;
+  border-radius: 4px;
+  transition: border-color 0.2s ease, color 0.2s ease, background 0.2s ease;
+}
+
+.auth-links a:hover {
+  border-color: #fff;
+  color: #fff;
+  background: rgba(255, 255, 255, 0.1);
+}
+
+@media (max-width: 420px) {
+  html, body { align-items: stretch; }
+  .container {
+    width: 100%;
+    height: 100vh;
+    border-radius: 0;
+    box-shadow: none;
+    padding: 20px 24px 50px;
+  }
+}
+
+#view-inuse {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  transform: translateY(-70px);
+}
+
+#view-inuse .brand {
+  gap: 10px !important;
+  margin-bottom: 8px !important;
+}
+
+#view-inuse p,
+#view-inuse label {
+  margin-top: 6px !important;
+}
+
+#view-inuse div[style*="display:grid"] {
+  gap: 20px !important;
+  margin-top: 10px !important;
+  margin-bottom: 20px !important;
+}
+
+#view-inuse .brand-logo {
+  width: 100px;
+  height: 100px;
+  margin-bottom: 10px;
+  align-self: center;
+}
+#view-verify p {
+margin-bottom: 10px;
+  text-align: center;
+  margin-left: auto;
+  margin-right: auto;
+} 
+
+/* dashboard buttons */ 
+
+.home-logo, 
+.chore-logo, 
+.dollar-logo, 
+.tips-logo {
+  background: none; 
+  border: none; 
+  padding: 10px 16px; 
+  cursor: pointer; 
+  display: flex; 
+  align-items: center; 
+  gap: 6px;  
+} 
+
+.home-logo img, 
+.chore-logo img, 
+.dollar-logo img, 
+.tips-logo img { 
+  width: 25px; 
+  height: auto; 
+} 
+
+.dash-title { 
+  background-color: rgb(113,176,129); 
+  border-radius: 0;
+  padding: 20px; 
+  margin: 0;
+  height: 200px; 
+  width: 100vw; 
+  margin-left: -50px; 
+  margin-top: -120px; 
+  line-height: 2.8;
+  color: #ffffff; 
+  font-size: 40px; 
+  font-weight: 800;
+  align-items: center; 
+  display: flex;
+} 
+
+/* matches and roomie stuff */ 
+
+.matches-intro { 
+  text-align: center; 
+  margin-top: 20px !important; 
+  margin-bottom: 10px !important; 
+  max-width: 52ch; 
+  line-height: 1.5; 
+  color: #fff; 
+  font-size: 16px;
+  font-weight: 500;
+} 
+
+.FindRoommate-box { 
+  background-color: white; 
+  border-radius: 20px; 
+  padding: 20px; 
+  margin: 20px auto 30px; 
+  width: 110%;
+  max-width: 1000px;
+  text-align: center; 
+  margin-left: -12px;
+}
+
+.FindRoommate-title{
+  color: #167c36; 
+  font-size: 20px; 
+  font-weight: 900; 
+  line-height: 1.4;
+} 
+
+.roommate-options { 
+  display: flex; 
+  justify-content: center; 
+  align-items: center; 
+  gap: 10px; 
+  flex-wrap: wrap;
+}
+
+.seeCompatible-box, 
+.matchRoommate-box { 
+  background-color: rgb(113,176,129); 
+  border-radius: 20px; 
+  width: 130px; 
+  height: 130px; 
+  text-align: center; 
+  color: #fbfbfb; 
+  font-size: 17px; 
+  font-weight: 300; 
+  line-height: 0.9;
+}
+
