@@ -209,4 +209,97 @@ margin-bottom: 10px;
   text-align: center;
   margin-left: auto;
   margin-right: auto;
+} 
+
+/* dashboard buttons */ 
+
+.home-logo, 
+.chore-logo, 
+.dollar-logo, 
+.tips-logo {
+  background: none; 
+  border: none; 
+  padding: 10px 16px; 
+  cursor: pointer; 
+  display: flex; 
+  align-items: center; 
+  gap: 6px;  
+} 
+
+.home-logo img, 
+.chore-logo img, 
+.dollar-logo img, 
+.tips-logo img { 
+  width: 25px; 
+  height: auto; 
+} 
+
+.dash-title { 
+  background-color: rgb(113,176,129); 
+  border-radius: 0;
+  padding: 20px; 
+  margin: 0;
+  height: 200px; 
+  width: 100vw; 
+  margin-left: -50px; 
+  margin-top: -120px; 
+  line-height: 2.8;
+  color: #ffffff; 
+  font-size: 40px; 
+  font-weight: 800;
+  align-items: center; 
+  display: flex;
+} 
+
+/* matches and roomie stuff */ 
+
+.matches-intro { 
+  text-align: center; 
+  margin-top: 20px !important; 
+  margin-bottom: 10px !important; 
+  max-width: 52ch; 
+  line-height: 1.5; 
+  color: #fff; 
+  font-size: 16px;
+  font-weight: 500;
+} 
+
+.FindRoommate-box { 
+  background-color: white; 
+  border-radius: 20px; 
+  padding: 20px; 
+  margin: 20px auto 30px; 
+  width: 110%;
+  max-width: 1000px;
+  text-align: center; 
+  margin-left: -12px;
 }
+
+.FindRoommate-title{
+  color: #167c36; 
+  font-size: 20px; 
+  font-weight: 900; 
+  line-height: 1.4;
+} 
+
+.roommate-options { 
+  display: flex; 
+  justify-content: center; 
+  align-items: center; 
+  gap: 10px; 
+  flex-wrap: wrap;
+}
+
+.seeCompatible-box, 
+.matchRoommate-box { 
+  background-color: rgb(113,176,129); 
+  border-radius: 20px; 
+  width: 130px; 
+  height: 130px; 
+  text-align: center; 
+  color: #fbfbfb; 
+  font-size: 17px; 
+  font-weight: 300; 
+  line-height: 0.9;
+}
+
