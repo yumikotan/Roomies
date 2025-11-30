@@ -12,7 +12,7 @@ module.exports = functions.https.onCall(async (data, context) => {
   if (!email)
     throw new functions.https.HttpsError("invalid-argument", "Email is required.");
 
-  // 1. Find user by email
+  // Find user by email
   const userSnap = await db
     .collection("ProfileUsers")
     .where("email", "==", email)
@@ -24,11 +24,11 @@ module.exports = functions.https.onCall(async (data, context) => {
 
   const invitedUid = userSnap.docs[0].id;
 
-  // 2. Prevent inviting yourself
+  // Prevent inviting yourself
   if (invitedUid === inviterUid)
     throw new functions.https.HttpsError("failed-precondition", "You cannot invite yourself.");
 
-  // 3. Create invite entry
+  // Create invite entry
   await db
     .collection("Compatibility")
     .doc("Invites")
