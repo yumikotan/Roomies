@@ -1,396 +1,2862 @@
+    <!-- DELETE HOUSEHOLD CONFIRMATION MODAL -->
+    <div id="delete-household-confirm-modal" class="modal hidden">
+      <div class="modal-inner-custom" style="position: relative; max-width: 400px;">
+        <button id="btn-close-delete-household-modal" class="modal-close-green">×</button>
+        <h2 style="margin-bottom:16px; color: #d32f2f; text-align: center;">Delete Household?</h2>
+        <p style="margin-bottom:24px; text-align: center; color: #234029; font-size: 15px;">Are you sure you want to delete this household? This action cannot be undone.</p>
+        <div style="display: flex; gap: 12px; justify-content: center;">
+          <button id="btn-cancel-delete-household" class="btn" style="background: #6fa573; color: white; border: none; min-width: 100px;">Cancel</button>
+          <button id="btn-confirm-delete-household" class="btn" style="background: #d32f2f; color: white; border: none; min-width: 100px;">Delete</button>
+        </div>
+      </div>
+    </div>
 <!doctype html>
 <html lang="en">
 <head>
- <meta charset="UTF-8" />
- <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
- <title>Roomies</title>
- <link rel="stylesheet" href="./styles.css" />
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Roomies</title>
+  <link rel="stylesheet" href="./styles.css" />
 </head>
 <body>
- <div class="container">
-   <div class="wave1"></div>
-   <div class="wave2"></div>
+  <div class="container">
 
+    <!-- HOUSEHOLD MODAL  -->
+    <div id="household-modal" class="modal hidden">
+      <div class="modal-inner card">
+        <button id="btn-close-household-modal" class="modal-close-green" style="top: 40px; right: 16px;">×</button>
+        <h2 id="household-modal-title" style="margin-bottom:12px;">Create Household</h2>
 
-   <div id="household-modal" class="modal hidden">
-     <div class="modal-inner card">
-       <button id="btn-close-household-modal" class="btn btn-text small">x</button>
-       <h2 id="household-modal-title" style="margin-bottom:12px;"> Create Household</h2>
+        <!-- CREATE FORM -->
+        <form id="form-create-household" class="form">
+          <div class="field">
+            <label for="modal-household-name">Household name</label>
+            <input
+              type="text"
+              id="modal-household-name"
+              placeholder="Ex: Swig Roomies"
+              required
+            />
+          </div>
 
+          <div class="field">
+            <label for="modal-household-description">Description</label>
+            <textarea
+              id="modal-household-description"
+              rows="3"
+              placeholder="Short description (who lives here, vibe, etc.)"
+            ></textarea>
+          </div>
 
-       <form id="form-create-household-name" class="form">
-         <div class="field">
-           <label for="modal-household-name"> Household name</label>
-           <input type="text" id="modal-household-name" placeholder="Swig Roomies" required />
-         </div>
+          <button type="submit" class="btn full-width" style="margin-top:12px; background:#6fa573; color:white; border:none;">
+            Create Household
+          </button>
+        </form>
+      
 
+        <!-- JOIN FORM -->
+        <form id="form-join-household" class="form hidden">
+          <div class="field">
+            <label for="modal-join-code">Invite code</label>
+            <input
+              type="text"
+              id="modal-join-code"
+              placeholder="ABC123"
+              required
+            />
+          </div>
 
-         <div class="field">
-           <label for="modal-household-description">Description</label>
-           <textarea id="modal-household-description" rows="3" placeholder="household description" ></textarea>
-         </div>
+          <button type="submit" class="btn full-width" style="margin-top:12px; background:#6fa573; color:white; border:none;">
+            Join Household
+          </button>
+        </form>
+      </div>
+    </div>
 
+    <!-- EDIT HOUSEHOLD MODAL -->
+    <div id="edit-household-modal" class="modal hidden">
+      <div class="modal-inner card">
+        <button id="btn-close-edit-modal" class="modal-close-green" style="top: 40px; right: 16px;">×</button>
+        <h2 id="edit-modal-title">Edit Household</h2>
 
-         <button type="submit" class="btn full-width" style="margin-top: 12px;"> Create Household </button>
-       </form> 
+        <form id="form-edit-household" class="form">
+          <div class="field">
+            <label for="edit-household-name">Household name</label>
+            <input
+              type="text"
+              id="edit-household-name"
+              placeholder="My Household"
+              required
+            />
+          </div>
 
+          <div class="field">
+            <label for="edit-household-description">Description</label>
+            <textarea
+              id="edit-household-description"
+              rows="3"
+              placeholder="Short description (who lives here, vibe, etc.)"
+            ></textarea>
+          </div>
 
-       <form id="form-join-household" class="form hidden">
-         <div class="field">
-           <label for="modal-join-code">Invite code</label>
-           <input type="text" id="modal-join-code" placeholder="ABC123" required />
-         </div>
+          <div class="field">
+            <label>Members</label>
+            <ul id="edit-members-list" style="list-style: none; padding: 0;"></ul>
+          </div>
 
+          <button type="button" id="btn-invite-roommates" class="btn full-width" style="margin-top:12px; box-shadow: none; background-color: white; border: 2px solid #6fa573; color: #6fa573;">
+            Invite roommates to join your household
+          </button>
 
-         <button type="submit" class="btn full-width" style="margin-top:12px;"> Join Household </button>
-       </form>
-     </div>
-   </div>
+          <button type="submit" class="btn full-width" style="margin-top:12px; box-shadow: none; background-color: #6fa573; border-color: #6fa573; color: white;">
+            Save Changes
+          </button>
 
+          <button type="button" id="btn-delete-household-modal" class="btn full-width" style="margin-top:12px; background-color: #d9534f; border-color: #d43f3a; color: white; box-shadow: none;">
+            <img src="./img/trash-can.png" alt="" style="width: 16px; height: 16px; vertical-align: middle; margin-right: 6px;"> Delete Household
+          </button>
+        </form>
+      </div>
+    </div>
 
-   <div id="compat-modal" class="modal hidden">
-     <div class="modal-inner card">
-       <button id="btn-close-compat-modal" class="modal-close">
-         X
-       </button>
+    <!-- INVITE CODE POPUP MODAL -->
+    <div id="invite-code-modal" class="modal hidden">
+      <div class="modal-inner card" style="padding: 32px; position: relative;">
+        <button id="btn-close-invite-modal" style="position: absolute; top: 16px; right: 16px; width: 32px; height: 32px; border-radius: 50%; background: #6fa573; border: none; color: white; font-size: 18px; font-weight: bold; cursor: pointer; display: flex; align-items: center; justify-content: center; box-shadow: none;">
+          ×
+        </button>
+        <h2 style="margin: 0 0 8px 0; color: #234029;">Invite Code</h2>
+        <p style="margin: 0 0 24px 0; font-size: 14px; color: #666;">Share this code with your roommates</p>
+        
+        <p id="invite-code-display" style="margin: 0 0 24px 0; font-size: 32px; font-weight: 800; color: #295e2b; letter-spacing: 3px; text-align: center;"></p>
 
+        <button id="btn-copy-invite-code" class="btn full-width">
+          Copy
+        </button>
+      </div>
+    </div>
 
-       <h2 style="text-align:center;margin-bottom:18px; color: #295e2b;">
-         Find a Roommate
-       </h2>
+    <!-- COMPATIBILITY TEST REMINDER MODAL -->
+    <div id="compat-reminder-modal" class="modal hidden">
+      <div class="modal-inner card">
+        <button id="btn-close-compat-modal" class="modal-close-green">
+          ×
+        </button>
+        <h2 style="margin-bottom:12px;">Complete Your Test First!</h2>
+        
+        <p style="margin-bottom:20px; line-height:1.6;">
+          You need to complete your compatibility test before you can view matches.
+        </p>
 
+        <button id="btn-start-compat-from-modal" class="btn full-width" style="background:#6fa573;">
+          Start Test Now
+        </button>
+      </div>
+    </div>
 
-       <button id="btn-compat-with-person" class="btn full-width" style="margin-bottom:12px; background: #6fa573; color: white; box-shadow: none;">
-         See if you're compatible with a potential roommate!
-       </button>
+    <!-- CUSTOM ALERT MODAL -->
+    <div id="custom-alert-modal" class="modal hidden">
+      <div class="modal-inner card">
+        <h2 id="custom-alert-title" style="display:none;"></h2>
+        <p id="custom-alert-message" style="margin-bottom:20px; line-height:1.6; text-align:center;"></p>
+        <button id="custom-alert-ok" class="btn full-width" style="background:#6fa573;">
+          OK
+        </button>
+      </div>
+    </div>
 
+    <!-- QUIT COMPATIBILITY TEST CONFIRMATION MODAL -->
+    <div id="quit-compat-modal" class="modal hidden">
+      <div class="modal-inner card">
+        <!-- Removed duplicate X button -->
+        <h2 style="margin-bottom:12px;">Quit Compatibility Test?</h2>
+        
+        <p style="margin-bottom:20px; line-height:1.6;">
+          Your progress will not be saved. Are you sure you want to quit?
+        </p>
 
-       <button id="btn-compat-auto-match" class="btn ghost full-width" style="background: transparent; color: #6fa573; border: 2px solid #6fa573;">
-         Match with potential roommates!
-       </button>
-     </div>
-   </div>
+        <div style="display: flex; gap: 10px; justify-content: center;">
+          <button id="btn-cancel-quit" class="btn" style="background: #6fa573; color: white;">Cancel</button>
+          <button id="btn-confirm-quit" class="btn full-width" style="background: #d32f2f; color: white;">Yes, Quit</button>
+        </div>
+      </div>
+    </div>
 
+    <!-- PHONE NUMBER REQUEST MODAL (for sending match request) -->
+    <div id="phone-request-modal" class="modal hidden">
+      <div class="modal-inner card">
+        <button id="btn-close-phone-request" class="modal-close" style="position: absolute; top: 16px; right: 16px;">
+          ×
+        </button>
+        <h2 style="margin-bottom:16px; color: #295e2b;">Share Your Phone Number?</h2>
+        
+        <p style="margin-bottom:16px; line-height:1.6; font-size: 14px; color: #555;">
+          To connect with this potential roommate, would you like to share your phone number? 
+          They will receive it if they accept your match request.
+        </p>
 
-   <section id="view-login" class="view no-banner">
-     <div class="brand center">
-       <div class="brand-logo">
-         <img src="./img/otter.png" alt="Roomies Otter" />
-       </div>
-       <h1 class="big">Welcome to<br/>Roomies!</h1>
-     </div>
-     <div style="margin-top:24px;">
-       <label>
-         <span> School Email</span>
-         <input id="login-email" type="email" placeholder="asmith@scu.edu" />
-       </label>
-       <label>
-         <span>Password</span>
-         <input id="login-password" type="password" placeholder="••••••••" />
-       </label>
-       <div style="margin-top:22px; display:grid; gap:14px;">
-        <button id="btn-login" class="btn"> Log in</button>
-        <div class="auth-links" style="margin-top:4px;">
-         <a href="#" id="btn-forgot">Forgot password?</a>
-       </div>
-       <button id="btn-create-account" class="btn ghost">Create Account</button>
-       </div>
-       <p class="footer">ROOMIES</p>
-     </div>
-   </section>
+        <label style="margin-bottom: 20px; display: block;">
+          <span style="display: block; margin-bottom: 8px; font-weight: 600; color: #295e2b;">Your Phone Number (Optional)</span>
+          <input id="phone-request-input" type="tel" placeholder="(123) 456-7890" 
+                 style="width: 100%; padding: 12px; border: 2px solid #e1efe4; border-radius: 8px; font-size: 14px;" />
+        </label>
+
+        <div style="display: flex; gap: 10px; justify-content: center;">
+          <button id="btn-phone-cancel" class="btn" style="background: #ccc; color: #333; flex: 1;">Cancel</button>
+          <button id="btn-phone-send" class="btn" style="background: #295e2b; color: #ffffff; flex: 2;">Send Request</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- PHONE NUMBER ACCEPT MODAL (for accepting match request) -->
+    <div id="phone-accept-modal" class="modal hidden">
+      <div class="modal-inner card">
+        <button id="btn-close-phone-accept" class="modal-close" style="position: absolute; top: 16px; right: 16px;">
+          ×
+        </button>
+        <h2 style="margin-bottom:16px; color: #295e2b;">Share Your Phone Number?</h2>
+        
+        <p id="phone-accept-message" style="margin-bottom:16px; line-height:1.6; font-size: 14px; color: #555;"></p>
+
+        <div id="phone-accept-their-number" style="background: #f8f9fa; padding: 12px; border-radius: 8px; margin-bottom: 16px; display: none;">
+          <p style="margin: 0; font-size: 13px; color: #666;">Their phone number:</p>
+          <p id="phone-display-number" style="margin: 4px 0 0 0; font-size: 16px; font-weight: 600; color: #295e2b;"></p>
+        </div>
+
+        <label style="margin-bottom: 20px; display: block;">
+          <span style="display: block; margin-bottom: 8px; font-weight: 600; color: #295e2b;">Your Phone Number (Optional)</span>
+          <input id="phone-accept-input" type="tel" placeholder="(123) 456-7890" 
+                 style="width: 100%; padding: 12px; border: 2px solid #e1efe4; border-radius: 8px; font-size: 14px;" />
+        </label>
+
+        <div style="display: flex; gap: 10px; justify-content: center;">
+          <button id="btn-phone-accept-cancel" class="btn" style="background: #ccc; color: #333; flex: 1;">Cancel</button>
+          <button id="btn-phone-accept-confirm" class="btn" style="background: #295e2b; color: #ffffff; flex: 2;">Accept Request</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- COMPATIBILITY RESULTS MODAL -->
+    <div id="compatibility-results-modal" class="modal hidden">
+      <div class="modal-inner card" style="max-width: 340px; max-height: 650px; overflow-y: auto;">
+        <button id="btn-close-results" class="modal-close" style="position: absolute; top: 16px; right: 16px;">
+          ×
+        </button>
+        <h2 style="margin-bottom:24px; color: #295e2b; text-align: center; font-size: 24px;">Compatibility Results</h2>
+        
+        <div style="text-align: center; margin-bottom: 28px;">
+          <div style="width: 140px; height: 140px; border-radius: 50%; background: linear-gradient(135deg, #5f8662 0%, #8fb896 100%); display: flex; align-items: center; justify-content: center; box-shadow: 0 6px 16px rgba(0,0,0,0.2); margin: 0 auto 12px auto;">
+            <span id="results-score" style="font-size: 42px; font-weight: 800; color: white;"></span>
+          </div>
+          <p style="margin: 0; font-size: 20px; font-weight: 700; color: #295e2b;">Overall Match</p>
+          <p style="margin: 8px 0 0 0; font-size: 14px; color: #666;">You two are a great potential match!</p>
+        </div>
+
+        <div id="results-differences" style="background: #8fb896; padding: 18px; border-radius: 12px; margin-bottom: 20px;">
+          <h3 style="margin: 0 0 16px 0; font-size: 18px; color: #ffffff; text-align: center;">Key Differences</h3>
+          <div id="differences-list"></div>
+        </div>
+
+        <button id="btn-results-ok" class="btn" style="background: #295e2b; color: #ffffff; width: 100%; padding: 14px; font-size: 16px; font-weight: 600;">Got it!</button>
+      </div>
+    </div>
+
+    <!-- LOGIN VIEW -->
+    <section id="view-login" class="view">
+      <div class="brand center">
+        <div class="brand-logo">
+          <img src="./img/otter.png" alt="Roomies Otter" />
+        </div>
+        <h1 class="big">Welcome to<br/>Roomies!</h1>
+      </div>
+
+      <div style="margin-top:24px;">
+        <label>
+          <span>School Email</span>
+          <input id="login-email" type="email" placeholder="asmith@scu.edu" />
+        </label>
+
+        <label>
+          <span>Password</span>
+          <input id="login-password" type="password" placeholder="••••••••" />
+        </label>
+
+        <div style="margin-top:22px; display:grid; gap:14px;">
+          <button id="btn-login" class="btn">Log in</button>
+          <div class="auth-links" style="margin-top:4px;">
+            <a href="#" id="btn-forgot">Forgot password?</a>
+          </div>
+          <button id="btn-create-account" class="btn ghost">Create Account</button>
+        </div>
+
+        <p class="footer">ROOMIES</p>
+      </div>
+    </section>
+
+    <!-- VERIFY / SIGN-UP VIEW -->
+    <section id="view-verify" class="view hidden">
+      <div class="brand center">
+        <div class="brand-logo">
+          <img src="./img/otter.png" alt="Roomies Otter" />
+        </div>
+        <h1 class="big">Become a Roomie!</h1>
+      </div>
+
+      <p style="margin-top:16px;max-width:52ch;line-height:1.5;">
+        At Roomies, we care about your safety! That's why we verify every user's school email,
+        so you can be confident you're connecting with real college students.
+      </p>
+
+      <div style="margin-top:8px;">
+        <label>
+          <span>School Email</span>
+          <input id="verify-email" type="email" placeholder="asmith@scu.edu" />
+        </label>
+        <label>
+          <span>Choose Password</span>
+          <input id="verify-password" type="password" placeholder="••••••••" />
+        </label>
+        <div style="margin-top:14px; display:grid; gap:12px;">
+          <button id="btn-verify" class="btn">Verify</button>
+          <button id="btn-go-back-from-verify" class="btn ghost">Go back</button>
+        </div>
+      </div>
+
+      <p class="footer">ROOMIES</p>
+    </section>
+
+    <!-- EMAIL IN USE VIEW -->
+    <section id="view-inuse" class="view hidden">
+      <div class="brand center" style="margin-top: 48px;">
+        <div class="brand-logo" style="margin-top: 64px; margin-bottom: 32px;"><img src="./img/otter.png" alt="Roomies Otter" /></div>
+        <h1 class="big" style="margin-bottom: 32px;">Uh Oh..</h1>
+      </div>
+
+      <p style="margin-top:32px;color:#ffb3b3;font-weight:700; text-align:center; text-shadow: 0 1px 6px rgba(0,0,0,0.08);">
+        This email is associated with an active account.
+      </p>
+
+      <p id="inuse-email" style="margin-top:24px;opacity:.95; user-select:text; cursor:text; text-align:center;"></p>
+
+      <div style="margin-top:32px; display:flex; justify-content:center; margin-bottom: 64px;">
+        <button id="btn-go-back-from-inuse" class="btn ghost" onclick="window.show('create-account')">Go back</button>
+      </div>
+
+      <p class="footer" style="margin-top: 120px;">ROOMIES</p>
+    </section>
+
+    <!-- DASHBOARD VIEW (Home tab) -->
+    <section id="view-dashboard" class="view hidden">
+      <div style="background-color: #6fa573 !important; padding: 30px 20px 30px 20px !important; border-radius: 40px 40px 0 0 !important; margin: -30px -30px 0 -30px !important; width: calc(100% + 60px) !important; max-width: none !important;">
+        <p style="color: white; font-size: 28px; font-weight: 800; text-align: center; margin: 0;">
+          My Dashboard
+        </p>
+      </div>
+
+      <!-- WELCOME SECTION -->
+      <div style="margin-bottom: 36px; margin-top: 40px; text-align: center;">
+        <div style="background: white; border-radius: 20px; box-shadow: 0 4px 12px rgba(0,0,0,0.10); padding: 32px 24px 24px 24px; max-width: 440px; margin: 0 auto;">
+          <h1 style="color: #5f8d66; font-size: 20px; font-weight: 800; margin: 0 0 12px 0;">Welcome to Roomies</h1>
+          <p style="color: #5f8d66; font-size: 13px; line-height: 1.7; margin: 0 auto; max-width: 340px; padding: 0 8px; opacity: 0.95; font-weight: 700;">Your all-in-one app for managing household life. Create or join a household, track expenses, manage chores, and find compatible roommates.</p>
+        </div>
+      </div>
+
+      <!-- COMPATIBILITY TEST CARD -->
+     <!-- HOUSEHOLD CARD -->
+  <div id="dashboard-household" style="margin-bottom: 24px;">
+    <h2 class="household-title" style="text-align: center; color: white; font-size: 22px; font-weight: 800; margin: 0 0 20px 0; background-color: #6fa573; padding: 16px 20px; border-radius: 16px; width: 95%; max-width: 450px; margin-left: auto; margin-right: auto; margin-bottom: 20px;">Household</h2>
+
+    <!-- EMPTY STATE -->
+    <div id="household-empty" style="background: white; border-radius: 16px; padding: 28px 35px 20px 35px; box-shadow: 0 4px 12px rgba(0,0,0,0.1); width: 95%; max-width: 450px; margin-left: auto; margin-right: auto;">
+      <p class="subtitle" style="color: #5f8d66; text-align: center;">No household yet</p>
+      <div class="household-actions" style="display: flex; flex-direction: column; gap: 12px; justify-content: center; margin-top: 16px;">
+        <button id="btn-add-household" class="btn small" style="background: #5f8d66; color: white; border: none; padding: 13px 20px; border-radius: 999px; cursor: pointer; font-size: 0.9rem;">
+          Create a Household
+        </button>
+        <button id="btn-open-join-household" class="btn small ghost" style="background: transparent; border: 2px solid #5f8d66; color: #5f8d66; padding: 10px 20px; border-radius: 999px; cursor: pointer; font-size: 0.9rem;">
+          Join a Household
+        </button>
+      </div>
+    </div>
+
+    <!-- FILLED STATE -->
+    <div id="household-details" class="hidden">
+      <div style="background: white; border-radius: 16px; padding: 28px 35px 20px 35px; margin-bottom: 16px; box-shadow: 0 4px 12px rgba(0,0,0,0.1); width: 95% !important; max-width: 450px !important; margin-left: auto; margin-right: auto;">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+          <h3 id="household-name" style="margin: 0; color: #5f8d66;"></h3>
+          <button id="btn-edit-household" style="background: none; border: none; padding: 0; cursor: pointer; box-shadow: none;">
+            <img src="./img/edit.png" style="width: 20px; height: auto; display: block;" alt="Edit" />
+          </button>
+        </div>
+        <p id="household-description" class="subtitle" style="margin: 0 0 16px 0; color: #666;"></p>
+        <h4 style="margin: 0 0 12px 0; color: #5f8d66; font-size: 16px;">Members</h4>
+        <ul id="household-members" class="member-list"></ul>
+      </div>
+
+      <p style="color: white; font-size: 13px; margin: 18px auto 18px auto; line-height: 1.4; font-weight: 700; text-align: center; width: 95%; max-width: 270px;">
+        Create and manage agreements to set household expectations and responsibilities
+      </p>
+      <div style="background: white; border-radius: 16px; padding: 20px 24px; box-shadow: 0 4px 12px rgba(0,0,0,0.1); width: 85% !important; max-width: 320px !important; margin-left: auto; margin-right: auto;">
+        <button id="btn-household-agreement" style="background: none; border: none; padding: 0; cursor: pointer; display: flex; flex-direction: column; align-items: center; gap: 24px; width: 100%; text-align: center; box-shadow: none;">
+          <img src="./img/roomagree.png" style="width: 56px; height: 56px; object-fit: contain;" alt="Document icon" />
+          <span style="color: #5f8d66; font-size: 16px; font-weight: 700;">Roommate Agreement</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- FIND A ROOMMATE CARD -->
+  <section class="card find-roommate-card">
+    <h2 class="find-title" style="background-color: #6fa573; padding: 16px 20px; border-radius: 16px; width: 95%; max-width: 450px; margin: 0 auto 20px auto;">Find a Roommate</h2>
+
+    <div style="background: white; border-radius: 16px; padding: 20px; box-shadow: 0 4px 12px rgba(0,0,0,0.1); width: 95% !important; max-width: 450px !important; margin: 0 auto;">
+      <div style="margin-bottom: 20px;">
+        <button id="btn-dash-take-test" class="find-wide-tile" style="padding: 22px 16px; min-height: 90px; width: 100%;">
+          <div class="find-icon">
+            <img src="./img/test.png" alt="" style="width: 36px; height: 36px; filter: brightness(0) invert(1);">
+          </div>
+          <div class="find-label">
+            Retake Compatibility Test
+          </div>
+        </button>
+        <p style="color: #5f8d66; font-size: 13px; margin: 10px 0 0 0; line-height: 1.4; font-weight: 700; text-align: center;">
+          Take a test to see how compatible you are with potential roommates
+        </p>
+      </div>
+
+      <div style="margin-bottom: 20px;">
+        <button id="btn-dash-requests" class="find-wide-tile" style="padding: 22px 16px; min-height: 90px; width: 100%;">
+          <div class="find-icon">
+            <img src="./img/request.png" alt="" style="width: 36px; height: 36px;">
+          </div>
+          <div class="find-label">
+            Test & Meeting Requests
+          </div>
+        </button>
+        <p style="color: #5f8d66; font-size: 13px; margin: 10px 0 0 0; line-height: 1.4; font-weight: 700; text-align: center;">
+          See and send test and match requests
+        </p>
+      </div>
+
+      <div style="margin-bottom: 0;">
+        <button id="btn-dash-matches" class="find-wide-tile" style="padding: 22px 16px; min-height: 90px; width: 100%;">
+          <div class="find-icon">
+            <img src="./img/puzzle.png" alt="" style="width: 36px; height: 36px;">
+          </div>
+          <div class="find-label">
+            Your Compatibility Test Matches
+          </div>
+        </button>
+        <p style="color: #5f8d66; font-size: 13px; margin: 10px 0 0 0; line-height: 1.4; font-weight: 700; text-align: center;">
+          See your compatibility scores with other Roomies users to find a potential roommate
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <p class="footer">ROOMIES</p>
+</section>
+
+    <!-- EXPENSES TAB VIEW -->
+    <!-- EXPENSES VIEW -->
+    <section id="view-expenses" class="view hidden">
+      <div style="background-color: #6fa573; padding: 30px 20px 30px 20px; border-radius: 40px 40px 0 0; margin: -30px -30px 0 -30px;">
+        <p style="color: white; font-size: 28px; font-weight: 800; text-align: center; margin: 0;">
+          Expenses
+        </p>
+      </div>
+
+      <div class="expenses-content">
+        <div class="summary-card shared">
+          <h2>Total Shared:</h2>
+          <span id="display-total-shared">$0</span>
+        </div>
+
+        <div class="summary-card owed">
+          <h2>Total Owed:</h2>
+          <span id="display-total-owed">$0</span>
+        </div>
+
+        <button id="btn-expense-history" class="expense-history-btn">
+          Expense History
+        </button>
+
+        <div class="add-expense-trigger" style="justify-content: center;"
+          onclick="document.getElementById('add-expense-modal').classList.remove('hidden')">
+          <div class="plus-circle">
+            <svg width="24" height="24" viewBox="0 0 24 24"
+              fill="none" stroke="#6fa573" stroke-width="3"
+              stroke-linecap="round" stroke-linejoin="round">
+              <line x1="12" y1="5" x2="12" y2="19"></line>
+              <line x1="5" y1="12" x2="19" y2="12"></line>
+            </svg>
+          </div>
+          <span class="trigger-text">Add Expense</span>
+        </div>
+
+        <!-- Unpaid Expenses Section -->
+        <div style="background-color: #6fa573; border-radius: 30px; padding: 20px 10px; margin-top: 20px;">
+          <h2 style="color: white; font-size: 20px; font-weight: 700; margin: 0; padding: 10px 10px 20px 10px; text-align: center;">Unpaid Expenses</h2>
+          <div id="expenses-list-container">
+            <p id="expenses-empty" style="color: white; text-align: center; font-size: 16px; font-weight: 700; margin: 18px 0; display: none;">No expenses yet</p>
+          </div>
+        </div>
+
+        <!-- Paid Expenses Section -->
+        <div style="background-color: #6fa573; border-radius: 30px; padding: 20px 10px; margin-top: 20px;">
+          <h2 style="color: white; font-size: 20px; font-weight: 700; margin: 0; padding: 10px 10px 20px 10px; text-align: center;">Paid Expenses</h2>
+          <div id="paid-expenses-list-container"></div>
+        </div>
+      </div>
+
+      <p class="footer">ROOMIES</p>
+    </section>
+
+    <!-- ADD EXPENSE MODAL -->
+    <div id="add-expense-modal" class="modal hidden">
+      <div class="modal-backdrop"
+        onclick="document.getElementById('add-expense-modal').classList.add('hidden')">
+      </div>
+
+      <div class="modal-inner-custom">
+        <button class="modal-close"
+          onclick="document.getElementById('add-expense-modal').classList.add('hidden')" style="margin-top:40px;">
+          X
+        </button>
+
+        <h2 class="modal-title">New Expense</h2>
+
+        <form id="form-add-expense">
+
+          <div class="field-group">
+            <label>Description</label>
+            <input type="text" id="inp-expense-title" class="pill-input" placeholder="e.g., Groceries" />
+          </div>
+
+          <div class="field-group">
+            <label>Amount ($)</label>
+            <input type="number" id="inp-expense-amount" class="pill-input" step="0.01" min="0" placeholder="0.00" />
+          </div>
+
+          <div class="field-group">
+            <label>Split With</label>
+            <div id="member-select-list"></div>
+          </div>
+
+          <div class="field-group">
+            <label>Split Method</label>
+            <div class="select-wrapper">
+              <select id="inp-split-method" class="pill-select">
+                <option value="even">Split Evenly</option>
+                <option value="custom">Custom Percentages (%)</option>
+              </select>
+            </div>
+          </div>
+        
+          <div id="custom-split-container" class="hidden">
+            <div id="custom-split-inputs-list"></div>
+          </div>
+
+          <button type="submit" class="btn-save-pill" style="margin-top:32px;">Save Expense</button>
+        </form>
+      </div>
+    </div>
+
+    <!-- EXPENSE HISTORY MODAL -->
+    <div id="expense-history-modal" class="modal hidden">
+      <div class="modal-backdrop"
+        onclick="document.getElementById('expense-history-modal').classList.add('hidden')">
+      </div>
+
+      <div class="modal-inner-custom">
+        <button class="modal-close"
+          onclick="document.getElementById('expense-history-modal').classList.add('hidden')">
+          X
+        </button>
+
+        <h2 class="modal-title">Completed Expenses</h2>
+
+        <div id="completed-expenses-list"></div>
+      </div>
+    </div>
+
+    <!-- EDIT EXPENSE MODAL -->
+    <div id="edit-expense-modal" class="modal hidden">
+      <div class="modal-backdrop"
+        onclick="document.getElementById('edit-expense-modal').classList.add('hidden')">
+      </div>
+
+      <div class="modal-inner-custom">
+        <button class="modal-close"
+          onclick="document.getElementById('edit-expense-modal').classList.add('hidden')" style="margin-top:40px;">
+          X
+        </button>
+
+        <h2 class="modal-title">Edit Expense</h2>
+
+        <form id="form-edit-expense">
+
+          <div class="field-group">
+            <label>Description</label>
+            <input type="text" id="inp-edit-expense-title" class="pill-input" placeholder="e.g., Groceries" />
+          </div>
+
+          <div class="field-group">
+            <label>Amount ($)</label>
+            <input type="number" id="inp-edit-expense-amount" class="pill-input" step="0.01" min="0" placeholder="0.00" />
+          </div>
+
+          <div class="field-group">
+            <label>Split With</label>
+            <div id="edit-member-select-list"></div>
+          </div>
+
+          <div class="field-group">
+            <label>Split Method</label>
+            <div class="select-wrapper">
+              <select id="inp-edit-split-method" class="pill-select">
+                <option value="even">Split Evenly</option>
+                <option value="custom">Custom Percentages (%)</option>
+              </select>
+            </div>
+          </div>
+        
+          <div id="edit-custom-split-container" class="hidden">
+            <div id="edit-custom-split-inputs-list"></div>
+          </div>
+
+          <div class="field-group">
+            <label>Payment Status</label>
+            <div id="edit-payment-status-list"></div>
+          </div>
+
+          <button type="submit" class="btn-save-pill" style="margin-top:32px;">Update Expense</button>
+
+          <button type="button" id="btn-delete-expense" class="btn-save-pill" style="margin-top: 12px; background-color: #d9534f; border-color: #d43f3a;">
+            <img src="./img/trash-can.png" alt="" style="width: 16px; height: 16px; vertical-align: middle; margin-right: 6px;"> Delete Expense
+          </button>
+        </form>
+      </div>
+    </div>
+
+    <!-- IDEAS / COMPATIBILITY TAB VIEW -->
+    <section id="view-ideas" class="view hidden">
+      <div class="brand center">
+        <h1 class="big">Compatibility & Ideas</h1>
+      </div>
+      <section class="card" style="margin:24px 18px;">
+        <p class="subtitle">
+          This tab can hold your compatibility test results and tips for better roommate living.
+        </p>
+      </section>
+    </section>
+<section id="view-tips" class="view hidden">
+  <div style="background-color: #6fa573; padding: 30px 20px 30px 20px; border-radius: 40px 40px 0 0; margin: -30px -30px 20px -30px;">
+    <p style="color: white; font-size: 28px; font-weight: 800; text-align: center; margin: 0;">
+      Tips
+    </p>
+  </div>
+
+  <div class="tips-section">
+    <div class="tips-category-bar">
+      <span>Conflict Resolution</span>
+      <span class="tips-bulb"><img src="./img/bulb.png" style="width: 20px; height: 20px; vertical-align: middle; filter: invert(55%) sepia(18%) saturate(863%) hue-rotate(78deg) brightness(92%) contrast(88%);"></span>
+    </div>
+
+    <div class="tip-card">
+      <h2>Use "I" statements:</h2>
+      <p>
+        Express your feelings from your own perspective without placing blame.
+        For example, say "I feel frustrated because..." instead of "You always...".
+      </p>
+    </div>
+
+    <div class="tip-card">
+      <h2>Focus on the issue:</h2>
+      <p>
+        Don't bring up past mistakes. Stay focused on the current conflict and
+        the behavior, not the person.
+      </p>
+    </div>
+
+    <div class="tips-category-bar" style="margin-top:24px;">
+      <span>Shared Space Etiquette</span>
+      <span class="tips-bulb"><img src="./img/bulb.png" style="width: 20px; height: 20px; vertical-align: middle; filter: invert(55%) sepia(18%) saturate(863%) hue-rotate(78deg) brightness(92%) contrast(88%);"></span>
+    </div>
+
+    <div class="tip-card">
+      <h2>Respect boundaries:</h2>
+      <p>
+        Don't invade other people's physical or personal space. Pay attention to social cues and avoid interrupting others who are focused on work. 
+      </p>
+    </div>
+
+    <div class="tip-card">
+      <h2>Respect privacy:</h2>
+      <p>
+       Be mindful of others' conversations and personal business. Avoid loud, private conversations in public spaces. 
+      </p>
+    </div>
+
+    <div class="tip-card">
+      <h2>Clean up after yourself:</h2>
+      <p>
+        Keep shared spaces tidy by cleaning up immediately after using them. Don't leave dishes in the sink or personal items in common areas.
+      </p>
+    </div>
+
+    <div class="tips-category-bar" style="margin-top:24px;">
+      <span>Communication Tips</span>
+      <span class="tips-bulb"><img src="./img/bulb.png" style="width: 20px; height: 20px; vertical-align: middle; filter: invert(55%) sepia(18%) saturate(863%) hue-rotate(78deg) brightness(92%) contrast(88%);"></span>
+    </div>
+
+    <div class="tip-card">
+      <h2>Set expectations early:</h2>
+      <p>
+        Discuss household rules, chores, and boundaries when you first move in together to avoid misunderstandings later.
+      </p>
+    </div>
+
+    <div class="tip-card">
+      <h2>Have regular check-ins:</h2>
+      <p>
+        Schedule monthly household meetings to discuss any concerns, share updates, and address issues before they become big problems.
+      </p>
+    </div>
+
+    <div class="tip-card">
+      <h2>Be direct but kind:</h2>
+      <p>
+        Don't let small annoyances build up. Address concerns promptly with respect and kindness rather than passive-aggressive behavior.
+      </p>
+    </div>
+
+    <div class="tips-category-bar" style="margin-top:24px;">
+      <span>Financial Management</span>
+      <span class="tips-bulb"><img src="./img/bulb.png" style="width: 20px; height: 20px; vertical-align: middle; filter: invert(55%) sepia(18%) saturate(863%) hue-rotate(78deg) brightness(92%) contrast(88%);"></span>
+    </div>
+
+    <div class="tip-card">
+      <h2>Track shared expenses:</h2>
+      <p>
+        Use the Expenses tab to log all shared costs like groceries, utilities, and household supplies to ensure fair splitting.
+      </p>
+    </div>
+
+    <div class="tip-card">
+      <h2>Pay bills on time:</h2>
+      <p>
+        Set reminders for your share of rent and utilities. Late payments can strain relationships and affect everyone's credit.
+      </p>
+    </div>
+
+    <div class="tip-card">
+      <h2>Discuss big purchases:</h2>
+      <p>
+        Before buying shared items like furniture or appliances, get everyone's input and agreement on the expense.
+      </p>
+    </div>
+
+    <div class="tips-category-bar" style="margin-top:24px;">
+      <span>Daily Living</span>
+      <span class="tips-bulb"><img src="./img/bulb.png" style="width: 20px; height: 20px; vertical-align: middle; filter: invert(55%) sepia(18%) saturate(863%) hue-rotate(78deg) brightness(92%) contrast(88%);"></span>
+    </div>
+
+    <div class="tip-card">
+      <h2>Be mindful of noise:</h2>
+      <p>
+        Keep noise levels reasonable, especially during early mornings and late nights. Use headphones when others are sleeping or studying.
+      </p>
+    </div>
+
+    <div class="tip-card">
+      <h2>Share responsibilities:</h2>
+      <p>
+        Divide household chores fairly using the Chores tab. Rotate unpleasant tasks so no one feels burdened.
+      </p>
+    </div>
+
+    <div class="tip-card">
+      <h2>Respect guests policy:</h2>
+      <p>
+        Always give roommates notice before having guests over. Agree on quiet hours and overnight guest limits in advance.
+      </p>
+    </div>
+
+    <div class="tip-card">
+      <h2>Label your food:</h2>
+      <p>
+        Mark your personal groceries clearly and respect others' labeled items. Discuss which items are shared and which are personal.
+      </p>
+    </div>
+  </div>
+
  
-   <section id="view-verify" class="view hidden no-banner">
-     <div class="brand center">
-       <div class="brand-logo">
-         <img src="./img/otter.png" alt="Roomies Otter" />
-       </div>
-       <h1 class="big">Become a Roomie!</h1>
-     </div>
-     <p style="margin-top:16px;max-width:52ch;line-height:1.5;">
-       At Roomies, we care about your safety! That’s why we verify every user’s school email,
-       so you can be confident you’re connecting with real college students.
-     </p>
-     <div style="margin-top:8px;">
-       <label>
-         <span>School Email</span>
-         <input id="verify-email" type="email" placeholder="asmith@scu.edu"/>
-       </label>
-       <label>
-         <span>Choose Password</span>
-         <input id="verify-password" type="password" placeholder="••••••••"/>
-       </label>
-       <div style="margin-top:14px; display:grid; gap:12px;">
-         <button id="btn-verify" class="btn">Verify</button>
-         <button id="btn-go-back-from-verify" class="btn ghost">Go back</button>
-       </div>
-     </div>
-     <p class="footer">ROOMIES</p>
-   </section>
+</section>
 
 
-   <section id="view-inuse" class="view hidden no-banner">
-     <div class="brand center">
-       <div class="brand-logo"><img src="./img/otter.png" alt="Roomies Otter" /></div>
-       <h1 class="big">Uh Oh…</h1>
-     </div>
-     <p style="margin-top:10px;color:#db6262;font-weight:700;">
-       This email is associated with an active account.
-     </p>
-     <p id="inuse-email" style="margin-top:24px;opacity:.95;"></p>
-     <div style="height:1px;background:rgba(255,255,255,.6);margin-top:8px;"></div>
-     <div style="margin-top:18px; display:grid; gap:12px;">
-       <button id="btn-inuse-verify" class="btn">Verify</button>
-       <button id="btn-go-back-from-inuse" class="btn ghost">Go back</button>
-     </div>
-     <p class="footer">ROOMIES</p>
-   </section>
-
-
-  <section id="view-dashboard" class="view hidden has-banner">
-   <header class="dash-title">
-     My Dashboard
-   </header>
-
-
-   <section class="card household-shell" style="background: #6fa573; padding: 20px; border-radius: 20px;">
-     <h2 class="dash" style="color: white; font-weight: 800; text-align: center; margin-bottom: 12px;">Household</h2>
     
-     <div id="household-empty">
-       <div class="card" style="margin-top:0; padding: 18px; border-radius: 16px; background: white; text-align: center;">
-         <p class="small" style="color: #333; margin: 0;">No household yet</p>
-         <div style="margin-top:16px; display:grid; gap:10px;">
-           <button id="btn-add-household" class="btn" style="background: #6fa573; color: white;">
-             Create a Household
-           </button>
-           <button id="btn-open-join-household" class="btn ghost" style="background: transparent; color: #6fa573; border: 2px solid #6fa573;">
-             Join a Household
-           </button>
-         </div>
-       </div>
-     </div>
-
-
-     <div id="household-details" class="hidden" style="margin-top:16px;">
-       <h3 id="household-name"></h3>
-       <p id="household-description" class="subtitle"></p>
-       <div class="members-block" style="margin-top:12px;">
-         <h4>Members</h4>
-         <ul id="household-members" class="member-list"></ul>
-       </div>
-       <div class="invite-block" style="margin-top:12px;">
-         <h4>Invite code</h4>
-         <div class="invite-code-row">
-           <span id="household-invite" class="code-pill">---</span>
-           <button id="btn-copy-invite" class="btn btn-text small">
-             Copy
-           </button>
-         </div>
-       </div>
-     </div>
-   </section>
-
-
-   <section class="card FindRoommate-box" style="margin-top:24px; padding: 20px; border-radius: 20px; background: white;">
-     <h2 class="FindRoommate-title" style="color: #295e2b; font-weight: 800; text-align: center;">Find a Roommate</h2> 
+<!-- SETTINGS TAB VIEW -->
+<section id="view-settings" class="view hidden">
+  <div style="background-color: #6fa573; padding: 30px 20px 30px 20px; border-radius: 40px 40px 0 0; margin: -30px -30px 0 -30px;">
+    <p style="color: white; font-size: 28px; font-weight: 800; text-align: center; margin: 0;">
+      Settings
+    </p>
+  </div>
+  <p id="settings-user-label" style="color: white; font-size: 15px; font-weight: 600; text-align: center; margin: 32px 0 8px 0;">
+    <!-- Signed in as user.email will be set by JS -->
+  </p>
+  <div style="padding: 20px;">
     
-     <button
-       id="btn-open-compat-modal"
-       class="btn"
-       style="margin-top:16px; background: #6fa573; color: white;"
-       >
-        Take a Compatibility Test
-     </button>
+    <!-- STATUS BLOCK -->
+    <section id="settings-status-block" class="hidden">
+      <div style="background: white; border-radius: 16px; padding: 20px; margin-bottom: 16px; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
+        <h3 style="margin: 0 0 16px 0; color: #234029; font-size: 18px; font-weight: 700;">Profile</h3>
+        
+        <button id="btn-change-profile-pic" class="btn" style="width: 100%; margin-bottom: 12px; background: #6fa573; color: white; border: none;">
+          Change Profile Picture
+        </button>
+      </div>
+
+      <div style="background: white; border-radius: 16px; padding: 20px; margin-bottom: 16px; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
+        <h3 style="margin: 0 0 16px 0; color: #234029; font-size: 18px; font-weight: 700;">Your Status</h3>
+        
+        <label style="display: block; margin-bottom: 12px;">
+          <span style="display: block; margin-bottom: 8px; color: #234029; font-weight: 600; font-size: 14px;">Current Status</span>
+          <select id="settings-status-dropdown" class="pill-select">
+            <option value="available">Available</option>
+            <option value="dnd">Do Not Disturb</option>
+            <option value="custom">Custom</option>
+          </select>
+        </label>
+
+        <!-- Custom status input -->
+        <label id="settings-custom-label" style="display:none; margin-bottom: 12px;">
+          <span style="display: block; margin-bottom: 8px; color: #234029; font-weight: 600; font-size: 14px;">Custom Status</span>
+          <input 
+            id="settings-status-custom" 
+            type="text" 
+            placeholder="Sleeping"
+            class="pill-input"
+          />
+        </label>
+
+        <button id="btn-save-status" class="btn" style="width: 100%; background: #6fa573; color: white; border: none;">
+          Save Status
+        </button>
+      </div>
+    </section>
+
+    <div style="background: white; border-radius: 16px; padding: 20px; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
+      <button id="btn-logout-settings" class="btn" style="width: 100%; background: #dc3545; color: white; border: none; font-weight: 600;">
+        Log Out
+      </button>
+    </div>
+
+  </div>
+</section>
+
+<!-- PROFILE PICTURE CHANGE MODAL -->
+<div id="profile-pic-modal" class="modal hidden">
+  <div class="modal-backdrop" onclick="document.getElementById('profile-pic-modal').classList.add('hidden')"></div>
+  <div class="modal-inner-custom">
+    <button class="modal-close" onclick="document.getElementById('profile-pic-modal').classList.add('hidden')">×</button>
+    <h2 class="modal-title">Choose Profile Picture</h2>
     
-     <div style="display:grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 12px;">
-       <button id="btn-compat-requests" class="btn ghost small" style="padding: 10px 6px; background: #6fa573; color: white; border: none; font-size: 0.9rem;">
-         Compatibility Test Requests <span class="badge" style="background: red; color: white; border-radius: 50%; padding: 2px 6px; font-size: 0.7rem; font-weight: 700;">1</span>
-       </button>
-       <button id="btn-compat-matches" class="btn ghost small" style="padding: 10px 6px; background: #6fa573; color: white; border: none; font-size: 0.9rem;">
-         Compatibility Test Matches
-       </button>
-     </div>
-   </section>
-
-
-   <p class="footer">ROOMIES</p>
- </section>
-
-
- <section id="view-chores" class="view hidden has-banner">
-   <header class="dash-title full-bleed">Chores</header>
-   <section class="card" style="margin-top:24px;">
-     <p class="subtitle">Shared tasks, schedules, and progress</p>
-   </section>
-   <p class="footer">ROOMIES</p>
- </section>
-
-
- <section id="view-expenses" class="view hidden has-banner">
-   <header class="dash-title">Expenses</header>
-   <section class="card" style="margin-top:24px;">
-     <p class="subtitle">Track shared bills, and payments here.</p>
-   </section>
-   <p class="footer">ROOMIES</p>
- </section> 
-
-
- <section id="view-tips" class="view hidden has-banner">
-   <header class="dash-title">Tips</header>
-   <section class="card" style="margin-top:24px;">
-     <p class="subtitle">Tips tab</p>
-   </section>
-   <p class="footer">ROOMIES</p>
- </section>  
-
-
- <section id="view-settings" class="view hidden ">
-   <header class="dash-title">Settings</header>
-   <section class="card" style="margin-top:24px;">
-     <p class="subtitle" id="settings-user-info">Account settings and Profile</p>
-     <button id="btn-logout" class="btn" style="margin-top:12px;">Log out</button>
-   </section>
-   <p class="footer">ROOMIES</p>
- </section> 
-
-
- <!-- STATUS BLOCK -->
- <section id="settings-status-block" class="hidden">
-
-
-   <h3 style="margin-top:10px;">Your Status</h3>
-
-
-   <label>
-     <span>Your current status</span>
-     <select id="settings-status-dropdown">
-       <option value="available">Available</option>
-       <option value="dnd">Do Not Disturb</option>
-       <option value="custom">Custom…</option>
-     </select>
-   </label>
-
-
-   <!-- Custom status input -->
-   <label id="settings-custom-label" style="display:none; margin-top:8px;">
-     <span>Custom Status</span>
-     <input
-       id="settings-status-custom"
-       type="text"
-       placeholder="Enter custom status"
-     />
-   </label>
-
-
-   <label style="margin-top:10px; display:block;">
-     <span>Profile picture URL (optional)</span>
-     <input
-       id="settings-icon-url"
-       type="url"
-       placeholder="https://img..."
-     />
-   </label>
-
-
-   <button id="btn-save-status" class="btn small" style="margin-top:10px;">
-     Save Status
-   </button>
-
-
- </section>
-
-
- <nav class="bottom-nav">
-   <button id="nav-dashboard" class="nav-btn" aria-label="Home">
-     <img src="./img/icon-home.svg" alt="Home" />
-   </button>
-   <button id="nav-chores" class="nav-btn" aria-label="Chores">
-     <img src="./img/icon-chores.svg" alt="Chores" />
-   </button>
-   <button id="nav-expenses" class="nav-btn" aria-label="Expenses">
-     <img src="./img/icon-expenses.svg" alt="Expenses" />
-   </button>
-   <button id="nav-tips" class="nav-btn" aria-label="Tips">
-     <img src="./img/icon-tips.svg" alt="Tips" />
-   </button>
-   <button id="nav-settings" class="nav-btn" aria-label="Settings">
-     <img src="./img/icon-settings.svg" alt="Settings" />
-   </button>
- </nav>
+    <div id="profile-pic-selector" style="display: flex; gap: 16px; margin: 24px 0; justify-content: center; flex-wrap: wrap;">
+      <div class="profile-pic-option" data-icon="./img/28.png">
+        <img src="./img/28.png" alt="Profile 1">
+      </div>
+      <div class="profile-pic-option" data-icon="./img/29.png">
+        <img src="./img/29.png" alt="Profile 2">
+      </div>
+      <div class="profile-pic-option" data-icon="./img/30.png">
+        <img src="./img/30.png" alt="Profile 3">
+      </div>
+      <div class="profile-pic-option" data-icon="./img/31.png">
+        <img src="./img/31.png" alt="Profile 4">
+      </div>
+    </div>
+    
+    <button id="btn-save-profile-pic" class="btn" style="width: 100%; margin-top: 16px;">
+      Save Profile Picture
+    </button>
+  </div>
 </div>
 
 
-<script type="module" src="./firebaseClient.js"></script>
-<script type="module" src="./auth.js"></script>
-<script type="module" src="./app.js"></script>
+  
+ 
+    <section id="view-household" class="view hidden">
+      <header class="topbar">
+        <button id="btn-household-back" class="btn btn-text">
+          &larr; Back to Dashboard
+        </button>
+        <h1 class="title">Your Household</h1>
+      </header>
 
+      <main class="household-layout">
 
-<script>
- const views = Array.from(document.querySelectorAll(".view"));
- function showView(id) {
-   views.forEach(v => v.classList.add("hidden"));
-   const target = document.getElementById(id);
-   if (target) target.classList.remove("hidden");
- }
+      </main>
 
+      <p class="footer">ROOMIES</p>
+    </section>
 
-  document.getElementById("nav-dashboard").addEventListener("click", () => showView("view-dashboard"));
- document.getElementById("nav-chores").addEventListener("click", () => showView("view-chores"));
- document.getElementById("nav-expenses").addEventListener("click", () => showView("view-expenses"));
- document.getElementById("nav-tips").addEventListener("click", () => showView("view-tips"));
- document.getElementById("nav-settings").addEventListener("click", () => showView("view-settings"));
+    <!-- view-Compatibility Test Question 1 & 2-->
+    <section id="view-CompatibilitTest1" class="view hidden">
+      <div style="display: flex; justify-content: space-between; align-items: center; padding: 0 20px;">
+        <div class="compatibleTest-title">Roomies Compatibility Test</div>
+        <button id="btn-quit-compat" class="modal-close" style="position: relative; top: 0; right: 0; margin: 0;">×</button>
+      </div>
 
+      <div class="Question-box" style="background: white; border-radius: 20px; padding: 20px; margin: 20px auto 10px; width: 100%; max-width: 100%; text-align: center;">
+          <p class="Question-title">1. Cleanliness & Organization</p>
+          <p class="Question-Text"> 1. How often do you clean shared spaces (kitchen, bathroom, living)?</p>
 
- document.getElementById("btn-logout").addEventListener("click", () => {
-   showView("view-login");
- });
+          <div style="display:flex;align-items:center;justify-content:space-between;gap:16px;">
+          
+            <button class="tick-circle" value="1" style="width:18px;height:18px;border-radius:50%;border:2px solid #6fa573;background:transparent;padding:0;margin:0;flex-shrink:0;transition:background-color 0.2s ease;transform:none;"></button>
+            <button class="tick-circle" value="2" style="width:18px;height:18px;border-radius:50%;border:2px solid #6fa573;background:transparent;padding:0;margin:0;flex-shrink:0;transition:background-color 0.2s ease;transform:none;"></button>
+            <button class="tick-circle" value="3" style="width:18px;height:18px;border-radius:50%;border:2px solid #6fa573;background:transparent;padding:0;margin:0;flex-shrink:0;transition:background-color 0.2s ease;transform:none;"></button>
+            <button class="tick-circle" value="4" style="width:18px;height:18px;border-radius:50%;border:2px solid #6fa573;background:transparent;padding:0;margin:0;flex-shrink:0;transition:background-color 0.2s ease;transform:none;"></button>
+            <button class="tick-circle" value="5" style="width:18px;height:18px;border-radius:50%;border:2px solid #6fa573;background:transparent;padding:0;margin:0;flex-shrink:0;transition:background-color 0.2s ease;transform:none;"></button>
+            
+          </div>
 
+          <p class="tick-label"> 
+            <span>Never</span>&nbsp;&nbsp;
+            <span>Rarely</span>&nbsp;&nbsp;
+            <span>Sometimes</span>&nbsp;&nbsp;
+            <span>Often</span>&nbsp;&nbsp;
+            <span>Very Often</span>
+          </p>
+          <p class="Question-Text"> 2. How tidy do you usually keep your personal space?</p>
+          <div class="option-list">
+            <div class="option-row">
+              <button class="Q2-tick-circle" value="1" style="border:none;background:transparent;padding:8px 0;margin:0;outline:none;color:#6fa573;font-size:16px;font-weight:700;line-height:1.5;text-decoration:none;vertical-align:baseline;transition:none;transform:none;position:relative;box-sizing:border-box;width:100%;display:flex;align-items:center;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;font-family:inherit;letter-spacing:0;"><span class="circle-indicator"></span>Very Messy</button>
+            </div>
+            <div class="option-row">
+              <button class="Q2-tick-circle" value="2" style="border:none;background:transparent;padding:8px 0;margin:0;outline:none;color:#6fa573;font-size:16px;font-weight:700;line-height:1.5;text-decoration:none;vertical-align:baseline;transition:none;transform:none;position:relative;box-sizing:border-box;width:100%;display:flex;align-items:center;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;font-family:inherit;letter-spacing:0;"><span class="circle-indicator"></span>Somewhat Messy</button>
+            </div>
+            <div class="option-row">
+              <button class="Q2-tick-circle" value="3" style="border:none;background:transparent;padding:8px 0;margin:0;outline:none;color:#6fa573;font-size:16px;font-weight:700;line-height:1.5;text-decoration:none;vertical-align:baseline;transition:none;transform:none;position:relative;box-sizing:border-box;width:100%;display:flex;align-items:center;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;font-family:inherit;letter-spacing:0;"><span class="circle-indicator"></span>Moderately Tidy</button>
+            </div>
+            <div class="option-row">
+              <button class="Q2-tick-circle" value="4" style="border:none;background:transparent;padding:8px 0;margin:0;outline:none;color:#6fa573;font-size:16px;font-weight:700;line-height:1.5;text-decoration:none;vertical-align:baseline;transition:none;transform:none;position:relative;box-sizing:border-box;width:100%;display:flex;align-items:center;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;font-family:inherit;letter-spacing:0;"><span class="circle-indicator"></span>Mostly Organized</button>
+            </div>
+            <div class="option-row">
+              <button class="Q2-tick-circle" value="5" style="border:none;background:transparent;padding:8px 0;margin:0;outline:none;color:#6fa573;font-size:16px;font-weight:700;line-height:1.5;text-decoration:none;vertical-align:baseline;transition:none;transform:none;position:relative;box-sizing:border-box;width:100%;display:flex;align-items:center;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;font-family:inherit;letter-spacing:0;"><span class="circle-indicator"></span>Very Organized</button>
+            </div>
+          
+            <button id="btn-nextQuestion" class="btn-nextQ">Next</button>
 
+          </div>
+      </div>
 
- const compatModal = document.getElementById("compat-modal");
- const openCompatBtn = document.getElementById("btn-open-compat-modal");
- const closeCompatBtn = document.getElementById("btn-close-compat-modal"); 
+    
+    </section>
 
+    <!-- Question 3 & 4    -->
+    <section id="view-CompatibilitTest3And4" class="view hidden">
+      <div style="display: flex; justify-content: space-between; align-items: center; padding: 0 20px;">
+        <div class="compatibleTest-title">Roomies Compatibility Test</div>
+        <button id="btn-quit-compat" class="modal-close" style="position: relative; top: 0; right: 0; margin: 0;">×</button>
+      </div>
 
- if (openCompatBtn) {
-   openCompatBtn.addEventListener("click", () => {
-     compatModal.classList.remove("hidden");
-   });
- }
+      <div class="Question-box">
+          <p class="Question-title">1. Cleanliness & Organization</p>
+          <p class="Question-Text"> 3. How important is it to you that shared spaces stay clean?</p>
 
+          <div style="display:flex;align-items:center;justify-content:space-between;gap:16px;">
+          
+            <button class="Q3-tick-circle" value="1" style="width:18px;height:18px;border-radius:50%;border:2px solid #6fa573;background:transparent;padding:0;margin:0;"></button>
+            <button class="Q3-tick-circle" value="2" style="width:18px;height:18px;border-radius:50%;border:2px solid #6fa573;background:transparent;padding:0;margin:0;"></button>
+            <button class="Q3-tick-circle" value="3" style="width:18px;height:18px;border-radius:50%;border:2px solid #6fa573;background:transparent;padding:0;margin:0;"></button>
+            <button class="Q3-tick-circle" value="4" style="width:18px;height:18px;border-radius:50%;border:2px solid #6fa573;background:transparent;padding:0;margin:0;"></button>
+            <button class="Q3-tick-circle" value="5" style="width:18px;height:18px;border-radius:50%;border:2px solid #6fa573;background:transparent;padding:0;margin:0;"></button>
+            
+          </div>
 
- if (closeCompatBtn) {
-   closeCompatBtn.addEventListener("click", () => {
-     compatModal.classList.add("hidden");
-   });
- }
+          <p class="tick-label"> 
+            <span>Not at All</span>&nbsp;&nbsp;
+            <span> </span>&nbsp;&nbsp;
+            <span> </span>&nbsp;&nbsp;
+            <span> </span>&nbsp;&nbsp;
+            <span>Very</span>
+          </p>
 
+          <p class="Question-Text"> 4. When the shared space gets dirty, how soon do you clean it?</p>
+          <div class="option-list">
+            <div class="option-row">
+              <button class="Q4-tick-circle" value="1" style="border:none;background:transparent;padding:8px 0;margin:0;outline:none;color:#6fa573;font-size:16px;font-weight:700;line-height:1.5;text-decoration:none;vertical-align:baseline;transition:none;transform:none;position:relative;box-sizing:border-box;width:100%;display:flex;align-items:center;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;font-family:inherit;letter-spacing:0;"><span class="circle-indicator"></span>Immediately</button>
+            </div>
+            <div class="option-row">
+              <button class="Q4-tick-circle" value="2" style="border:none;background:transparent;padding:8px 0;margin:0;outline:none;color:#6fa573;font-size:16px;font-weight:700;line-height:1.5;text-decoration:none;vertical-align:baseline;transition:none;transform:none;position:relative;box-sizing:border-box;width:100%;display:flex;align-items:center;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;font-family:inherit;letter-spacing:0;"><span class="circle-indicator"></span>Within a few days</button>
+            </div>
+            <div class="option-row">
+              <button class="Q4-tick-circle" value="3" style="border:none;background:transparent;padding:8px 0;margin:0;outline:none;color:#6fa573;font-size:16px;font-weight:700;line-height:1.5;text-decoration:none;vertical-align:baseline;transition:none;transform:none;position:relative;box-sizing:border-box;width:100%;display:flex;align-items:center;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;font-family:inherit;letter-spacing:0;"><span class="circle-indicator"></span>Only if someone asks</button>
+            </div>
+            <div class="option-row">
+              <button class="Q4-tick-circle" value="4" style="border:none;background:transparent;padding:8px 0;margin:0;outline:none;color:#6fa573;font-size:16px;font-weight:700;line-height:1.5;text-decoration:none;vertical-align:baseline;transition:none;transform:none;position:relative;box-sizing:border-box;width:100%;display:flex;align-items:center;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;font-family:inherit;letter-spacing:0;"><span class="circle-indicator"></span>Rarely</button>
+            </div>
+            <div class="option-row">
+              <button class="Q4-tick-circle" value="5" style="border:none;background:transparent;padding:8px 0;margin:0;outline:none;color:#6fa573;font-size:16px;font-weight:700;line-height:1.5;text-decoration:none;vertical-align:baseline;transition:none;transform:none;position:relative;box-sizing:border-box;width:100%;display:flex;align-items:center;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;font-family:inherit;letter-spacing:0;"><span class="circle-indicator"></span>Never</button>
+            </div>
 
- document.getElementById("btn-compat-with-person").addEventListener("click", () => {
-   compatModal.classList.add("hidden");
-   alert("Redirect to roommate invite form or open invite modal.");
- });
+            <div style="display:flex;align-items:center;justify-content:space-between;gap:16px;">
+              <button class="btn-backQ">Back</button>
+              <button id="btn-nextQuestion5_6" class="btn-nextQ">Next</button>
+            </div>
 
+          </div>
+      </div>
 
- document.getElementById("btn-compat-auto-match").addEventListener("click", () => {
-   compatModal.classList.add("hidden");
-   alert("Redirect to start compatibility test.");
- }); 
+    
+    </section>
+    <!-- Quesitons 5&6 -->
+    <section id="view-CompatibilitTest5And6" class="view hidden">
+      <div style="display: flex; justify-content: space-between; align-items: center; padding: 0 20px;">
+        <div class="compatibleTest-title">Roomies Compatibility Test</div>
+        <button id="btn-quit-compat" class="modal-close" style="position: relative; top: 0; right: 0; margin: 0;">×</button>
+      </div>
 
+      <div class="Question-box">
+          <p class="Question-title">1. Cleanliness & Organization</p>
+          <p class="Question-Text">5. How much does a messy roommate bother you?</p>
 
- document.getElementById("btn-compat-requests").addEventListener("click", () => {
-     alert("Display Compatibility Test Requests list.");
- });
+          <div style="display:flex;align-items:center;justify-content:space-between;gap:16px;">
+          
+            <button class="Q5-tick-circle" value="1" style="width:18px;height:18px;border-radius:50%;border:2px solid #6fa573;background:transparent;padding:0;margin:0;"></button>
+            <button class="Q5-tick-circle" value="2" style="width:18px;height:18px;border-radius:50%;border:2px solid #6fa573;background:transparent;padding:0;margin:0;"></button>
+            <button class="Q5-tick-circle" value="3" style="width:18px;height:18px;border-radius:50%;border:2px solid #6fa573;background:transparent;padding:0;margin:0;"></button>
+            <button class="Q5-tick-circle" value="4" style="width:18px;height:18px;border-radius:50%;border:2px solid #6fa573;background:transparent;padding:0;margin:0;"></button>
+            <button class="Q5-tick-circle" value="5" style="width:18px;height:18px;border-radius:50%;border:2px solid #6fa573;background:transparent;padding:0;margin:0;"></button>
+            
+          </div>
 
+          <p class="tick-label"> 
+            <span>Not at All</span>&nbsp;&nbsp;
+            <span> </span>&nbsp;&nbsp;
+            <span> </span>&nbsp;&nbsp;
+            <span> </span>&nbsp;&nbsp;
+            <span>Very</span>
+          </p>
 
- document.getElementById("btn-compat-matches").addEventListener("click", () => {
-     alert("Display Compatibility Test Matches list.");
- });
+          <p class="Question-Text">6. Do you prefer creating a chore schedule or cleaning when needed?</p>
+          <div class="option-list">
+            <div class="option-row">
+              <button class="Q6-tick-circle" value="1" style="border:none;background:transparent;padding:8px 0;margin:0;outline:none;color:#6fa573;font-size:16px;font-weight:700;line-height:1.5;text-decoration:none;vertical-align:baseline;transition:none;transform:none;position:relative;box-sizing:border-box;width:100%;display:flex;align-items:center;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;font-family:inherit;letter-spacing:0;"><span class="circle-indicator"></span>Creating a chore schedule</button>
+            </div>
+            <div class="option-row">
+              <button class="Q6-tick-circle" value="2" style="border:none;background:transparent;padding:8px 0;margin:0;outline:none;color:#6fa573;font-size:16px;font-weight:700;line-height:1.5;text-decoration:none;vertical-align:baseline;transition:none;transform:none;position:relative;box-sizing:border-box;width:100%;display:flex;align-items:center;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;font-family:inherit;letter-spacing:0;"><span class="circle-indicator"></span>Cleaning when needed</button>
+            </div>
+            <p class="tick-label"> 
+              <span></span>&nbsp;&nbsp;
+              <span></span>&nbsp;&nbsp;
+              <span></span>&nbsp;&nbsp;
+              <span></span>&nbsp;&nbsp;
+              <span></span>&nbsp;&nbsp;
+              <span></span>&nbsp;&nbsp;
+              <span></span>&nbsp;&nbsp;
+              <span></span>&nbsp;&nbsp;
+              <span></span>&nbsp;&nbsp;
+              <span></span>&nbsp;&nbsp;
+              <span></span>
+            </p>
+            <div style="display:flex;align-items:center;justify-content:space-between;gap:16px;">
+              <button class="btn-backQ">Back</button>
+              <button id="btn-nextQuestion7_8" class="btn-nextQ">Next</button>
+            </div>
+          </div>
+      </div>
 
+    
+    </section>
+    <!--2. Noise & Social Activity Level-->
+    <!--Question 7 & 8-->
+    <section id="view-CompatibilitTest7And8" class="view hidden">
+      <div style="display: flex; justify-content: space-between; align-items: center; padding: 0 20px;">
+        <div class="compatibleTest-title">Roomies Compatibility Test</div>
+        <button id="btn-quit-compat" class="modal-close" style="position: relative; top: 0; right: 0; margin: 0;">×</button>
+      </div>
 
- showView("view-login");
+      <div class="Question-box">
+          <p class="Question-title"> 2. Noise & Social Activity Level</p>
+          <p class="Question-Text">7. How noisy are you in your living space (music, calls, gaming)?</p>
 
+          <div style="display:flex;align-items:center;justify-content:space-between;gap:16px;">
+          
+            <button class="Q7-tick-circle" value="1" style="width:18px;height:18px;border-radius:50%;border:2px solid #6fa573;background:transparent;padding:0;margin:0;"></button>
+            <button class="Q7-tick-circle" value="2" style="width:18px;height:18px;border-radius:50%;border:2px solid #6fa573;background:transparent;padding:0;margin:0;"></button>
+            <button class="Q7-tick-circle" value="3" style="width:18px;height:18px;border-radius:50%;border:2px solid #6fa573;background:transparent;padding:0;margin:0;"></button>
+            <button class="Q7-tick-circle" value="4" style="width:18px;height:18px;border-radius:50%;border:2px solid #6fa573;background:transparent;padding:0;margin:0;"></button>
+            <button class="Q7-tick-circle" value="5" style="width:18px;height:18px;border-radius:50%;border:2px solid #6fa573;background:transparent;padding:0;margin:0;"></button>
+            
+          </div>
 
-</script>
+          <p class="tick-label"> 
+            <span>Not at All</span>&nbsp;&nbsp;
+            <span> </span>&nbsp;&nbsp;
+            <span> </span>&nbsp;&nbsp;
+            <span> </span>&nbsp;&nbsp;
+            <span>Very</span>
+          </p>
+          <p class="Question-Text">8. How often do you hang out or host friends in your room/apartment?</p>
+
+          <div style="display:flex;align-items:center;justify-content:space-between;gap:16px;">
+          
+            <button class="Q8-tick-circle" value="1" style="width:18px;height:18px;border-radius:50%;border:2px solid #6fa573;background:transparent;padding:0;margin:0;"></button>
+            <button class="Q8-tick-circle" value="2" style="width:18px;height:18px;border-radius:50%;border:2px solid #6fa573;background:transparent;padding:0;margin:0;"></button>
+            <button class="Q8-tick-circle" value="3" style="width:18px;height:18px;border-radius:50%;border:2px solid #6fa573;background:transparent;padding:0;margin:0;"></button>
+            <button class="Q8-tick-circle" value="4" style="width:18px;height:18px;border-radius:50%;border:2px solid #6fa573;background:transparent;padding:0;margin:0;"></button>
+            <button class="Q8-tick-circle" value="5" style="width:18px;height:18px;border-radius:50%;border:2px solid #6fa573;background:transparent;padding:0;margin:0;"></button>
+            
+          </div>
+
+          <p class="tick-label"> 
+            <span>Never</span>&nbsp;&nbsp;
+            <span>Rarely</span>&nbsp;&nbsp;
+            <span>Sometimes</span>&nbsp;&nbsp;
+            <span>Often</span>&nbsp;&nbsp;
+            <span>Very Often</span>
+          </p>
+          <div style="display:flex;align-items:center;justify-content:space-between;gap:16px;">
+            <button class="btn-backQ">Back</button>
+            <button id="btn-nextQuestion9_10" class="btn-nextQ">Next</button>
+          </div>  
+      </div>
+      
+
+    
+    </section>
+    <!--2. Noise & Social Activity Level-->
+    <!--Question 9 & 10-->
+    <section id="view-CompatibilitTest9And10" class="view hidden">
+      <div style="display: flex; justify-content: space-between; align-items: center; padding: 0 20px;">
+        <div class="compatibleTest-title">Roomies Compatibility Test</div>
+        <button id="btn-quit-compat" class="modal-close" style="position: relative; top: 0; right: 0; margin: 0;">×</button>
+      </div>
+
+      <div class="Question-box">
+          <p class="Question-title"> 2. Noise & Social Activity Level</p>
+          <p class="Question-Text"> 9. How frequently do you listen to loud music or have background noise?</p>
+
+          <div style="display:flex;align-items:center;justify-content:space-between;gap:16px;">
+          
+            <button class="Q9-tick-circle" value="1" style="width:18px;height:18px;border-radius:50%;border:2px solid #6fa573;background:transparent;padding:0;margin:0;"></button>
+            <button class="Q9-tick-circle" value="2" style="width:18px;height:18px;border-radius:50%;border:2px solid #6fa573;background:transparent;padding:0;margin:0;"></button>
+            <button class="Q9-tick-circle" value="3" style="width:18px;height:18px;border-radius:50%;border:2px solid #6fa573;background:transparent;padding:0;margin:0;"></button>
+            <button class="Q9-tick-circle" value="4" style="width:18px;height:18px;border-radius:50%;border:2px solid #6fa573;background:transparent;padding:0;margin:0;"></button>
+            <button class="Q9-tick-circle" value="5" style="width:18px;height:18px;border-radius:50%;border:2px solid #6fa573;background:transparent;padding:0;margin:0;"></button>
+            
+          </div>
+
+          <p class="tick-label"> 
+            <span>Never</span>&nbsp;&nbsp;
+            <span>Rarely</span>&nbsp;&nbsp;
+            <span>Sometimes</span>&nbsp;&nbsp;
+            <span>Often</span>&nbsp;&nbsp;
+            <span>Very Often</span>
+          </p>
+          <p class="Question-Text"> 10. How important is it for your roommate to maintain a quiet environment?</p>
+
+          <div style="display:flex;align-items:center;justify-content:space-between;gap:16px;">
+          
+            <button class="Q10-tick-circle" value="1" style="width:18px;height:18px;border-radius:50%;border:2px solid #6fa573;background:transparent;padding:0;margin:0;"></button>
+            <button class="Q10-tick-circle" value="2" style="width:18px;height:18px;border-radius:50%;border:2px solid #6fa573;background:transparent;padding:0;margin:0;"></button>
+            <button class="Q10-tick-circle" value="3" style="width:18px;height:18px;border-radius:50%;border:2px solid #6fa573;background:transparent;padding:0;margin:0;"></button>
+            <button class="Q10-tick-circle" value="4" style="width:18px;height:18px;border-radius:50%;border:2px solid #6fa573;background:transparent;padding:0;margin:0;"></button>
+            <button class="Q10-tick-circle" value="5" style="width:18px;height:18px;border-radius:50%;border:2px solid #6fa573;background:transparent;padding:0;margin:0;"></button>
+            
+          </div>
+
+          <p class="tick-label"> 
+            <span>Not at All</span>&nbsp;&nbsp;
+            <span> </span>&nbsp;&nbsp;
+            <span> </span>&nbsp;&nbsp;
+            <span> </span>&nbsp;&nbsp;
+            <span>Very</span>
+          </p>
+          <div style="display:flex;align-items:center;justify-content:space-between;gap:16px;">
+            <button class="btn-backQ">Back</button>
+            <button id="btn-nextQuestion11_12" class="btn-nextQ">Next</button>  
+          </div>
+      </div>
+      
+
+     
+    </section>
+    <!--2. Noise & Social Activity Level-->
+    <!--Question 11 -->
+    <section id="view-CompatibilitTest11" class="view hidden">
+      <div style="display: flex; justify-content: space-between; align-items: center; padding: 0 20px;">
+        <div class="compatibleTest-title">Roomies Compatibility Test</div>
+        <button id="btn-quit-compat" class="modal-close" style="position: relative; top: 0; right: 0; margin: 0;">×</button>
+      </div>
+
+      <div class="Question-box">
+          <p class="Question-title"> 2. Noise & Social Activity Level</p>
+          <p class="Question-Text">11. How comfortable are you with a socially active roommate?</p>
+
+          <div style="display:flex;align-items:center;justify-content:space-between;gap:16px;">
+          
+            <button class="Q11-tick-circle" value="1" style="width:18px;height:18px;border-radius:50%;border:2px solid #6fa573;background:transparent;padding:0;margin:0;"></button>
+            <button class="Q11-tick-circle" value="2" style="width:18px;height:18px;border-radius:50%;border:2px solid #6fa573;background:transparent;padding:0;margin:0;"></button>
+            <button class="Q11-tick-circle" value="3" style="width:18px;height:18px;border-radius:50%;border:2px solid #6fa573;background:transparent;padding:0;margin:0;"></button>
+            <button class="Q11-tick-circle" value="4" style="width:18px;height:18px;border-radius:50%;border:2px solid #6fa573;background:transparent;padding:0;margin:0;"></button>
+            <button class="Q11-tick-circle" value="5" style="width:18px;height:18px;border-radius:50%;border:2px solid #6fa573;background:transparent;padding:0;margin:0;"></button>
+            
+          </div>
+
+          <p class="tick-label"> 
+            <span>Not at All</span>&nbsp;&nbsp;
+            <span> </span>&nbsp;&nbsp;
+            <span> </span>&nbsp;&nbsp;
+            <span> </span>&nbsp;&nbsp;
+            <span>Very</span>
+          </p>
+          <div style="display:flex;align-items:center;justify-content:space-between;gap:16px;">
+            <button class="btn-backQ">Back</button>
+            <button id="btn-nextQuestion12_13" class="btn-nextQ">Next</button>
+          </div>
+
+           
+      </div>
+      
+
+   
+    </section>
+    <!--3. Sleep Schedule-->
+    <!--Question 12 & 13-->
+    <section id="view-CompatibilitTest12And13" class="view hidden">
+      <div style="display: flex; justify-content: space-between; align-items: center; padding: 0 20px;">
+        <div class="compatibleTest-title">Roomies Compatibility Test</div>
+        <button id="btn-quit-compat" class="modal-close" style="position: relative; top: 0; right: 0; margin: 0;">×</button>
+      </div>
+
+      <div class="Question-box">
+          <p class="Question-title"> 3. Sleep Schedule</p>
+          <p class="Question-Text">12. How comfortable are you with a socially active roommate?</p>
+
+          <div style="display:flex;align-items:center;justify-content:space-between;gap:16px;">
+          
+            <button class="Q12-tick-circle" value="1" style="width:18px;height:18px;border-radius:50%;border:2px solid #6fa573;background:transparent;padding:0;margin:0;"></button>
+            <button class="Q12-tick-circle" value="2" style="width:18px;height:18px;border-radius:50%;border:2px solid #6fa573;background:transparent;padding:0;margin:0;"></button>
+            <button class="Q12-tick-circle" value="3" style="width:18px;height:18px;border-radius:50%;border:2px solid #6fa573;background:transparent;padding:0;margin:0;"></button>
+            <button class="Q12-tick-circle" value="4" style="width:18px;height:18px;border-radius:50%;border:2px solid #6fa573;background:transparent;padding:0;margin:0;"></button>
+            <button class="Q12-tick-circle" value="5" style="width:18px;height:18px;border-radius:50%;border:2px solid #6fa573;background:transparent;padding:0;margin:0;"></button>
+            
+          </div>
+
+          <p class="tick-label"> 
+            <span>Not at All</span>&nbsp;&nbsp;
+            <span> </span>&nbsp;&nbsp;
+            <span> </span>&nbsp;&nbsp;
+            <span> </span>&nbsp;&nbsp;
+            <span>Very</span>
+          </p>
+
+          <p class="Question13-Text">13. How important is it for your roommate to maintain a quiet environment?</p>
+
+          <div class="option-list">
+            <div class="option-row">
+              <button class="Q13-tick-circle" value="1" style="border:none;background:transparent;padding:8px 0;margin:0;outline:none;color:#6fa573;font-size:16px;font-weight:700;line-height:1.5;text-decoration:none;vertical-align:baseline;transition:none;transform:none;position:relative;box-sizing:border-box;width:100%;display:flex;align-items:center;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;font-family:inherit;letter-spacing:0;"><span class="circle-indicator"></span>Not important at all</button>
+            </div>
+            <div class="option-row">
+              <button class="Q13-tick-circle" value="2" style="border:none;background:transparent;padding:8px 0;margin:0;outline:none;color:#6fa573;font-size:16px;font-weight:700;line-height:1.5;text-decoration:none;vertical-align:baseline;transition:none;transform:none;position:relative;box-sizing:border-box;width:100%;display:flex;align-items:center;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;font-family:inherit;letter-spacing:0;"><span class="circle-indicator"></span>Little importance</button>
+            </div>
+            <div class="option-row">
+              <button class="Q13-tick-circle" value="3" style="border:none;background:transparent;padding:8px 0;margin:0;outline:none;color:#6fa573;font-size:16px;font-weight:700;line-height:1.5;text-decoration:none;vertical-align:baseline;transition:none;transform:none;position:relative;box-sizing:border-box;width:100%;display:flex;align-items:center;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;font-family:inherit;letter-spacing:0;"><span class="circle-indicator"></span>Average importance</button>
+            </div>
+            <div class="option-row">
+              <button class="Q13-tick-circle" value="4" style="border:none;background:transparent;padding:8px 0;margin:0;outline:none;color:#6fa573;font-size:16px;font-weight:700;line-height:1.5;text-decoration:none;vertical-align:baseline;transition:none;transform:none;position:relative;box-sizing:border-box;width:100%;display:flex;align-items:center;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;font-family:inherit;letter-spacing:0;"><span class="circle-indicator"></span>Very important</button>
+            </div>
+            <div class="option-row">
+              <button class="Q13-tick-circle" value="5" style="border:none;background:transparent;padding:8px 0;margin:0;outline:none;color:#6fa573;font-size:16px;font-weight:700;line-height:1.5;text-decoration:none;vertical-align:baseline;transition:none;transform:none;position:relative;box-sizing:border-box;width:100%;display:flex;align-items:center;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;font-family:inherit;letter-spacing:0;"><span class="circle-indicator"></span>Absolutely essential</button>
+              
+            </div>
+          
+            <div style="display:flex;align-items:center;justify-content:space-between;gap:16px;">
+              <button class="btn-backQ">Back</button>
+              <button id="btn-nextQuestion14_15" class="btn-nextQ">Next</button>
+            </div>
+          </div>
+      </div>
+      
+
+     
+    </section>
+    <!--3. Sleep Schedule-->
+    <!--Question 14 & 15-->
+    <section id="view-CompatibilitTest14And15" class="view hidden">
+      <div style="display: flex; justify-content: space-between; align-items: center; padding: 0 20px;">
+        <div class="compatibleTest-title">Roomies Compatibility Test</div>
+        <button id="btn-quit-compat" class="modal-close" style="position: relative; top: 0; right: 0; margin: 0;">×</button>
+      </div>
+
+      <div class="Question-box">
+          <p class="Question-title"> 3. Sleep Schedule</p>
+          <p class="Question-Text"> 14. How much does being woken up by noise or light bother you?</p>
+
+          <div style="display:flex;align-items:center;justify-content:space-between;gap:16px;">
+          
+            <button class="Q14-tick-circle" value="1" style="width:18px;height:18px;border-radius:50%;border:2px solid #6fa573;background:transparent;padding:0;margin:0;"></button>
+            <button class="Q14-tick-circle" value="2" style="width:18px;height:18px;border-radius:50%;border:2px solid #6fa573;background:transparent;padding:0;margin:0;"></button>
+            <button class="Q14-tick-circle" value="3" style="width:18px;height:18px;border-radius:50%;border:2px solid #6fa573;background:transparent;padding:0;margin:0;"></button>
+            <button class="Q14-tick-circle" value="4" style="width:18px;height:18px;border-radius:50%;border:2px solid #6fa573;background:transparent;padding:0;margin:0;"></button>
+            <button class="Q14-tick-circle" value="5" style="width:18px;height:18px;border-radius:50%;border:2px solid #6fa573;background:transparent;padding:0;margin:0;"></button>
+            
+          </div>
+
+           <p class="tick-label"> 
+            <span>Not at All</span>&nbsp;&nbsp;
+            <span> </span>&nbsp;&nbsp;
+            <span> </span>&nbsp;&nbsp;
+            <span> </span>&nbsp;&nbsp;
+            <span>Very</span>
+          </p>
+
+          <p class="Question-Text">15. What time do you usually wake up?</p>
+
+          <div class="option-list">
+            <div class="option-row">
+              <button class="Q15-tick-circle" value="1" style="border:none;background:transparent;padding:8px 0;margin:0;outline:none;color:#6fa573;font-size:16px;font-weight:700;line-height:1.5;text-decoration:none;vertical-align:baseline;transition:none;transform:none;position:relative;box-sizing:border-box;width:100%;display:flex;align-items:center;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;font-family:inherit;letter-spacing:0;"><span class="circle-indicator"></span>Before 6pm</button>
+            </div>
+            <div class="option-row">
+              <button class="Q15-tick-circle" value="2" style="border:none;background:transparent;padding:8px 0;margin:0;outline:none;color:#6fa573;font-size:16px;font-weight:700;line-height:1.5;text-decoration:none;vertical-align:baseline;transition:none;transform:none;position:relative;box-sizing:border-box;width:100%;display:flex;align-items:center;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;font-family:inherit;letter-spacing:0;"><span class="circle-indicator"></span>6am to 8am</button>
+            </div>
+            <div class="option-row">
+              <button class="Q15-tick-circle" value="3" style="border:none;background:transparent;padding:8px 0;margin:0;outline:none;color:#6fa573;font-size:16px;font-weight:700;line-height:1.5;text-decoration:none;vertical-align:baseline;transition:none;transform:none;position:relative;box-sizing:border-box;width:100%;display:flex;align-items:center;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;font-family:inherit;letter-spacing:0;"><span class="circle-indicator"></span>8am to 10am</button>
+            </div>
+            <div class="option-row">
+              <button class="Q15-tick-circle" value="4" style="border:none;background:transparent;padding:8px 0;margin:0;outline:none;color:#6fa573;font-size:16px;font-weight:700;line-height:1.5;text-decoration:none;vertical-align:baseline;transition:none;transform:none;position:relative;box-sizing:border-box;width:100%;display:flex;align-items:center;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;font-family:inherit;letter-spacing:0;"><span class="circle-indicator"></span>10am to 12pm</button>
+            </div>
+            <div class="option-row">
+              <button class="Q15-tick-circle" value="5" style="border:none;background:transparent;padding:8px 0;margin:0;outline:none;color:#6fa573;font-size:16px;font-weight:700;line-height:1.5;text-decoration:none;vertical-align:baseline;transition:none;transform:none;position:relative;box-sizing:border-box;width:100%;display:flex;align-items:center;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;font-family:inherit;letter-spacing:0;"><span class="circle-indicator"></span>After 12pm</button>
+              
+            </div>
+          
+            <div style="display:flex;align-items:center;justify-content:space-between;gap:16px;">
+              <button class="btn-backQ">Back</button>
+              <button id="btn-nextQuestion16_17" class="btn-nextQ">Next</button>
+            </div>
+          </div>
+      </div>
+      
+
+    
+    </section>
+    <!--4. Study & Work Habits-->
+    <!--Question 16 & 17-->
+    <section id="view-CompatibilitTest16And17" class="view hidden">
+      <div style="display: flex; justify-content: space-between; align-items: center; padding: 0 20px;">
+        <div class="compatibleTest-title">Roomies Compatibility Test</div>
+        <button id="btn-quit-compat" class="modal-close" style="position: relative; top: 0; right: 0; margin: 0;">×</button>
+      </div>
+
+      <div class="Question-box">
+          <p class="Question-title"> 4. Study & Work Habits</p>
+          <p class="Question-Text">16. Do you need quiet to focus while studying?</p>
+
+          <div style="display:flex;align-items:center;justify-content:space-between;gap:16px;">
+          
+            <button class="Q16-tick-circle" value="1" style="width:18px;height:18px;border-radius:50%;border:2px solid #6fa573;background:transparent;padding:0;margin:0;"></button>
+            <button class="Q16-tick-circle" value="2" style="width:18px;height:18px;border-radius:50%;border:2px solid #6fa573;background:transparent;padding:0;margin:0;"></button>
+            <button class="Q16-tick-circle" value="3" style="width:18px;height:18px;border-radius:50%;border:2px solid #6fa573;background:transparent;padding:0;margin:0;"></button>
+            <button class="Q16-tick-circle" value="4" style="width:18px;height:18px;border-radius:50%;border:2px solid #6fa573;background:transparent;padding:0;margin:0;"></button>
+            <button class="Q16-tick-circle" value="5" style="width:18px;height:18px;border-radius:50%;border:2px solid #6fa573;background:transparent;padding:0;margin:0;"></button>
+            
+          </div>
+
+            <p class="tick-label"> 
+            <span>Not at All</span>&nbsp;&nbsp;
+            <span> </span>&nbsp;&nbsp;
+            <span> </span>&nbsp;&nbsp;
+            <span> </span>&nbsp;&nbsp;
+            <span>Absolutely</span>
+          </p>
+
+          <p class="Question-Text">17. Where do you prefer to study?</p>
+
+          <div class="option-list">
+            <div class="option-row">
+              <button class="Q17-tick-circle" value="1" style="border:none;background:transparent;padding:8px 0;margin:0;outline:none;color:#6fa573;font-size:16px;font-weight:700;line-height:1.5;text-decoration:none;vertical-align:baseline;transition:none;transform:none;position:relative;box-sizing:border-box;width:100%;display:flex;align-items:center;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;font-family:inherit;letter-spacing:0;"><span class="circle-indicator"></span>Room</button>
+            </div>
+            <div class="option-row">
+              <button class="Q17-tick-circle" value="2" style="border:none;background:transparent;padding:8px 0;margin:0;outline:none;color:#6fa573;font-size:16px;font-weight:700;line-height:1.5;text-decoration:none;vertical-align:baseline;transition:none;transform:none;position:relative;box-sizing:border-box;width:100%;display:flex;align-items:center;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;font-family:inherit;letter-spacing:0;"><span class="circle-indicator"></span>Library</button>
+            </div>
+            <div class="option-row">
+              <button class="Q17-tick-circle" value="3" style="border:none;background:transparent;padding:8px 0;margin:0;outline:none;color:#6fa573;font-size:16px;font-weight:700;line-height:1.5;text-decoration:none;vertical-align:baseline;transition:none;transform:none;position:relative;box-sizing:border-box;width:100%;display:flex;align-items:center;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;font-family:inherit;letter-spacing:0;"><span class="circle-indicator"></span>Coffee shop</button>
+            </div>
+            <div class="option-row">
+              <button class="Q17-tick-circle" value="4" style="border:none;background:transparent;padding:8px 0;margin:0;outline:none;color:#6fa573;font-size:16px;font-weight:700;line-height:1.5;text-decoration:none;vertical-align:baseline;transition:none;transform:none;position:relative;box-sizing:border-box;width:100%;display:flex;align-items:center;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;font-family:inherit;letter-spacing:0;"><span class="circle-indicator"></span>Mix of all</button>
+            </div>
+          
+            <div style="display:flex;align-items:center;justify-content:space-between;gap:16px;">
+              <button class="btn-backQ">Back</button>
+              <button id="btn-nextQuestion18_19" class="btn-nextQ">Next</button>
+            </div>
+          </div>
+      </div>
+      
+
+     
+    </section>
+    <!--4. Study & Work Habits-->
+    <!--Question 18 & 19 -->
+    <section id="view-CompatibilitTest18And19" class="view hidden">
+      <div style="display: flex; justify-content: space-between; align-items: center; padding: 0 20px;">
+        <div class="compatibleTest-title">Roomies Compatibility Test</div>
+        <button id="btn-quit-compat" class="modal-close" style="position: relative; top: 0; right: 0; margin: 0;">×</button>
+      </div>
+
+      <div class="Question-box">
+          <p class="Question-title"> 4. Study & Work Habits</p>
+          <p class="Question-Text">18. How often do you study in your room?</p>
+
+          <div style="display:flex;align-items:center;justify-content:space-between;gap:16px;">
+          
+            <button class="Q18-tick-circle" value="1" style="width:18px;height:18px;border-radius:50%;border:2px solid #6fa573;background:transparent;padding:0;margin:0;"></button>
+            <button class="Q18-tick-circle" value="2" style="width:18px;height:18px;border-radius:50%;border:2px solid #6fa573;background:transparent;padding:0;margin:0;"></button>
+            <button class="Q18-tick-circle" value="3" style="width:18px;height:18px;border-radius:50%;border:2px solid #6fa573;background:transparent;padding:0;margin:0;"></button>
+            <button class="Q18-tick-circle" value="4" style="width:18px;height:18px;border-radius:50%;border:2px solid #6fa573;background:transparent;padding:0;margin:0;"></button>
+            <button class="Q18-tick-circle" value="5" style="width:18px;height:18px;border-radius:50%;border:2px solid #6fa573;background:transparent;padding:0;margin:0;"></button>
+            
+          </div>
+
+          <p class="tick-label"> 
+            <span>Never</span>&nbsp;&nbsp;
+            <span>Rarely</span>&nbsp;&nbsp;
+            <span>Sometimes</span>&nbsp;&nbsp;
+            <span>Often</span>&nbsp;&nbsp;
+            <span>Very Often</span>
+          </p>
+          <p class="Question-Text">19. How important is it that your roommate respects your study time?</p>
+
+          <div style="display:flex;align-items:center;justify-content:space-between;gap:16px;">
+          
+            <button class="Q19-tick-circle" value="1" style="width:18px;height:18px;border-radius:50%;border:2px solid #6fa573;background:transparent;padding:0;margin:0;"></button>
+            <button class="Q19-tick-circle" value="2" style="width:18px;height:18px;border-radius:50%;border:2px solid #6fa573;background:transparent;padding:0;margin:0;"></button>
+            <button class="Q19-tick-circle" value="3" style="width:18px;height:18px;border-radius:50%;border:2px solid #6fa573;background:transparent;padding:0;margin:0;"></button>
+            <button class="Q19-tick-circle" value="4" style="width:18px;height:18px;border-radius:50%;border:2px solid #6fa573;background:transparent;padding:0;margin:0;"></button>
+            <button class="Q19-tick-circle" value="5" style="width:18px;height:18px;border-radius:50%;border:2px solid #6fa573;background:transparent;padding:0;margin:0;"></button>
+            
+          </div>
+
+           <p class="tick-label"> 
+            <span>Not at All</span>&nbsp;&nbsp;
+            <span> </span>&nbsp;&nbsp;
+            <span> </span>&nbsp;&nbsp;
+            <span> </span>&nbsp;&nbsp;
+            <span>Very</span>
+          </p>
+          
+          <div style="display:flex;align-items:center;justify-content:space-between;gap:16px;">
+            <button class="btn-backQ">Back</button>
+            <button id="btn-nextQuestion20" class="btn-nextQ">Next</button>
+          </div>
+
+          
+      </div>
+      
+
+    
+    </section>
+    <!--4. Study & Work Habits-->
+    <!--Question 20-->
+    <section id="view-CompatibilitTest20" class="view hidden">
+      <div style="display: flex; justify-content: space-between; align-items: center; padding: 0 20px;">
+        <div class="compatibleTest-title">Roomies Compatibility Test</div>
+        <button id="btn-quit-compat" class="modal-close" style="position: relative; top: 0; right: 0; margin: 0;">×</button>
+      </div>
+
+      <div class="Question-box">
+          <p class="Question-title"> 4. Study & Work Habits</p>
+          <p class="Question-Text">20. How important is having a quiet study environment overall?</p>
+
+          <div style="display:flex;align-items:center;justify-content:space-between;gap:16px;">
+          
+            <button class="Q20-tick-circle" value="1" style="width:18px;height:18px;border-radius:50%;border:2px solid #6fa573;background:transparent;padding:0;margin:0;"></button>
+            <button class="Q20-tick-circle" value="2" style="width:18px;height:18px;border-radius:50%;border:2px solid #6fa573;background:transparent;padding:0;margin:0;"></button>
+            <button class="Q20-tick-circle" value="3" style="width:18px;height:18px;border-radius:50%;border:2px solid #6fa573;background:transparent;padding:0;margin:0;"></button>
+            <button class="Q20-tick-circle" value="4" style="width:18px;height:18px;border-radius:50%;border:2px solid #6fa573;background:transparent;padding:0;margin:0;"></button>
+            <button class="Q20-tick-circle" value="5" style="width:18px;height:18px;border-radius:50%;border:2px solid #6fa573;background:transparent;padding:0;margin:0;"></button>
+            
+          </div>
+
+           <p class="tick-label"> 
+            <span>Not at All</span>&nbsp;&nbsp;
+            <span> </span>&nbsp;&nbsp;
+            <span> </span>&nbsp;&nbsp;
+            <span> </span>&nbsp;&nbsp;
+            <span>Very</span>
+          </p>
+
+          <div style="display:flex;align-items:center;justify-content:space-between;gap:16px;">
+            <button class="btn-backQ">Back</button>
+            <button id="btn-nextQuestion21_22" class="btn-nextQ">Next</button>
+          </div>
+
+          
+      </div>
+      
+
+     
+    </section>
+    <!--5.  Communication & Conflict Style-->
+    <!--Question 21 & 22-->
+    <section id="view-CompatibilitTest21And22" class="view hidden">
+      <div style="display: flex; justify-content: space-between; align-items: center; padding: 0 20px;">
+        <div class="compatibleTest-title">Roomies Compatibility Test</div>
+        <button id="btn-quit-compat" class="modal-close" style="position: relative; top: 0; right: 0; margin: 0;">×</button>
+      </div>
+
+      <div class="Question-box">
+          <p class="Question-title"> 5. Communication & Conflict Style</p>
+          <p class="Question-Text">21. How important is open communication in your living situation?</p>
+
+          <div style="display:flex;align-items:center;justify-content:space-between;gap:16px;">
+          
+            <button class="Q21-tick-circle" value="1" style="width:18px;height:18px;border-radius:50%;border:2px solid #6fa573;background:transparent;padding:0;margin:0;"></button>
+            <button class="Q21-tick-circle" value="2" style="width:18px;height:18px;border-radius:50%;border:2px solid #6fa573;background:transparent;padding:0;margin:0;"></button>
+            <button class="Q21-tick-circle" value="3" style="width:18px;height:18px;border-radius:50%;border:2px solid #6fa573;background:transparent;padding:0;margin:0;"></button>
+            <button class="Q21-tick-circle" value="4" style="width:18px;height:18px;border-radius:50%;border:2px solid #6fa573;background:transparent;padding:0;margin:0;"></button>
+            <button class="Q21-tick-circle" value="5" style="width:18px;height:18px;border-radius:50%;border:2px solid #6fa573;background:transparent;padding:0;margin:0;"></button>
+            
+          </div>
+
+         <p class="tick-label"> 
+            <span>Not at All</span>&nbsp;&nbsp;
+            <span> </span>&nbsp;&nbsp;
+            <span> </span>&nbsp;&nbsp;
+            <span> </span>&nbsp;&nbsp;
+            <span>Very</span>
+          </p>
+
+          <p class="Question-Text">22. How do you typically address problems with others?</p>
+
+          <div class="option-list">
+            <div class="option-row">
+              <button class="Q22-tick-circle" value="1" style="border:none;background:transparent;padding:8px 0;margin:0;outline:none;color:#6fa573;font-size:16px;font-weight:700;line-height:1.5;text-decoration:none;vertical-align:baseline;transition:none;transform:none;position:relative;box-sizing:border-box;width:100%;display:flex;align-items:center;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;font-family:inherit;letter-spacing:0;"><span class="circle-indicator"></span>I avoid confrontation</button>
+            </div>
+            <div class="option-row">
+              <button class="Q22-tick-circle" value="2" style="border:none;background:transparent;padding:8px 0;margin:0;outline:none;color:#6fa573;font-size:16px;font-weight:700;line-height:1.5;text-decoration:none;vertical-align:baseline;transition:none;transform:none;position:relative;box-sizing:border-box;width:100%;display:flex;align-items:center;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;font-family:inherit;letter-spacing:0;"><span class="circle-indicator"></span>I bring it up gently</button>
+            </div>
+            <div class="option-row">
+              <button class="Q22-tick-circle" value="3" style="border:none;background:transparent;padding:8px 0;margin:0;outline:none;color:#6fa573;font-size:16px;font-weight:700;line-height:1.5;text-decoration:none;vertical-align:baseline;transition:none;transform:none;position:relative;box-sizing:border-box;width:100%;display:flex;align-items:center;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;font-family:inherit;letter-spacing:0;"><span class="circle-indicator"></span>I'm direct and open</button>
+            </div>
+            <div class="option-row">
+              <button class="Q22-tick-circle" value="4" style="border:none;background:transparent;padding:8px 0;margin:0;outline:none;color:#6fa573;font-size:16px;font-weight:700;line-height:1.5;text-decoration:none;vertical-align:baseline;transition:none;transform:none;position:relative;box-sizing:border-box;width:100%;display:flex;align-items:center;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;font-family:inherit;letter-spacing:0;"><span class="circle-indicator"></span>I tend to get frustrated easily</button>
+            </div>
+          
+            <div style="display:flex;align-items:center;justify-content:space-between;gap:16px;">
+              <button class="btn-backQ">Back</button>
+              <button id="btn-nextQuestion23_24" class="btn-nextQ">Next</button>
+            </div>
+          </div>
+      </div>
+      
+
+    
+    </section>
+    <!--5.  Communication & Conflict Style-->
+    <!--Question 23 & 24-->
+    <section id="view-CompatibilitTest23And24" class="view hidden">
+      <div style="display: flex; justify-content: space-between; align-items: center; padding: 0 20px;">
+        <div class="compatibleTest-title">Roomies Compatibility Test</div>
+        <button id="btn-quit-compat" class="modal-close" style="position: relative; top: 0; right: 0; margin: 0;">×</button>
+      </div>
+
+      <div class="Question-box">
+          <p class="Question-title"> 5. Communication & Conflict Style</p>
+          <p class="Question-Text">23. Would you prefer to schedule ?roommate check-ins? to talk about things?</p>
+
+          <div class="option-list">
+            <div class="option-row">
+              <button class="Q23-tick-circle" value="1" style="border:none;background:transparent;padding:8px 0;margin:0;outline:none;color:#6fa573;font-size:16px;font-weight:700;line-height:1.5;text-decoration:none;vertical-align:baseline;transition:none;transform:none;position:relative;box-sizing:border-box;width:100%;display:flex;align-items:center;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;font-family:inherit;letter-spacing:0;"><span class="circle-indicator"></span>Yes</button>
+            </div>
+            <div class="option-row">
+              <button class="Q23-tick-circle" value="5" style="border:none;background:transparent;padding:8px 0;margin:0;outline:none;color:#6fa573;font-size:16px;font-weight:700;line-height:1.5;text-decoration:none;vertical-align:baseline;transition:none;transform:none;position:relative;box-sizing:border-box;width:100%;display:flex;align-items:center;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;font-family:inherit;letter-spacing:0;"><span class="circle-indicator"></span>No</button>
+            </div>
+          </div>
+
+          <p class="Question-Text">24. How do you typically address problems with others?</p>
+
+          <div class="option-list">
+            <div class="option-row">
+              <button class="Q24-tick-circle" value="1" style="border:none;background:transparent;padding:8px 0;margin:0;outline:none;color:#6fa573;font-size:16px;font-weight:700;line-height:1.5;text-decoration:none;vertical-align:baseline;transition:none;transform:none;position:relative;box-sizing:border-box;width:100%;display:flex;align-items:center;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;font-family:inherit;letter-spacing:0;"><span class="circle-indicator"></span>Immediately</button>
+            </div>
+            <div class="option-row">
+              <button class="Q24-tick-circle" value="2" style="border:none;background:transparent;padding:8px 0;margin:0;outline:none;color:#6fa573;font-size:16px;font-weight:700;line-height:1.5;text-decoration:none;vertical-align:baseline;transition:none;transform:none;position:relative;box-sizing:border-box;width:100%;display:flex;align-items:center;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;font-family:inherit;letter-spacing:0;"><span class="circle-indicator"></span>After a few days</button>
+            </div>
+            <div class="option-row">
+              <button class="Q24-tick-circle" value="3" style="border:none;background:transparent;padding:8px 0;margin:0;outline:none;color:#6fa573;font-size:16px;font-weight:700;line-height:1.5;text-decoration:none;vertical-align:baseline;transition:none;transform:none;position:relative;box-sizing:border-box;width:100%;display:flex;align-items:center;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;font-family:inherit;letter-spacing:0;"><span class="circle-indicator"></span>Only if it gets serious</button>
+            </div>
+            <div class="option-row">
+              <button class="Q24-tick-circle" value="4" style="border:none;background:transparent;padding:8px 0;margin:0;outline:none;color:#6fa573;font-size:16px;font-weight:700;line-height:1.5;text-decoration:none;vertical-align:baseline;transition:none;transform:none;position:relative;box-sizing:border-box;width:100%;display:flex;align-items:center;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;font-family:inherit;letter-spacing:0;"><span class="circle-indicator"></span>Rarely bring it up</button>
+            </div>
+          
+            <div style="display:flex;align-items:center;justify-content:space-between;gap:16px;">
+              <button class="btn-backQ">Back</button>
+              <button id="btn-nextQuestion25_26" class="btn-nextQ">Next</button>
+            </div>
+          </div>
+      </div>
+      
+
+    
+    </section>
+    <!--6. Guests & Social Life-->
+    <!--Question 25 & 26-->
+    <section id="view-CompatibilitTest25And26" class="view hidden">
+      <div style="display: flex; justify-content: space-between; align-items: center; padding: 0 20px;">
+        <div class="compatibleTest-title">Roomies Compatibility Test</div>
+        <button id="btn-quit-compat" class="modal-close" style="position: relative; top: 0; right: 0; margin: 0;">×</button>
+      </div>
+
+      <div class="Question-box">
+          <p class="Question-title"> 6. Guests & Social Life</p>
+          <p class="Question-Text">25.  How often do you invite guests or friends over?</p>
+
+          <div style="display:flex;align-items:center;justify-content:space-between;gap:16px;">
+          
+            <button class="Q25-tick-circle" value="1" style="width:18px;height:18px;border-radius:50%;border:2px solid #6fa573;background:transparent;padding:0;margin:0;flex-shrink:0;transition:background-color 0.2s ease;transform:none;"></button>
+            <button class="Q25-tick-circle" value="2" style="width:18px;height:18px;border-radius:50%;border:2px solid #6fa573;background:transparent;padding:0;margin:0;flex-shrink:0;transition:background-color 0.2s ease;transform:none;"></button>
+            <button class="Q25-tick-circle" value="3" style="width:18px;height:18px;border-radius:50%;border:2px solid #6fa573;background:transparent;padding:0;margin:0;flex-shrink:0;transition:background-color 0.2s ease;transform:none;"></button>
+            <button class="Q25-tick-circle" value="4" style="width:18px;height:18px;border-radius:50%;border:2px solid #6fa573;background:transparent;padding:0;margin:0;flex-shrink:0;transition:background-color 0.2s ease;transform:none;"></button>
+            <button class="Q25-tick-circle" value="5" style="width:18px;height:18px;border-radius:50%;border:2px solid #6fa573;background:transparent;padding:0;margin:0;flex-shrink:0;transition:background-color 0.2s ease;transform:none;"></button>
+            
+          </div>
+
+          <p class="tick-label"> 
+            <span>Never</span>&nbsp;&nbsp;
+            <span>Rarely</span>&nbsp;&nbsp;
+            <span>Sometimes</span>&nbsp;&nbsp;
+            <span>Often</span>&nbsp;&nbsp;
+            <span>Very Often</span>
+          </p>
+          <p class="Question-Text">26. How often do you have overnight guests?</p>
+
+          <div style="display:flex;align-items:center;justify-content:space-between;gap:16px;">
+          
+            <button class="Q26-tick-circle" value="1" style="width:18px;height:18px;border-radius:50%;border:2px solid #6fa573;background:transparent;padding:0;margin:0;flex-shrink:0;transition:background-color 0.2s ease;transform:none;"></button>
+            <button class="Q26-tick-circle" value="2" style="width:18px;height:18px;border-radius:50%;border:2px solid #6fa573;background:transparent;padding:0;margin:0;flex-shrink:0;transition:background-color 0.2s ease;transform:none;"></button>
+            <button class="Q26-tick-circle" value="3" style="width:18px;height:18px;border-radius:50%;border:2px solid #6fa573;background:transparent;padding:0;margin:0;flex-shrink:0;transition:background-color 0.2s ease;transform:none;"></button>
+            <button class="Q26-tick-circle" value="4" style="width:18px;height:18px;border-radius:50%;border:2px solid #6fa573;background:transparent;padding:0;margin:0;flex-shrink:0;transition:background-color 0.2s ease;transform:none;"></button>
+            <button class="Q26-tick-circle" value="5" style="width:18px;height:18px;border-radius:50%;border:2px solid #6fa573;background:transparent;padding:0;margin:0;flex-shrink:0;transition:background-color 0.2s ease;transform:none;"></button>
+            
+          </div>
+
+          <p class="tick-label"> 
+            <span>Never</span>&nbsp;&nbsp;
+            <span>Rarely</span>&nbsp;&nbsp;
+            <span>Sometimes</span>&nbsp;&nbsp;
+            <span>Often</span>&nbsp;&nbsp;
+            <span>Very Often</span>
+          </p>
+          
+          <div style="display:flex;align-items:center;justify-content:space-between;gap:16px;">
+            <button class="btn-backQ">Back</button>
+            <button id="btn-nextQuestion27_28" class="btn-nextQ">Next</button>
+          </div>
+
+          
+      </div>
+      
+
+    
+    </section>
+    <!--6. Guests & Social Life-->
+    <!--Question 27 & 28-->
+    <section id="view-CompatibilitTest27And28" class="view hidden">
+      <div style="display: flex; justify-content: space-between; align-items: center; padding: 0 20px;">
+        <div class="compatibleTest-title">Roomies Compatibility Test</div>
+        <button id="btn-quit-compat" class="modal-close" style="position: relative; top: 0; right: 0; margin: 0;">×</button>
+      </div>
+
+      <div class="Question-box">
+          <p class="Question-title"> 6. Guests & Social Life</p>
+          <p class="Question-Text">27. How comfortable are you with your roommate having guests frequently?</p>
+
+          <div style="display:flex;align-items:center;justify-content:space-between;gap:16px;">
+          
+            <button class="Q27-tick-circle" value="1" style="width:18px;height:18px;border-radius:50%;border:2px solid #6fa573;background:transparent;padding:0;margin:0;flex-shrink:0;transition:background-color 0.2s ease;transform:none;"></button>
+            <button class="Q27-tick-circle" value="2" style="width:18px;height:18px;border-radius:50%;border:2px solid #6fa573;background:transparent;padding:0;margin:0;flex-shrink:0;transition:background-color 0.2s ease;transform:none;"></button>
+            <button class="Q27-tick-circle" value="3" style="width:18px;height:18px;border-radius:50%;border:2px solid #6fa573;background:transparent;padding:0;margin:0;flex-shrink:0;transition:background-color 0.2s ease;transform:none;"></button>
+            <button class="Q27-tick-circle" value="4" style="width:18px;height:18px;border-radius:50%;border:2px solid #6fa573;background:transparent;padding:0;margin:0;flex-shrink:0;transition:background-color 0.2s ease;transform:none;"></button>
+            <button class="Q27-tick-circle" value="5" style="width:18px;height:18px;border-radius:50%;border:2px solid #6fa573;background:transparent;padding:0;margin:0;flex-shrink:0;transition:background-color 0.2s ease;transform:none;"></button>
+            
+          </div>
+
+        <p class="tick-label"> 
+            <span>Not at All</span>&nbsp;&nbsp;
+            <span> </span>&nbsp;&nbsp;
+            <span> </span>&nbsp;&nbsp;
+            <span> </span>&nbsp;&nbsp;
+            <span>Very</span>
+          </p>
+          
+          <p class="Question-Text">28. How often do you have overnight guests?</p>
+
+          <div style="display:flex;align-items:center;justify-content:space-between;gap:16px;">
+          
+            <button class="Q28-tick-circle" value="1" style="width:18px;height:18px;border-radius:50%;border:2px solid #6fa573;background:transparent;padding:0;margin:0;flex-shrink:0;transition:background-color 0.2s ease;transform:none;"></button>
+            <button class="Q28-tick-circle" value="2" style="width:18px;height:18px;border-radius:50%;border:2px solid #6fa573;background:transparent;padding:0;margin:0;flex-shrink:0;transition:background-color 0.2s ease;transform:none;"></button>
+            <button class="Q28-tick-circle" value="3" style="width:18px;height:18px;border-radius:50%;border:2px solid #6fa573;background:transparent;padding:0;margin:0;flex-shrink:0;transition:background-color 0.2s ease;transform:none;"></button>
+            <button class="Q28-tick-circle" value="4" style="width:18px;height:18px;border-radius:50%;border:2px solid #6fa573;background:transparent;padding:0;margin:0;flex-shrink:0;transition:background-color 0.2s ease;transform:none;"></button>
+            <button class="Q28-tick-circle" value="5" style="width:18px;height:18px;border-radius:50%;border:2px solid #6fa573;background:transparent;padding:0;margin:0;flex-shrink:0;transition:background-color 0.2s ease;transform:none;"></button>
+            
+          </div>
+
+          <p class="tick-label"> 
+            <span>Never</span>&nbsp;&nbsp;
+            <span>Rarely</span>&nbsp;&nbsp;
+            <span>Sometimes</span>&nbsp;&nbsp;
+            <span>Often</span>&nbsp;&nbsp;
+            <span>Very Often</span>
+          </p>
+          
+          <div style="display:flex;align-items:center;justify-content:space-between;gap:16px;">
+            <button class="btn-backQ">Back</button>
+            <button id="btn-nextQuestion29_30" class="btn-nextQ">Next</button>
+          </div>
+          
+      </div>
+      
+
+     
+    </section>
+    <!--7.Pets-->
+    <!--Question 29 & 30-->
+    <section id="view-CompatibilitTest29And30" class="view hidden">
+      <div style="display: flex; justify-content: space-between; align-items: center; padding: 0 20px;">
+        <div class="compatibleTest-title">Roomies Compatibility Test</div>
+        <button id="btn-quit-compat" class="modal-close" style="position: relative; top: 0; right: 0; margin: 0;">×</button>
+      </div>
+
+      <div class="Question-box">
+          <p class="Question-title">7. Pets</p>
+          <p class="Question-Text">29.  How comfortable are you living with pets?</p>
+
+          <div style="display:flex;align-items:center;justify-content:space-between;gap:16px;">
+          
+            <button class="Q29-tick-circle" value="1" style="width:18px;height:18px;border-radius:50%;border:2px solid #6fa573;background:transparent;padding:0;margin:0;flex-shrink:0;transition:background-color 0.2s ease;transform:none;"></button>
+            <button class="Q29-tick-circle" value="2" style="width:18px;height:18px;border-radius:50%;border:2px solid #6fa573;background:transparent;padding:0;margin:0;flex-shrink:0;transition:background-color 0.2s ease;transform:none;"></button>
+            <button class="Q29-tick-circle" value="3" style="width:18px;height:18px;border-radius:50%;border:2px solid #6fa573;background:transparent;padding:0;margin:0;flex-shrink:0;transition:background-color 0.2s ease;transform:none;"></button>
+            <button class="Q29-tick-circle" value="4" style="width:18px;height:18px;border-radius:50%;border:2px solid #6fa573;background:transparent;padding:0;margin:0;flex-shrink:0;transition:background-color 0.2s ease;transform:none;"></button>
+            <button class="Q29-tick-circle" value="5" style="width:18px;height:18px;border-radius:50%;border:2px solid #6fa573;background:transparent;padding:0;margin:0;flex-shrink:0;transition:background-color 0.2s ease;transform:none;"></button>
+            
+          </div>
+
+            <p class="tick-label"> 
+            <span>Not at All</span>&nbsp;&nbsp;
+            <span> </span>&nbsp;&nbsp;
+            <span> </span>&nbsp;&nbsp;
+            <span> </span>&nbsp;&nbsp;
+            <span>Very</span>
+          </p>
+          <p class="Question-Text">30. Do you currently have a pet or plan to have one?</p>
+          
+          <div class="option-list">
+            <div class="option-row">
+              <button class="Q30-tick-circle" value="7" style="border:none;background:transparent;padding:8px 0;margin:0;outline:none;color:#6fa573;font-size:16px;font-weight:700;line-height:1.5;text-decoration:none;vertical-align:baseline;transition:none;transform:none;position:relative;box-sizing:border-box;width:100%;display:flex;align-items:center;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;font-family:inherit;letter-spacing:0;"><span class="circle-indicator"></span>Yes</button>
+            </div>
+
+            <div class="option-row">
+              <button class="Q30-tick-circle" value="1" style="border:none;background:transparent;padding:8px 0;margin:0;outline:none;color:#6fa573;font-size:16px;font-weight:700;line-height:1.5;text-decoration:none;vertical-align:baseline;transition:none;transform:none;position:relative;box-sizing:border-box;width:100%;display:flex;align-items:center;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;font-family:inherit;letter-spacing:0;"><span class="circle-indicator"></span>No</button>
+            </div>
+            
+          </div>
+          
+          
+          <div style="display:flex;align-items:center;justify-content:space-between;gap:16px;">
+            <button class="btn-backQ">Back</button>
+            <button id="btn-nextQuestion31_32" class="btn-nextQ">Next</button>
+          </div>
+          
+      </div>
+      
+
+     
+    </section>
+    <!--7.Pets-->
+    <!--Question 31& 32-->
+    <section id="view-CompatibilitTest31And32" class="view hidden">
+      <div style="display: flex; justify-content: space-between; align-items: center; padding: 0 20px;">
+        <div class="compatibleTest-title">Roomies Compatibility Test</div>
+        <button id="btn-quit-compat" class="modal-close" style="position: relative; top: 0; right: 0; margin: 0;">×</button>
+      </div>
+
+      <div class="Question-box">
+          <p class="Question-title"> 7.Pets</p>
+          <p class="Question-Text"> 31. How important is it that your roommate be pet-friendly?</p>
+
+          <div style="display:flex;align-items:center;justify-content:space-between;gap:16px;">
+          
+            <button class="Q31-tick-circle" value="1" style="width:18px;height:18px;border-radius:50%;border:2px solid #6fa573;background:transparent;padding:0;margin:0;flex-shrink:0;transition:background-color 0.2s ease;transform:none;"></button>
+            <button class="Q31-tick-circle" value="2" style="width:18px;height:18px;border-radius:50%;border:2px solid #6fa573;background:transparent;padding:0;margin:0;flex-shrink:0;transition:background-color 0.2s ease;transform:none;"></button>
+            <button class="Q31-tick-circle" value="3" style="width:18px;height:18px;border-radius:50%;border:2px solid #6fa573;background:transparent;padding:0;margin:0;flex-shrink:0;transition:background-color 0.2s ease;transform:none;"></button>
+            <button class="Q31-tick-circle" value="4" style="width:18px;height:18px;border-radius:50%;border:2px solid #6fa573;background:transparent;padding:0;margin:0;flex-shrink:0;transition:background-color 0.2s ease;transform:none;"></button>
+            <button class="Q31-tick-circle" value="5" style="width:18px;height:18px;border-radius:50%;border:2px solid #6fa573;background:transparent;padding:0;margin:0;flex-shrink:0;transition:background-color 0.2s ease;transform:none;"></button>
+            
+          </div>
+
+             <p class="tick-label"> 
+            <span>Not at All</span>&nbsp;&nbsp;
+            <span> </span>&nbsp;&nbsp;
+            <span> </span>&nbsp;&nbsp;
+            <span> </span>&nbsp;&nbsp;
+            <span>Very</span>
+          </p>
+          <p class="Question-Text"> 32. How important is keeping shared areas pet-hair and odor-free?</p>
+
+          <div style="display:flex;align-items:center;justify-content:space-between;gap:16px;">
+          
+            <button class="Q32-tick-circle" value="1" style="width:18px;height:18px;border-radius:50%;border:2px solid #6fa573;background:transparent;padding:0;margin:0;flex-shrink:0;transition:background-color 0.2s ease;transform:none;"></button>
+            <button class="Q32-tick-circle" value="2" style="width:18px;height:18px;border-radius:50%;border:2px solid #6fa573;background:transparent;padding:0;margin:0;flex-shrink:0;transition:background-color 0.2s ease;transform:none;"></button>
+            <button class="Q32-tick-circle" value="3" style="width:18px;height:18px;border-radius:50%;border:2px solid #6fa573;background:transparent;padding:0;margin:0;flex-shrink:0;transition:background-color 0.2s ease;transform:none;"></button>
+            <button class="Q32-tick-circle" value="4" style="width:18px;height:18px;border-radius:50%;border:2px solid #6fa573;background:transparent;padding:0;margin:0;flex-shrink:0;transition:background-color 0.2s ease;transform:none;"></button>
+            <button class="Q32-tick-circle" value="5" style="width:18px;height:18px;border-radius:50%;border:2px solid #6fa573;background:transparent;padding:0;margin:0;flex-shrink:0;transition:background-color 0.2s ease;transform:none;"></button>
+            
+          </div>
+
+            <p class="tick-label"> 
+            <span>Not at All</span>&nbsp;&nbsp;
+            <span> </span>&nbsp;&nbsp;
+            <span> </span>&nbsp;&nbsp;
+            <span> </span>&nbsp;&nbsp;
+            <span>Very</span>
+          </p>
+
+          <div style="display:flex;align-items:center;justify-content:space-between;gap:16px;">
+            <button class="btn-backQ">Back</button>
+            <button id="btn-nextQuestion33_34" class="btn-nextQ">Next</button>
+          </div>
+          
+      </div>
+      
+
+      
+    </section>
+    <!--8. Smoking & Substance Use-->
+    <!--Question 33& 34-->
+    <section id="view-CompatibilitTest33And34" class="view hidden">
+      <div style="display: flex; justify-content: space-between; align-items: center; padding: 0 20px;">
+        <div class="compatibleTest-title">Roomies Compatibility Test</div>
+        <button id="btn-quit-compat" class="modal-close" style="position: relative; top: 0; right: 0; margin: 0;">×</button>
+      </div>
+
+      <div class="Question-box">
+          <p class="Question-title">8. Smoking & Substance Use</p>
+
+          <p class="Question-Text">33. How often do you or your guests use alcohol or recreational substances in the room?</p>
+
+          <div style="display:flex;align-items:center;justify-content:space-between;gap:16px;">
+          
+            <button class="Q33-tick-circle" value="1" style="width:18px;height:18px;border-radius:50%;border:2px solid #6fa573;background:transparent;padding:0;margin:0;flex-shrink:0;transition:background-color 0.2s ease;transform:none;"></button>
+            <button class="Q33-tick-circle" value="2" style="width:18px;height:18px;border-radius:50%;border:2px solid #6fa573;background:transparent;padding:0;margin:0;flex-shrink:0;transition:background-color 0.2s ease;transform:none;"></button>
+            <button class="Q33-tick-circle" value="3" style="width:18px;height:18px;border-radius:50%;border:2px solid #6fa573;background:transparent;padding:0;margin:0;flex-shrink:0;transition:background-color 0.2s ease;transform:none;"></button>
+            <button class="Q33-tick-circle" value="4" style="width:18px;height:18px;border-radius:50%;border:2px solid #6fa573;background:transparent;padding:0;margin:0;flex-shrink:0;transition:background-color 0.2s ease;transform:none;"></button>
+            <button class="Q33-tick-circle" value="5" style="width:18px;height:18px;border-radius:50%;border:2px solid #6fa573;background:transparent;padding:0;margin:0;flex-shrink:0;transition:background-color 0.2s ease;transform:none;"></button>
+            
+          </div>
+
+          <p class="tick-label"> 
+            <span>Never</span>&nbsp;&nbsp;
+            <span>Rarely</span>&nbsp;&nbsp;
+            <span>Sometimes</span>&nbsp;&nbsp;
+            <span>Often</span>&nbsp;&nbsp;
+            <span>Very Often</span>
+          </p>
+
+          <p class="Question-Text">34. Do you smoke or vape indoors or near shared spaces?</p>
+
+          <div class="option-list">
+            <div class="option-row">
+              <button class="Q34-tick-circle" value="1" style="border:none;background:transparent;padding:8px 0;margin:0;outline:none;color:#6fa573;font-size:16px;font-weight:700;line-height:1.5;text-decoration:none;vertical-align:baseline;transition:none;transform:none;position:relative;box-sizing:border-box;width:100%;display:flex;align-items:center;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;font-family:inherit;letter-spacing:0;"><span class="circle-indicator"></span>Yes</button>
+            </div>
+
+            <div class="option-row">
+              <button class="Q34-tick-circle" value="2" style="border:none;background:transparent;padding:8px 0;margin:0;outline:none;color:#6fa573;font-size:16px;font-weight:700;line-height:1.5;text-decoration:none;vertical-align:baseline;transition:none;transform:none;position:relative;box-sizing:border-box;width:100%;display:flex;align-items:center;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;font-family:inherit;letter-spacing:0;"><span class="circle-indicator"></span>Occasionally</button>
+            </div>
+            <div class="option-row">
+              <button class="Q34-tick-circle" value="3" style="border:none;background:transparent;padding:8px 0;margin:0;outline:none;color:#6fa573;font-size:16px;font-weight:700;line-height:1.5;text-decoration:none;vertical-align:baseline;transition:none;transform:none;position:relative;box-sizing:border-box;width:100%;display:flex;align-items:center;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;font-family:inherit;letter-spacing:0;"><span class="circle-indicator"></span>Never</button>
+            </div>
+            
+          </div>
+          
+          <div style="display:flex;align-items:center;justify-content:space-between;gap:16px;">
+            <button class="btn-backQ">Back</button>
+            <button id="btn-nextQuestion35_36" class="btn-nextQ">Next</button>
+          </div>
+          
+      </div>
+      
+
+     
+    </section>
+    <!--8. Smoking & Substance Use-->
+    <!--Question 35 & 36-->
+    <section id="view-CompatibilitTest35And36" class="view hidden">
+      <div style="display: flex; justify-content: space-between; align-items: center; padding: 0 20px;">
+        <div class="compatibleTest-title">Roomies Compatibility Test</div>
+        <button id="btn-quit-compat" class="modal-close" style="position: relative; top: 0; right: 0; margin: 0;">×</button>
+      </div>
+
+      <div class="Question-box">
+          <p class="Question-title">8.Smoking & Substance Use</p>
+
+          <p class="Question-Text">35. How important is it for your living space to be smoke- or substance-free?</p>
+
+          <div style="display:flex;align-items:center;justify-content:space-between;gap:16px;">
+          
+            <button class="Q35-tick-circle" value="1" style="width:18px;height:18px;border-radius:50%;border:2px solid #6fa573;background:transparent;padding:0;margin:0;flex-shrink:0;transition:background-color 0.2s ease;transform:none;"></button>
+            <button class="Q35-tick-circle" value="2" style="width:18px;height:18px;border-radius:50%;border:2px solid #6fa573;background:transparent;padding:0;margin:0;flex-shrink:0;transition:background-color 0.2s ease;transform:none;"></button>
+            <button class="Q35-tick-circle" value="3" style="width:18px;height:18px;border-radius:50%;border:2px solid #6fa573;background:transparent;padding:0;margin:0;flex-shrink:0;transition:background-color 0.2s ease;transform:none;"></button>
+            <button class="Q35-tick-circle" value="4" style="width:18px;height:18px;border-radius:50%;border:2px solid #6fa573;background:transparent;padding:0;margin:0;flex-shrink:0;transition:background-color 0.2s ease;transform:none;"></button>
+            <button class="Q35-tick-circle" value="5" style="width:18px;height:18px;border-radius:50%;border:2px solid #6fa573;background:transparent;padding:0;margin:0;flex-shrink:0;transition:background-color 0.2s ease;transform:none;"></button>
+            
+          </div>
+
+         <p class="tick-label"> 
+            <span>Not at All</span>&nbsp;&nbsp;
+            <span> </span>&nbsp;&nbsp;
+            <span> </span>&nbsp;&nbsp;
+            <span> </span>&nbsp;&nbsp;
+            <span>Very</span>
+          </p>
+
+          <p class="Question-Text">36. How comfortable are you if your roommate drinks or smokes occasionally?</p>
+
+          <div style="display:flex;align-items:center;justify-content:space-between;gap:16px;">
+          
+            <button class="Q36-tick-circle" value="1" style="width:18px;height:18px;border-radius:50%;border:2px solid #6fa573;background:transparent;padding:0;margin:0;flex-shrink:0;transition:background-color 0.2s ease;transform:none;"></button>
+            <button class="Q36-tick-circle" value="2" style="width:18px;height:18px;border-radius:50%;border:2px solid #6fa573;background:transparent;padding:0;margin:0;flex-shrink:0;transition:background-color 0.2s ease;transform:none;"></button>
+            <button class="Q36-tick-circle" value="3" style="width:18px;height:18px;border-radius:50%;border:2px solid #6fa573;background:transparent;padding:0;margin:0;flex-shrink:0;transition:background-color 0.2s ease;transform:none;"></button>
+            <button class="Q36-tick-circle" value="4" style="width:18px;height:18px;border-radius:50%;border:2px solid #6fa573;background:transparent;padding:0;margin:0;flex-shrink:0;transition:background-color 0.2s ease;transform:none;"></button>
+            <button class="Q36-tick-circle" value="5" style="width:18px;height:18px;border-radius:50%;border:2px solid #6fa573;background:transparent;padding:0;margin:0;flex-shrink:0;transition:background-color 0.2s ease;transform:none;"></button>
+            
+          </div>
+
+            <p class="tick-label"> 
+            <span>Not at All</span>&nbsp;&nbsp;
+            <span> </span>&nbsp;&nbsp;
+            <span> </span>&nbsp;&nbsp;
+            <span> </span>&nbsp;&nbsp;
+            <span>Very</span>
+          </p>
+          
+          <div style="display:flex;align-items:center;justify-content:space-between;gap:16px;">
+            <button class="btn-backQ">Back</button>
+            <button id="btn-nextQuestion37_38" class="btn-nextQ">Next</button>
+          </div>
+          
+      </div>
+      
+
+      
+    </section>
+    <!--9. Finances & Bill Sharing-->
+    <!--Question 37 & 38-->
+    <section id="view-CompatibilitTest37And38" class="view hidden">
+      <div style="display: flex; justify-content: space-between; align-items: center; padding: 0 20px;">
+        <div class="compatibleTest-title">Roomies Compatibility Test</div>
+        <button id="btn-quit-compat" class="modal-close" style="position: relative; top: 0; right: 0; margin: 0;">×</button>
+      </div>
+
+      <div class="Question-box">
+          <p class="Question-title">9. Finances & Bill Sharing</p>
+
+          <p class="Question-Text">37. How reliable are you with paying rent or shared bills on time?</p>
+
+          <div style="display:flex;align-items:center;justify-content:space-between;gap:16px;">
+          
+            <button class="Q37-tick-circle" value="1" style="width:18px;height:18px;border-radius:50%;border:2px solid #6fa573;background:transparent;padding:0;margin:0;flex-shrink:0;transition:background-color 0.2s ease;transform:none;"></button>
+            <button class="Q37-tick-circle" value="2" style="width:18px;height:18px;border-radius:50%;border:2px solid #6fa573;background:transparent;padding:0;margin:0;flex-shrink:0;transition:background-color 0.2s ease;transform:none;"></button>
+            <button class="Q37-tick-circle" value="3" style="width:18px;height:18px;border-radius:50%;border:2px solid #6fa573;background:transparent;padding:0;margin:0;flex-shrink:0;transition:background-color 0.2s ease;transform:none;"></button>
+            <button class="Q37-tick-circle" value="4" style="width:18px;height:18px;border-radius:50%;border:2px solid #6fa573;background:transparent;padding:0;margin:0;flex-shrink:0;transition:background-color 0.2s ease;transform:none;"></button>
+            <button class="Q37-tick-circle" value="5" style="width:18px;height:18px;border-radius:50%;border:2px solid #6fa573;background:transparent;padding:0;margin:0;flex-shrink:0;transition:background-color 0.2s ease;transform:none;"></button>
+            
+          </div>
+
+             <p class="tick-label"> 
+            <span>Not at All</span>&nbsp;&nbsp;
+            <span> </span>&nbsp;&nbsp;
+            <span> </span>&nbsp;&nbsp;
+            <span> </span>&nbsp;&nbsp;
+            <span>Very</span>
+          </p>
+
+          <p class="Question-Text">38. How often do you track shared expenses? </p>
+
+          <div style="display:flex;align-items:center;justify-content:space-between;gap:16px;">
+          
+            <button class="Q38-tick-circle" value="1" style="width:18px;height:18px;border-radius:50%;border:2px solid #6fa573;background:transparent;padding:0;margin:0;flex-shrink:0;transition:background-color 0.2s ease;transform:none;"></button>
+            <button class="Q38-tick-circle" value="2" style="width:18px;height:18px;border-radius:50%;border:2px solid #6fa573;background:transparent;padding:0;margin:0;flex-shrink:0;transition:background-color 0.2s ease;transform:none;"></button>
+            <button class="Q38-tick-circle" value="3" style="width:18px;height:18px;border-radius:50%;border:2px solid #6fa573;background:transparent;padding:0;margin:0;flex-shrink:0;transition:background-color 0.2s ease;transform:none;"></button>
+            <button class="Q38-tick-circle" value="4" style="width:18px;height:18px;border-radius:50%;border:2px solid #6fa573;background:transparent;padding:0;margin:0;flex-shrink:0;transition:background-color 0.2s ease;transform:none;"></button>
+            <button class="Q38-tick-circle" value="5" style="width:18px;height:18px;border-radius:50%;border:2px solid #6fa573;background:transparent;padding:0;margin:0;flex-shrink:0;transition:background-color 0.2s ease;transform:none;"></button>
+            
+          </div>
+
+          <p class="tick-label"> 
+            <span>Never</span>&nbsp;&nbsp;
+            <span>Rarely</span>&nbsp;&nbsp;
+            <span>Sometimes</span>&nbsp;&nbsp;
+            <span>Often</span>&nbsp;&nbsp;
+            <span>Very Often</span>
+          </p>
+          
+          
+          <div style="display:flex;align-items:center;justify-content:space-between;gap:16px;">
+            <button class="btn-backQ">Back</button>
+            <button id="btn-nextQuestion39_40" class="btn-nextQ">Next</button>
+          </div>
+          
+      </div>
+      
+
+    
+    </section>
+    <!--9. Finances & Bill Sharing-->
+    <!--Question 39 & 40-->
+    <section id="view-CompatibilitTest39And40" class="view hidden">
+      <div style="display: flex; justify-content: space-between; align-items: center; padding: 0 20px;">
+        <div class="compatibleTest-title">Roomies Compatibility Test</div>
+        <button id="btn-quit-compat" class="modal-close" style="position: relative; top: 0; right: 0; margin: 0;">×</button>
+      </div>
+
+      <div class="Question-box">
+          <p class="Question-title">9. Finances & Bill Sharing</p>
+
+          <p class="Question-Text">39. How important is financial responsibility in a roommate?</p>
+
+          <div style="display:flex;align-items:center;justify-content:space-between;gap:16px;">
+          
+            <button class="Q39-tick-circle" value="1" style="width:18px;height:18px;border-radius:50%;border:2px solid #6fa573;background:transparent;padding:0;margin:0;flex-shrink:0;transition:background-color 0.2s ease;transform:none;"></button>
+            <button class="Q39-tick-circle" value="2" style="width:18px;height:18px;border-radius:50%;border:2px solid #6fa573;background:transparent;padding:0;margin:0;flex-shrink:0;transition:background-color 0.2s ease;transform:none;"></button>
+            <button class="Q39-tick-circle" value="3" style="width:18px;height:18px;border-radius:50%;border:2px solid #6fa573;background:transparent;padding:0;margin:0;flex-shrink:0;transition:background-color 0.2s ease;transform:none;"></button>
+            <button class="Q39-tick-circle" value="4" style="width:18px;height:18px;border-radius:50%;border:2px solid #6fa573;background:transparent;padding:0;margin:0;flex-shrink:0;transition:background-color 0.2s ease;transform:none;"></button>
+            <button class="Q39-tick-circle" value="5" style="width:18px;height:18px;border-radius:50%;border:2px solid #6fa573;background:transparent;padding:0;margin:0;flex-shrink:0;transition:background-color 0.2s ease;transform:none;"></button>
+            
+          </div>
+
+            <p class="tick-label"> 
+            <span>Not at All</span>&nbsp;&nbsp;
+            <span> </span>&nbsp;&nbsp;
+            <span> </span>&nbsp;&nbsp;
+            <span> </span>&nbsp;&nbsp;
+            <span>Very</span>
+          </p>
+
+          <p class="Question-Text">40. Would you rather split all expenses equally or individually by usage?</p>
+
+          <div class="option-list">
+            <div class="option-row">
+              <button class="Q40-tick-circle" value="1" style="border:none;background:transparent;padding:8px 0;margin:0;outline:none;color:#6fa573;font-size:16px;font-weight:700;line-height:1.5;text-decoration:none;vertical-align:baseline;transition:none;transform:none;position:relative;box-sizing:border-box;width:100%;display:flex;align-items:center;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;font-family:inherit;letter-spacing:0;"><span class="circle-indicator"></span>Equally</button>
+            </div>
+
+            <div class="option-row">
+              <button class="Q40-tick-circle" value="2" style="border:none;background:transparent;padding:8px 0;margin:0;outline:none;color:#6fa573;font-size:16px;font-weight:700;line-height:1.5;text-decoration:none;vertical-align:baseline;transition:none;transform:none;position:relative;box-sizing:border-box;width:100%;display:flex;align-items:center;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;font-family:inherit;letter-spacing:0;"><span class="circle-indicator"></span>By item</button>
+            </div>
+            <div class="option-row">
+              <button class="Q40-tick-circle" value="3" style="border:none;background:transparent;padding:8px 0;margin:0;outline:none;color:#6fa573;font-size:16px;font-weight:700;line-height:1.5;text-decoration:none;vertical-align:baseline;transition:none;transform:none;position:relative;box-sizing:border-box;width:100%;display:flex;align-items:center;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;font-family:inherit;letter-spacing:0;"><span class="circle-indicator"></span>Depends</button>
+            </div>
+            
+          </div>
+
+          
+          <div style="display:flex;align-items:center;justify-content:space-between;gap:16px;">
+            <button class="btn-backQ">Back</button>
+            <button id="btn-nextQuestion41_42" class="btn-nextQ">Next</button>
+          </div>
+          
+      </div>
+      
+
+    
+    </section>
+    <!--10. Sharing & Boundaries-->
+    <!--Question 41 & 42-->
+    <section id="view-CompatibilitTest41And42" class="view hidden">
+      <div style="display: flex; justify-content: space-between; align-items: center; padding: 0 20px;">
+        <div class="compatibleTest-title">Roomies Compatibility Test</div>
+        <button id="btn-quit-compat" class="modal-close" style="position: relative; top: 0; right: 0; margin: 0;">×</button>
+      </div>
+
+      <div class="Question-box">
+          <p class="Question-title">10. Sharing & Boundaries</p>
+
+          <p class="Question-Text">41. How comfortable are you sharing food or household items?</p>
+
+          <div style="display:flex;align-items:center;justify-content:space-between;gap:16px;">
+          
+            <button class="Q41-tick-circle" value="1" style="width:18px;height:18px;border-radius:50%;border:2px solid #6fa573;background:transparent;padding:0;margin:0;flex-shrink:0;transition:background-color 0.2s ease;transform:none;"></button>
+            <button class="Q41-tick-circle" value="2" style="width:18px;height:18px;border-radius:50%;border:2px solid #6fa573;background:transparent;padding:0;margin:0;flex-shrink:0;transition:background-color 0.2s ease;transform:none;"></button>
+            <button class="Q41-tick-circle" value="3" style="width:18px;height:18px;border-radius:50%;border:2px solid #6fa573;background:transparent;padding:0;margin:0;flex-shrink:0;transition:background-color 0.2s ease;transform:none;"></button>
+            <button class="Q41-tick-circle" value="4" style="width:18px;height:18px;border-radius:50%;border:2px solid #6fa573;background:transparent;padding:0;margin:0;flex-shrink:0;transition:background-color 0.2s ease;transform:none;"></button>
+            <button class="Q41-tick-circle" value="5" style="width:18px;height:18px;border-radius:50%;border:2px solid #6fa573;background:transparent;padding:0;margin:0;flex-shrink:0;transition:background-color 0.2s ease;transform:none;"></button>
+            
+          </div>
+
+            <p class="tick-label"> 
+            <span>Not at All</span>&nbsp;&nbsp;
+            <span> </span>&nbsp;&nbsp;
+            <span> </span>&nbsp;&nbsp;
+            <span> </span>&nbsp;&nbsp;
+            <span>Very</span>
+          </p>
+
+          <p class="Question-Text">42. How often do you borrow or lend things (like dishes, supplies, clothes)? </p>
+
+          <div style="display:flex;align-items:center;justify-content:space-between;gap:16px;">
+          
+            <button class="Q42-tick-circle" value="1" style="width:18px;height:18px;border-radius:50%;border:2px solid #6fa573;background:transparent;padding:0;margin:0;flex-shrink:0;transition:background-color 0.2s ease;transform:none;"></button>
+            <button class="Q42-tick-circle" value="2" style="width:18px;height:18px;border-radius:50%;border:2px solid #6fa573;background:transparent;padding:0;margin:0;flex-shrink:0;transition:background-color 0.2s ease;transform:none;"></button>
+            <button class="Q42-tick-circle" value="3" style="width:18px;height:18px;border-radius:50%;border:2px solid #6fa573;background:transparent;padding:0;margin:0;flex-shrink:0;transition:background-color 0.2s ease;transform:none;"></button>
+            <button class="Q42-tick-circle" value="4" style="width:18px;height:18px;border-radius:50%;border:2px solid #6fa573;background:transparent;padding:0;margin:0;flex-shrink:0;transition:background-color 0.2s ease;transform:none;"></button>
+            <button class="Q42-tick-circle" value="5" style="width:18px;height:18px;border-radius:50%;border:2px solid #6fa573;background:transparent;padding:0;margin:0;flex-shrink:0;transition:background-color 0.2s ease;transform:none;"></button>
+            
+          </div>
+
+          <p class="tick-label"> 
+            <span>Never</span>&nbsp;&nbsp;
+            <span>Rarely</span>&nbsp;&nbsp;
+            <span>Sometimes</span>&nbsp;&nbsp;
+            <span>Often</span>&nbsp;&nbsp;
+            <span>Very Often</span>
+          </p>
+          
+          
+          <div style="display:flex;align-items:center;justify-content:space-between;gap:16px;">
+            <button class="btn-backQ">Back</button>
+            <button id="btn-nextQuestion43_44" class="btn-nextQ">Next</button>
+          </div>
+          
+      </div>
+      
+
+     
+    </section>
+    <!--10. Sharing & Boundaries-->
+    <!--Question 43& 44-->
+    <section id="view-CompatibilitTest43And44" class="view hidden">
+      <div style="display: flex; justify-content: space-between; align-items: center; padding: 0 20px;">
+        <div class="compatibleTest-title">Roomies Compatibility Test</div>
+        <button id="btn-quit-compat" class="modal-close" style="position: relative; top: 0; right: 0; margin: 0;">×</button>
+      </div>
+
+      <div class="Question-box">
+          <p class="Question-title">10. Sharing & Boundaries</p>
+
+          <p class="Question-Text">43. How important is it to you to have clearly defined personal vs. shared items?</p>
+
+          <div style="display:flex;align-items:center;justify-content:space-between;gap:16px;">
+          
+            <button class="Q43-tick-circle" value="1" style="width:18px;height:18px;border-radius:50%;border:2px solid #6fa573;background:transparent;padding:0;margin:0;flex-shrink:0;transition:background-color 0.2s ease;transform:none;"></button>
+            <button class="Q43-tick-circle" value="2" style="width:18px;height:18px;border-radius:50%;border:2px solid #6fa573;background:transparent;padding:0;margin:0;flex-shrink:0;transition:background-color 0.2s ease;transform:none;"></button>
+            <button class="Q43-tick-circle" value="3" style="width:18px;height:18px;border-radius:50%;border:2px solid #6fa573;background:transparent;padding:0;margin:0;flex-shrink:0;transition:background-color 0.2s ease;transform:none;"></button>
+            <button class="Q43-tick-circle" value="4" style="width:18px;height:18px;border-radius:50%;border:2px solid #6fa573;background:transparent;padding:0;margin:0;flex-shrink:0;transition:background-color 0.2s ease;transform:none;"></button>
+            <button class="Q43-tick-circle" value="5" style="width:18px;height:18px;border-radius:50%;border:2px solid #6fa573;background:transparent;padding:0;margin:0;flex-shrink:0;transition:background-color 0.2s ease;transform:none;"></button>
+            
+          </div>
+
+             <p class="tick-label"> 
+            <span>Not at All</span>&nbsp;&nbsp;
+            <span> </span>&nbsp;&nbsp;
+            <span> </span>&nbsp;&nbsp;
+            <span> </span>&nbsp;&nbsp;
+            <span>Very</span>
+          </p>
+
+          <p class="Question-Text">44. Would you prefer a label or inventory system for shared items?</p>
+
+          <div class="option-list">
+            <div class="option-row">
+              <button class="Q44-tick-circle" value="1" style="border:none;background:transparent;padding:8px 0;margin:0;outline:none;color:#6fa573;font-size:16px;font-weight:700;line-height:1.5;text-decoration:none;vertical-align:baseline;transition:none;transform:none;position:relative;box-sizing:border-box;width:100%;display:flex;align-items:center;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;font-family:inherit;letter-spacing:0;"><span class="circle-indicator"></span>Yes</button>
+            </div>
+            <div class="option-row">
+              <button class="Q44-tick-circle" value="0" style="border:none;background:transparent;padding:8px 0;margin:0;outline:none;color:#6fa573;font-size:16px;font-weight:700;line-height:1.5;text-decoration:none;vertical-align:baseline;transition:none;transform:none;position:relative;box-sizing:border-box;width:100%;display:flex;align-items:center;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;font-family:inherit;letter-spacing:0;"><span class="circle-indicator"></span>No</button>
+            </div>
+            
+          </div>
+          
+          <div style="display:flex;align-items:center;justify-content:space-between;gap:16px;">
+            <button class="btn-backQ">Back</button>
+            <button id="btn-nextQuestion45_46" class="btn-nextQ">Next</button>
+          </div>
+          
+      </div>
+      
+
+     
+    </section>
+    <!--11. Privacy & Alone Time-->
+    <!--Question 45 & 46-->
+    <section id="view-CompatibilitTest45And46" class="view hidden">
+      <div style="display: flex; justify-content: space-between; align-items: center; padding: 0 20px;">
+        <div class="compatibleTest-title">Roomies Compatibility Test</div>
+        <button id="btn-quit-compat" class="modal-close" style="position: relative; top: 0; right: 0; margin: 0;">×</button>
+      </div>
+
+      <div class="Question-box">
+          <p class="Question-title">11. Privacy & Alone Time</p>
+
+          <p class="Question-Text">45. How often do you like to have alone time in your room?</p>
+
+          <div style="display:flex;align-items:center;justify-content:space-between;gap:16px;">
+          
+            <button class="Q45-tick-circle" value="1" style="width:18px;height:18px;border-radius:50%;border:2px solid #6fa573;background:transparent;padding:0;margin:0;flex-shrink:0;transition:background-color 0.2s ease;transform:none;"></button>
+            <button class="Q45-tick-circle" value="2" style="width:18px;height:18px;border-radius:50%;border:2px solid #6fa573;background:transparent;padding:0;margin:0;flex-shrink:0;transition:background-color 0.2s ease;transform:none;"></button>
+            <button class="Q45-tick-circle" value="3" style="width:18px;height:18px;border-radius:50%;border:2px solid #6fa573;background:transparent;padding:0;margin:0;flex-shrink:0;transition:background-color 0.2s ease;transform:none;"></button>
+            <button class="Q45-tick-circle" value="4" style="width:18px;height:18px;border-radius:50%;border:2px solid #6fa573;background:transparent;padding:0;margin:0;flex-shrink:0;transition:background-color 0.2s ease;transform:none;"></button>
+            <button class="Q45-tick-circle" value="5" style="width:18px;height:18px;border-radius:50%;border:2px solid #6fa573;background:transparent;padding:0;margin:0;flex-shrink:0;transition:background-color 0.2s ease;transform:none;"></button>
+            
+          </div>
+
+          <p class="tick-label"> 
+            <span>Never</span>&nbsp;&nbsp;
+            <span>Rarely</span>&nbsp;&nbsp;
+            <span>Sometimes</span>&nbsp;&nbsp;
+            <span>Often</span>&nbsp;&nbsp;
+            <span>Very Often</span>
+          </p>
+
+          <p class="Question-Text">46.How comfortable are you with spontaneous conversations or hangouts in shared spaces?</p>
+
+          <div style="display:flex;align-items:center;justify-content:space-between;gap:16px;">
+          
+            <button class="Q46-tick-circle" value="1" style="width:18px;height:18px;border-radius:50%;border:2px solid #6fa573;background:transparent;padding:0;margin:0;flex-shrink:0;transition:background-color 0.2s ease;transform:none;"></button>
+            <button class="Q46-tick-circle" value="2" style="width:18px;height:18px;border-radius:50%;border:2px solid #6fa573;background:transparent;padding:0;margin:0;flex-shrink:0;transition:background-color 0.2s ease;transform:none;"></button>
+            <button class="Q46-tick-circle" value="3" style="width:18px;height:18px;border-radius:50%;border:2px solid #6fa573;background:transparent;padding:0;margin:0;flex-shrink:0;transition:background-color 0.2s ease;transform:none;"></button>
+            <button class="Q46-tick-circle" value="4" style="width:18px;height:18px;border-radius:50%;border:2px solid #6fa573;background:transparent;padding:0;margin:0;flex-shrink:0;transition:background-color 0.2s ease;transform:none;"></button>
+            <button class="Q46-tick-circle" value="5" style="width:18px;height:18px;border-radius:50%;border:2px solid #6fa573;background:transparent;padding:0;margin:0;flex-shrink:0;transition:background-color 0.2s ease;transform:none;"></button>
+            
+          </div>
+
+            <p class="tick-label"> 
+            <span>Not at All</span>&nbsp;&nbsp;
+            <span> </span>&nbsp;&nbsp;
+            <span> </span>&nbsp;&nbsp;
+            <span> </span>&nbsp;&nbsp;
+            <span>Very</span>
+          </p>
+          
+          
+          <div style="display:flex;align-items:center;justify-content:space-between;gap:16px;">
+            <button class="btn-backQ">Back</button>
+            <button id="btn-nextQuestion47_48" class="btn-nextQ">Next</button>
+          </div>
+          
+      </div>
+      
+
+    
+    </section>
+    <!--11. Privacy & Alone Time-->
+    <!--Question 47 & 48-->
+    <section id="view-CompatibilitTest47And48" class="view hidden">
+      <div style="display: flex; justify-content: space-between; align-items: center; padding: 0 20px;">
+        <div class="compatibleTest-title">Roomies Compatibility Test</div>
+        <button id="btn-quit-compat" class="modal-close" style="position: relative; top: 0; right: 0; margin: 0;">×</button>
+      </div>
+
+      <div class="Question-box">
+          <p class="Question-title">11. Privacy & Alone Time</p>
+
+          <p class="Question-Text">47. How important is it that your roommate respects your personal time and space?</p>
+
+          <div style="display:flex;align-items:center;justify-content:space-between;gap:16px;">
+          
+            <button class="Q47-tick-circle" value="1" style="width:18px;height:18px;border-radius:50%;border:2px solid #6fa573;background:transparent;padding:0;margin:0;flex-shrink:0;transition:background-color 0.2s ease;transform:none;"></button>
+            <button class="Q47-tick-circle" value="2" style="width:18px;height:18px;border-radius:50%;border:2px solid #6fa573;background:transparent;padding:0;margin:0;flex-shrink:0;transition:background-color 0.2s ease;transform:none;"></button>
+            <button class="Q47-tick-circle" value="3" style="width:18px;height:18px;border-radius:50%;border:2px solid #6fa573;background:transparent;padding:0;margin:0;flex-shrink:0;transition:background-color 0.2s ease;transform:none;"></button>
+            <button class="Q47-tick-circle" value="4" style="width:18px;height:18px;border-radius:50%;border:2px solid #6fa573;background:transparent;padding:0;margin:0;flex-shrink:0;transition:background-color 0.2s ease;transform:none;"></button>
+            <button class="Q47-tick-circle" value="5" style="width:18px;height:18px;border-radius:50%;border:2px solid #6fa573;background:transparent;padding:0;margin:0;flex-shrink:0;transition:background-color 0.2s ease;transform:none;"></button>
+            
+          </div>
+
+            <p class="tick-label"> 
+            <span>Not at All</span>&nbsp;&nbsp;
+            <span> </span>&nbsp;&nbsp;
+            <span> </span>&nbsp;&nbsp;
+            <span> </span>&nbsp;&nbsp;
+            <span>Very</span>
+          </p>
+
+          <p class="Question-Text">48. How important is it to you to have boundaries about entering each other?s rooms?</p>
+
+          <div style="display:flex;align-items:center;justify-content:space-between;gap:16px;">
+          
+            <button class="Q48-tick-circle" value="1" style="width:18px;height:18px;border-radius:50%;border:2px solid #6fa573;background:transparent;padding:0;margin:0;flex-shrink:0;transition:background-color 0.2s ease;transform:none;"></button>
+            <button class="Q48-tick-circle" value="2" style="width:18px;height:18px;border-radius:50%;border:2px solid #6fa573;background:transparent;padding:0;margin:0;flex-shrink:0;transition:background-color 0.2s ease;transform:none;"></button>
+            <button class="Q48-tick-circle" value="3" style="width:18px;height:18px;border-radius:50%;border:2px solid #6fa573;background:transparent;padding:0;margin:0;flex-shrink:0;transition:background-color 0.2s ease;transform:none;"></button>
+            <button class="Q48-tick-circle" value="4" style="width:18px;height:18px;border-radius:50%;border:2px solid #6fa573;background:transparent;padding:0;margin:0;flex-shrink:0;transition:background-color 0.2s ease;transform:none;"></button>
+            <button class="Q48-tick-circle" value="5" style="width:18px;height:18px;border-radius:50%;border:2px solid #6fa573;background:transparent;padding:0;margin:0;flex-shrink:0;transition:background-color 0.2s ease;transform:none;"></button>
+            
+          </div>
+
+             <p class="tick-label"> 
+            <span>Not at All</span>&nbsp;&nbsp;
+            <span> </span>&nbsp;&nbsp;
+            <span> </span>&nbsp;&nbsp;
+            <span> </span>&nbsp;&nbsp;
+            <span>Very</span>
+          </p>
+          
+          
+          <div style="display:flex;align-items:center;justify-content:space-between;gap:16px;">
+            <button class="btn-backQ">Back</button>
+            <button id="btn-nextQuestion49_50" class="btn-nextQ">Next</button>
+          </div>
+          
+      </div>
+      
+
+     
+    </section>
+    <!--12. Values, Lifestyle & Prioritiese-->
+    <!--Question 49 & 50-->
+    <section id="view-CompatibilitTest49And50" class="view hidden">
+      <div style="display: flex; justify-content: space-between; align-items: center; padding: 0 20px;">
+        <div class="compatibleTest-title">Roomies Compatibility Test</div>
+        <button id="btn-quit-compat" class="modal-close" style="position: relative; top: 0; right: 0; margin: 0;">×</button>
+      </div>
+
+      <div class="Question-box">
+          <p class="Question-title">12. Values, Lifestyle & Priorities</p>
+          <p class="Question-Text">49. How often are you in the dorm/apartment (vs. being out or traveling)?</p>
+
+          <div style="display:flex;align-items:center;justify-content:space-between;gap:16px;">
+          
+            <button class="Q49-tick-circle" value="1" style="width:18px;height:18px;border-radius:50%;border:2px solid #6fa573;background:transparent;padding:0;margin:0;flex-shrink:0;transition:background-color 0.2s ease;transform:none;"></button>
+            <button class="Q49-tick-circle" value="2" style="width:18px;height:18px;border-radius:50%;border:2px solid #6fa573;background:transparent;padding:0;margin:0;flex-shrink:0;transition:background-color 0.2s ease;transform:none;"></button>
+            <button class="Q49-tick-circle" value="3" style="width:18px;height:18px;border-radius:50%;border:2px solid #6fa573;background:transparent;padding:0;margin:0;flex-shrink:0;transition:background-color 0.2s ease;transform:none;"></button>
+            <button class="Q49-tick-circle" value="4" style="width:18px;height:18px;border-radius:50%;border:2px solid #6fa573;background:transparent;padding:0;margin:0;flex-shrink:0;transition:background-color 0.2s ease;transform:none;"></button>
+            <button class="Q49-tick-circle" value="5" style="width:18px;height:18px;border-radius:50%;border:2px solid #6fa573;background:transparent;padding:0;margin:0;flex-shrink:0;transition:background-color 0.2s ease;transform:none;"></button>
+            
+          </div>
+
+          <p class="tick-label"> 
+            <span>Never</span>&nbsp;&nbsp;
+            <span>Rarely</span>&nbsp;&nbsp;
+            <span>Sometimes</span>&nbsp;&nbsp;
+            <span>Often</span>&nbsp;&nbsp;
+            <span>Very Often</span>
+          </p>
+
+          <p class="Question-Text">50. Do you prefer living with a close friend or a more independent roommate?</p>
+
+          <div class="option-list">
+            <div class="option-row">
+              <button class="Q50-tick-circle" value="1" style="border:none;background:transparent;padding:8px 0;margin:0;outline:none;color:#6fa573;font-size:16px;font-weight:700;line-height:1.5;text-decoration:none;vertical-align:baseline;transition:none;transform:none;position:relative;box-sizing:border-box;width:100%;display:flex;align-items:center;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;font-family:inherit;letter-spacing:0;"><span class="circle-indicator"></span>Close friend</button>
+            </div>
+            <div class="option-row">
+              <button class="Q50-tick-circle" value="2" style="border:none;background:transparent;padding:8px 0;margin:0;outline:none;color:#6fa573;font-size:16px;font-weight:700;line-height:1.5;text-decoration:none;vertical-align:baseline;transition:none;transform:none;position:relative;box-sizing:border-box;width:100%;display:flex;align-items:center;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;font-family:inherit;letter-spacing:0;"><span class="circle-indicator"></span>Independent roommate</button>
+            </div>
+           
+          
+            <div style="display:flex;align-items:center;justify-content:space-between;gap:16px;">
+              <button class="btn-backQ">Back</button>
+              <button id="btn-nextQuestion51_52" class="btn-nextQ">Next</button>
+            </div>
+          </div>
+      </div>
+      
+
+   
+    </section>
+    <!--12. Values, Lifestyle & Prioritiese-->
+    <!--Question 51 & 52-->
+    <section id="view-CompatibilitTest51And52" class="view hidden">
+      <div style="display: flex; justify-content: space-between; align-items: center; padding: 0 20px;">
+        <div class="compatibleTest-title">Roomies Compatibility Test</div>
+        <button id="btn-quit-compat" class="modal-close" style="position: relative; top: 0; right: 0; margin: 0;">×</button>
+      </div>
+
+      <div class="Question-box">
+          <p class="Question-title">12. Values, Lifestyle & Prioritiese</p>
+          <p class="Question-Text">51. How important is it that your roommate shares similar lifestyle values?</p>
+
+          <div style="display:flex;align-items:center;justify-content:space-between;gap:16px;">
+          
+            <button class="Q51-tick-circle" value="1" style="width:18px;height:18px;border-radius:50%;border:2px solid #6fa573;background:transparent;padding:0;margin:0;flex-shrink:0;transition:background-color 0.2s ease;transform:none;"></button>
+            <button class="Q51-tick-circle" value="2" style="width:18px;height:18px;border-radius:50%;border:2px solid #6fa573;background:transparent;padding:0;margin:0;flex-shrink:0;transition:background-color 0.2s ease;transform:none;"></button>
+            <button class="Q51-tick-circle" value="3" style="width:18px;height:18px;border-radius:50%;border:2px solid #6fa573;background:transparent;padding:0;margin:0;flex-shrink:0;transition:background-color 0.2s ease;transform:none;"></button>
+            <button class="Q51-tick-circle" value="4" style="width:18px;height:18px;border-radius:50%;border:2px solid #6fa573;background:transparent;padding:0;margin:0;flex-shrink:0;transition:background-color 0.2s ease;transform:none;"></button>
+            <button class="Q51-tick-circle" value="5" style="width:18px;height:18px;border-radius:50%;border:2px solid #6fa573;background:transparent;padding:0;margin:0;flex-shrink:0;transition:background-color 0.2s ease;transform:none;"></button>
+            
+          </div>
+
+             <p class="tick-label"> 
+            <span>Not at All</span>&nbsp;&nbsp;
+            <span> </span>&nbsp;&nbsp;
+            <span> </span>&nbsp;&nbsp;
+            <span> </span>&nbsp;&nbsp;
+            <span>Very</span>
+          </p>
+
+          <p class="Question-Text">52. What best describes your lifestyle?</p>
+
+          <div class="option-list">
+            <div class="option-row">
+              <button class="Q52-tick-circle" value="1" style="border:none;background:transparent;padding:8px 0;margin:0;outline:none;color:#6fa573;font-size:16px;font-weight:700;line-height:1.5;text-decoration:none;vertical-align:baseline;transition:none;transform:none;position:relative;box-sizing:border-box;width:100%;display:flex;align-items:center;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;font-family:inherit;letter-spacing:0;"><span class="circle-indicator"></span>Focused on studying</button>
+            </div>
+            <div class="option-row">
+              <button class="Q52-tick-circle" value="2" style="border:none;background:transparent;padding:8px 0;margin:0;outline:none;color:#6fa573;font-size:16px;font-weight:700;line-height:1.5;text-decoration:none;vertical-align:baseline;transition:none;transform:none;position:relative;box-sizing:border-box;width:100%;display:flex;align-items:center;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;font-family:inherit;letter-spacing:0;"><span class="circle-indicator"></span>Socially active</button>
+            </div>
+            <div class="option-row">
+              <button class="Q52-tick-circle" value="3" style="border:none;background:transparent;padding:8px 0;margin:0;outline:none;color:#6fa573;font-size:16px;font-weight:700;line-height:1.5;text-decoration:none;vertical-align:baseline;transition:none;transform:none;position:relative;box-sizing:border-box;width:100%;display:flex;align-items:center;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;font-family:inherit;letter-spacing:0;"><span class="circle-indicator"></span>Balanced</button>
+            </div>
+            <div class="option-row">
+              <button class="Q52-tick-circle" value="4" style="border:none;background:transparent;padding:8px 0;margin:0;outline:none;color:#6fa573;font-size:16px;font-weight:700;line-height:1.5;text-decoration:none;vertical-align:baseline;transition:none;transform:none;position:relative;box-sizing:border-box;width:100%;display:flex;align-items:center;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;font-family:inherit;letter-spacing:0;"><span class="circle-indicator"></span>Quiet and reserved</button>
+            </div>
+          
+            <div style="display:flex;align-items:center;justify-content:space-between;gap:16px;">
+              <button class="btn-backQ">Back</button>
+              <button id="btn-nextQuestion53" class="btn-nextQ">Next</button>
+            </div>
+          </div>
+      </div>
+      
+
+     
+    </section>
+       <!--12. Values, Lifestyle & Prioritiese-->
+    <!--Question 53-->
+       <!-- 53. last compatibility question -->
+    <section id="compatibility53" class="view hidden" >
+      <div style="display: flex; justify-content: space-between; align-items: center; padding: 0 20px;">
+        <div class="compatibleTest-title">Roomies Compatibility Test</div>
+        <button id="btn-quit-compat" class="modal-close" style="position: relative; top: 0; right: 0; margin: 0;">×</button>
+      </div>
+
+      <div class="Question-box">
+        <p class="Question-title">12. Values, Lifestyle & Priorities</p>
+        <p class="Question-Text">
+          53. Rank the top three things that matter most in a roommate (Drag and Drop)
+        </p>
+
+        <div style="margin: 20px 0;">
+          <p style="font-weight: bold; margin-bottom: 10px; color: #6fa573;">Drag items to rank them (1 = Most Important)</p>
+          
+          <!-- Ranking Slots -->
+          <div id="ranking-slots" style="margin-bottom: 20px;">
+            <div id="rank-slot-1" class="rank-slot" data-rank="1" style="padding: 15px; margin: 10px 0; border: 2px dashed #ccc; border-radius: 8px; min-height: 60px; background: #f9f9f9;">
+              <strong style="color: #167c36;">1st Most Important:</strong> <span class="rank-placeholder"></span>
+            </div>
+            <div id="rank-slot-2" class="rank-slot" data-rank="2" style="padding: 15px; margin: 10px 0; border: 2px dashed #ccc; border-radius: 8px; min-height: 60px; background: #f9f9f9;">
+              <strong style="color: #167c36;">2nd Most Important:</strong> <span class="rank-placeholder"></span>
+            </div>
+            <div id="rank-slot-3" class="rank-slot" data-rank="3" style="padding: 15px; margin: 10px 0; border: 2px dashed #ccc; border-radius: 8px; min-height: 60px; background: #f9f9f9;">
+              <strong style="color: #167c36;">3rd Most Important:</strong> <span class="rank-placeholder"></span>
+            </div>
+          </div>
+
+          <!-- Available Options -->
+          <p style="font-weight: bold; margin-bottom: 10px; color: #6fa573;">Available Options:</p>
+          <div id="draggable-options" style="display: flex; flex-wrap: wrap; gap: 10px;">
+            <div class="drag-item" draggable="true" data-value="cleanliness" style="padding: 10px 15px; background: #6fa573; color: white; border-radius: 20px; cursor: move; user-select: none;">
+              Cleanliness
+            </div>
+            <div class="drag-item" draggable="true" data-value="quietness" style="padding: 10px 15px; background: #5a8b61; color: white; border-radius: 20px; cursor: move; user-select: none;">
+              Quietness
+            </div>
+            <div class="drag-item" draggable="true" data-value="social" style="padding: 10px 15px; background: #89b38e; color: white; border-radius: 20px; cursor: move; user-select: none;">
+              Social/Friendly
+            </div>
+            <div class="drag-item" draggable="true" data-value="respect" style="padding: 10px 15px; background: #4a7a51; color: white; border-radius: 20px; cursor: move; user-select: none;">
+              Respect for Privacy
+            </div>
+            <div class="drag-item" draggable="true" data-value="communication" style="padding: 10px 15px; background: #7fa983; color: white; border-radius: 20px; cursor: move; user-select: none;">
+              Good Communication
+            </div>
+            <div class="drag-item" draggable="true" data-value="schedule" style="padding: 10px 15px; background: rgb(39, 108, 43); color: white; border-radius: 20px; cursor: move; user-select: none;">
+              Similar Schedule
+            </div>
+          </div>
+        </div>
+
+        <div style="display:flex;align-items:center;justify-content:space-between;gap:16px;">
+          <button class="btn-backQ">Back</button>
+          <button id="btn-Calculate" class="btn-nextQ">Calculate Score</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- REQUESTS VIEW (separate top-level view) -->
+    <section id="view-requests" class="view hidden">
+      <div>
+        <h1 style="font-size: 28px; font-weight: 800; text-align: center; margin: 0 0 30px 0; color: white;">Compatibility Requests</h1>
+
+        <div class="requests-actions" style="margin-bottom: 30px; background: white; padding: 20px; border-radius: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.1);">
+          <h3 style="color: var(--ink); margin: 0 0 16px 0; font-size: 18px; font-weight: 700;">Send a new compatibility test request</h3>
+          <input
+            id="request-email-input"
+            type="email"
+            placeholder="Enter your roommate's .edu email"
+            style="width: 100%; padding: 12px; border-radius: 8px; border: 1px solid #ddd; margin-bottom: 12px; font-size: 14px;"
+          />
+          <button id="btn-make-request" class="btn" style="width: 100%;">Send Request</button>
+        </div>
+        
+        <style>
+          #request-email-input::placeholder {
+            color: #6fa573;
+            opacity: 1;
+          }
+        </style>
+
+        <div id="incoming-requests-section" style="background: white; padding: 20px; border-radius: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.1);">
+          <h3 style="color: var(--ink); margin: 0 0 16px 0; font-size: 18px; font-weight: 700;">Compatibility Test Requests</h3>
+          <div id="requests-empty">
+            <p style="color: #6fa573; opacity: 0.9;">No incoming requests.</p>
+          </div>
+
+          <div id="requests-list" class="hidden">
+            <!-- Filled dynamically with incoming requests -->
+          </div>
+        </div>
+
+        <div id="meeting-requests-section" style="margin-top: 30px; background: white; padding: 20px; border-radius: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.1);">
+          <h3 style="color: var(--ink); margin: 0 0 16px 0; font-size: 18px; font-weight: 700;">Meeting Requests</h3>
+          <div id="meeting-requests-empty">
+            <p style="color: #6fa573; opacity: 0.9;">No meeting requests.</p>
+          </div>
+
+          <div id="meeting-requests-list" class="hidden">
+            <!-- Filled dynamically with meeting requests -->
+          </div>
+        </div>
+
+        <div id="outgoing-requests-section" style="margin-top: 30px; background: white; padding: 20px; border-radius: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.1);">
+          <h3 style="color: var(--ink); margin: 0 0 16px 0; font-size: 18px; font-weight: 700;">Sent Requests</h3>
+          <div id="outgoing-requests-empty">
+            <p style="color: #6fa573; opacity: 0.9;">No sent requests.</p>
+          </div>
+
+          <div id="outgoing-requests-list" class="hidden">
+            <!-- Filled dynamically with outgoing requests -->
+          </div>
+        </div>
+      </div>
+
+      <p class="footer">ROOMIES</p>
+    </section>
+
+    <!-- MATCHES VIEW -->
+    <section id="view-matches" class="view hidden">
+      <div class="brand center">
+        <div class="brand-logo">
+          <img src="./img/otter.png" alt="Roomies Otter" />
+        </div>
+        <h1 class="big">Your Matches</h1>
+      </div>
+
+      <div id="matches-empty">
+        <p class="subtitle">Complete your compatibility test to see matches!</p>
+        <button id="btn-compatibleTest-box" class="btn">
+          <img src="./img/test.png" alt="" style="width: 24px; height: 24px; vertical-align: middle; margin-right: 8px; filter: brightness(0) invert(1); display: inline-block;"> Take Compatibility Test
+        </button>
+      </div>
+
+      <div id="matches-list" class="hidden" style="max-height: 450px; overflow-y: auto; padding: 0 4px;">
+        <!-- Filled dynamically with compatibility matches -->
+      </div>
+
+      <p class="footer">ROOMIES</p>
+    </section>
+
+    <!-- ROOMMATE AGREEMENT VIEW (Display) -->
+    <section id="view-roommateAgreement" class="view hidden">
+      <div class="brand center">
+        <div class="brand-logo">
+          <img src="./img/otter.png" alt="Roomies Otter" />
+        </div>
+        <h1 class="roommateAgreement-title">Roommate Agreement</h1>
+      </div>
+
+      <div class="agreementDisplay-outer-box">
+        <div id="agreementSections" class="agreementDisplay-box">
+          <!-- Sections will be dynamically populated here -->
+        </div>
+      </div>
+
+      <div style="display: flex; gap: 8px; margin-top: 16px;">
+        <button id="btn-back-from-agreement" class="btn ghost" style="flex: 1;">
+          Back
+        </button>
+        <button id="btn-create-agreement" class="btn" style="flex: 2;">
+          Create/Edit Agreement
+        </button>
+      </div>
+
+      <p class="footer">ROOMIES</p>
+    </section>
+
+    <!-- ROOMMATE AGREEMENT EDIT VIEW -->
+    <section id="view-createRoommateAgreement" class="view hidden">
+      <div style="text-align: center; margin-top: 30px; margin-bottom: 20px;">
+        <h1 class="NewroommateAgreement-title">Edit Roommate Agreement</h1>
+      </div>
+
+      <div id="editableSectionsContainer">
+        <!-- Editable sections will be populated here -->
+      </div>
+
+      <div style="display: flex; gap: 8px; margin: 30px 0 120px 0; justify-content: center;">
+        <button id="btn-cancel-agreement" class="btn ghost" style="flex: 1; max-width: 150px;">
+          Cancel
+        </button>
+        <button id="btn-save-agreement" class="btn btn-saveAgreement" style="flex: 2; max-width: 300px;">
+          Save Agreement
+        </button>
+      </div>
+
+      <p class="footer">ROOMIES</p>
+    </section>
+
+    <!--- CHORES VIEW  -->
+    <section id="view-chores" class="view hidden">
+      <div style="background-color: #6fa573; padding: 30px 20px 30px 20px; border-radius: 40px 40px 0 0; margin: -30px -30px 0 -30px;">
+        <p style="color: white; font-size: 28px; font-weight: 800; text-align: center; margin: 0;">
+          Chores
+        </p>
+      </div>
+
+      <div style="padding: 10px 5px 20px 5px;">
+        <div style="display: flex; align-items: center; justify-content: center; gap: 12px; margin-bottom: 18px; margin-top: 18px; padding: 6px 0; cursor: pointer;" id="btn-addChore-header">
+          <div style="background-color: #ffffff; width: 30px; height: 30px; border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
+            <svg width="24" height="24" viewBox="0 0 24 24"
+              fill="none" stroke="#6fa573" stroke-width="3"
+              stroke-linecap="round" stroke-linejoin="round">
+              <line x1="12" y1="5" x2="12" y2="19"></line>
+              <line x1="5" y1="12" x2="19" y2="12"></line>
+            </svg>
+          </div>
+          <span style="color: white; font-size: 18px; font-weight: 700;">Add a Chore</span>
+        </div>
+
+        <div style="background-color: #ffffff; padding: 16px; border-radius: 16px; margin-bottom: 16px; width: 90%; margin-left: auto; margin-right: auto;">
+          <h3 style="color: #6fa573; font-size: 20px; font-weight: 700; text-align: center; margin: 0;">To Do</h3>
+        </div>
+
+        <div id="memberChoresContainer">
+          <p id="chores-empty" style="color: white; text-align: center; font-size: 16px; font-weight: 700; margin: 18px 0; display: none;">No chores yet</p>
+        </div>
+      </div>
+
+      <p class="footer">ROOMIES</p>
+    </section>
+
+    <!--  ADD CHORE MODAL  -->
+    <div id="add-chore-modal" class="modal hidden">
+      <div class="modal-backdrop" onclick="document.getElementById('add-chore-modal').classList.add('hidden')"></div>
+      
+      <div class="modal-inner-custom" style="max-height: 85vh; overflow-y: auto;">
+        <button class="modal-close" onclick="document.getElementById('add-chore-modal').classList.add('hidden')" style="margin-top:40px;">X</button>
+        
+        <h2 class="modal-title" style="margin-top:24px;">Add New Chore</h2>
+
+        <form id="form-add-chore" style="padding: 0 8px;">
+          <div class="field-group">
+            <label>Chore Title</label>
+            <input type="text" id="addChore-title" class="pill-input" placeholder="e.g., Vacuum living room" />
+          </div>
+
+          <div class="field-group">
+            <label>Description</label>
+            <textarea id="addChore-description" class="pill-input" placeholder="Add details about this chore..." 
+                      style="min-height: 80px; resize: vertical;"></textarea>
+          </div>
+
+          <div class="field-group">
+            <label>Due Date</label>
+            <input type="date" id="addChore-dueDate" class="pill-input" />
+          </div>
+
+          <div class="field-group">
+            <label>Due Time</label>
+            <input type="time" id="addChore-dueTime" class="pill-input" />
+          </div>
+
+          <div class="field-group">
+            <label>Assignment Type</label>
+            <div class="select-wrapper">
+              <select id="DropBox-ChoreAssignmentType" class="pill-select">
+                <option value="single">Single (Assign to one person)</option>
+                <option value="rotating">Rotating (Auto-rotate on due date)</option>
+                <option value="shared">Shared (Multiple members work together)</option>
+                <option value="voluntary">Voluntary (Anyone can claim)</option>
+              </select>
+            </div>
+          </div>
+
+          <div id="rotation-frequency-container" class="field-group" style="display: none;">
+            <label>Rotation Frequency</label>
+            <div class="select-wrapper">
+              <select id="DropBox-RotationFrequency" class="pill-select">
+                <option value="daily">Daily</option>
+                <option value="weekly">Weekly</option>
+                <option value="biweekly">Biweekly</option>
+                <option value="monthly">Monthly</option>
+                <option value="custom">Custom (days)</option>
+              </select>
+            </div>
+            <input type="number" id="custom-rotation-days" class="pill-input" placeholder="Enter days" min="1" 
+                   style="margin-top: 8px; display: none;">
+          </div>
+
+          <div class="field-group">
+            <label>Assign to Members</label>
+            <div id="selectMembers-CheckBox"></div>
+          </div>
+
+          <button type="submit" id="btn-saveChore" class="btn-save-pill">Save Chore</button>
+        </form>
+      </div>
+    </div>
+
+    <!-- EDIT CHORE MODAL  -->
+    <div id="edit-chore-modal" class="modal hidden">
+      <div class="modal-backdrop" onclick="document.getElementById('edit-chore-modal').classList.add('hidden')"></div>
+      
+      <div class="modal-inner-custom" style="max-height: 85vh; overflow-y: auto;">
+        <button class="modal-close" onclick="document.getElementById('edit-chore-modal').classList.add('hidden')" style="margin-top:40px;">X</button>
+        
+        <h2 class="modal-title" style="margin-top:24px;">Edit Chore</h2>
+
+        <form id="form-edit-chore" style="padding: 0 8px;">
+          <div class="field-group">
+            <label>Chore Title</label>
+            <input type="text" id="edit-chore-title" class="pill-input" placeholder="e.g., Vacuuming" />
+          </div>
+
+          <div class="field-group">
+            <label>Description</label>
+            <textarea id="edit-chore-description" class="pill-input" placeholder="Vacuum the living room." 
+                      style="min-height: 60px; resize: vertical;"></textarea>
+          </div>
+
+          <div class="field-group">
+            <label>Assignment Type</label>
+            <div class="select-wrapper">
+              <select id="edit-chore-assignment-type" class="pill-select">
+                <option value="single">Single (Assign to one person)</option>
+                <option value="rotating">Rotating (Auto-rotate on due date)</option>
+                <option value="shared">Shared (Multiple members work together)</option>
+                <option value="voluntary">Voluntary (Anyone can claim)</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="field-group">
+            <label>Assigned to</label>
+            <div class="select-wrapper">
+              <select id="edit-assigned-to-dropdown" class="pill-select">
+                <!-- Populated dynamically -->
+              </select>
+            </div>
+          </div>
+
+          <div class="field-group">
+            <label>Due Time</label>
+            <input type="time" id="edit-chore-dueTime" class="pill-input" />
+          </div>
+
+          <div class="field-group">
+            <label>Due Date</label>
+            <input type="date" id="edit-chore-dueDate" class="pill-input" />
+          </div>
+
+          <div class="field-group">
+            <label>Status</label>
+            <div class="select-wrapper">
+              <select id="edit-chore-status" class="pill-select">
+                <option value="pending">Pending</option>
+                <option value="in_progress">In Progress</option>
+                <option value="completed">Completed</option>
+                <option value="skipped">Skipped</option>
+              </select>
+            </div>
+          </div>
+
+          <!-- Rotation Order Collapsible -->
+          <div id="edit-rotation-order-section" class="field-group" style="display: none;">
+            <button type="button" id="edit-rotation-order-toggle" style="width: 100%; padding: 12px; background: #d4edda; border: 2px solid #c6e5cd; border-radius: 8px; font-size: 14px; font-weight: 600; color: #234029; cursor: pointer; display: flex; justify-content: space-between; align-items: center;">
+              <span>Rotation Order:</span>
+              <span id="edit-rotation-order-arrow">∧</span>
+            </button>
+            <div id="edit-rotation-order-content" style="background: #e8f5e9; border: 2px solid #c6e5cd; border-top: none; border-radius: 0 0 8px 8px; padding: 12px;">
+              <div id="edit-rotation-order-list"></div>
+              <button type="button" id="edit-rotation-edit-btn" style="margin-top: 8px; padding: 6px 12px; background: white; border: 1px solid #c6e5cd; border-radius: 4px; cursor: pointer; font-size: 12px;">
+                ✏️
+              </button>
+            </div>
+          </div>
+
+          <!-- Rotation Frequency Collapsible -->
+          <div id="edit-rotation-frequency-section" class="field-group" style="display: none;">
+            <button type="button" id="edit-rotation-frequency-toggle" style="width: 100%; padding: 12px; background: #d4edda; border: 2px solid #c6e5cd; border-radius: 8px; font-size: 14px; font-weight: 600; color: #234029; cursor: pointer; display: flex; justify-content: space-between; align-items: center;">
+              <span>Rotation Frequency:</span>
+              <span id="edit-rotation-frequency-arrow">∧</span>
+            </button>
+            <div id="edit-rotation-frequency-content" style="background: #e8f5e9; border: 2px solid #c6e5cd; border-top: none; border-radius: 0 0 8px 8px; padding: 0;">
+              <div style="border-bottom: 1px solid #c6e5cd; padding: 12px; cursor: pointer;" data-freq="daily">Daily</div>
+              <div style="border-bottom: 1px solid #c6e5cd; padding: 12px; cursor: pointer;" data-freq="weekly">Weekly</div>
+              <div style="border-bottom: 1px solid #c6e5cd; padding: 12px; cursor: pointer;" data-freq="biweekly">Biweekly</div>
+              <div style="border-bottom: 1px solid #c6e5cd; padding: 12px; cursor: pointer;" data-freq="monthly">Monthly</div>
+              <div style="padding: 12px; cursor: pointer;" data-freq="custom">Custom</div>
+            </div>
+            <input type="number" id="edit-custom-rotation-days" class="pill-input" placeholder="Enter days" min="1" 
+                   style="margin-top: 8px; display: none;">
+          </div>
+
+          <div style="display: flex; gap: 12px; margin-top: 24px;">
+            <button type="button" id="btn-editsaveChore" class="btn-save-pill" style="flex: 1;">Update</button>
+            <button type="button" id="btn-delete-chore" class="btn-save-pill" style="flex: 1; background-color: #dc3545;">Delete</button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <!-- BOTTOM TAB BAR (hidden until login) -->
+    <nav id="bottom-nav" class="bottom-nav hidden">
+      <button class="nav-item" data-view="chores">
+        <span class="nav-icon"><img src="./img/broomstick.png" alt="" class="nav-icon-img" style="width: 22px; height: 22px;"></span>
+      </button>
+      <button class="nav-item" data-view="expenses">
+        <span class="nav-icon"><img src="./img/dollar (1).png" alt="" class="nav-icon-img" style="width: 24px; height: 24px;"></span>
+      </button>
+      <button class="nav-item active" data-view="dash">
+        <span class="nav-icon"><img src="./img/home (4).png" alt="" class="nav-icon-img"></span>
+      </button>
+      <button class="nav-item" data-view="tips">
+        <span class="nav-icon"><img src="./img/bulb.png" alt="" class="nav-icon-img" style="width: 22px; height: 22px;"></span>
+      </button>
+      <button class="nav-item" data-view="settings">
+        <span class="nav-icon"><img src="./img/cogwheel.png" alt="" class="nav-icon-img" style="width: 22px; height: 22px;"></span>
+      </button>
+    </nav>
+  </div>
+
+  <script type="module" src="./utils.js"></script>
+  <script type="module" src="./firebaseClient.js?v=3"></script>
+  <script type="module" src="./auth.js?v=3"></script>
+  <script type="module" src="./matches.js?v=100"></script>
+  <script type="module" src="./roommateAgreement.js?v=3"></script>
+  <script type="module" src="./chores.js?v=3"></script>
+  <script type="module" src="./expenseService.js?v=3"></script>
+  <script type="module" src="./expenses.js?v=3"></script>
+  <script type="module" src="./app.js?v=5"></script>
 </body>
+
 </html>
+
+
+
+
+
+
+
 
