@@ -1,7 +1,10 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.13.2/firebase-app.js";
 import { getAuth } from "https://www.gstatic.com/firebasejs/10.13.2/firebase-auth.js";
+import { getFirestore } from "https://www.gstatic.com/firebasejs/10.13.2/firebase-firestore.js";
+import { getFunctions } from "https://www.gstatic.com/firebasejs/10.13.2/firebase-functions.js";
 
-export const firebaseConfig = {
+
+const firebaseConfig = {
   apiKey: "AIzaSyDskrxKhHOiiSXsJoSwyACGauTW6boSHa4",
   authDomain: "roomies-979da.firebaseapp.com",
   projectId: "roomies-979da",
@@ -12,4 +15,15 @@ export const firebaseConfig = {
 };
 
 const app = initializeApp(firebaseConfig);
-export const auth = getAuth(app);
+
+
+const auth=getAuth(app);
+const db=getFirestore(app);
+const functions=getFunctions(app);
+
+export { app, auth, db, functions };
+
+
+
+
+
