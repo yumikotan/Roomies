@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Cleanup Duplicates</title>
+</head>
+<body>
+    <h1>Cleanup Duplicate Requests</h1>
+    <button id="btnCleanup" style="padding: 20px; font-size: 18px; background: #6fa573; color: white; border: none; border-radius: 8px; cursor: pointer;">
+        Clean Up Duplicates Now
+    </button>
+    <div id="output" style="margin-top: 20px; font-family: monospace; white-space: pre-wrap;"></div>
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.13.2/firebase-app.js";
+        import { getAuth } from "https://www.gstatic.com/firebasejs/10.13.2/firebase-auth.js";
+        import { getFirestore, collection, query, where, getDocs, deleteDoc, doc } from "https://www.gstatic.com/firebasejs/10.13.2/firebase-firestore.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyCOoxwqHOpS6KugNWT495end_l1f5WHRMY",
+            authDomain: "roomies-db.firebaseapp.com",
+            projectId: "roomies-db",
+            storageBucket: "roomies-db.firebasestorage.app",
+            messagingSenderId: "122024765550",
+            appId: "1:122024765550:web:3813e98b3b87fdfb99c36f",
+            measurementId: "G-YGCE88MFQW"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const db = getFirestore(app);
+        const output = document.getElementById('output');
+        
+        document.getElementById('btnCleanup').addEventListener('click', async () => {
+            output.textContent = 'Starting cleanup...\n';
+            
+            const user = auth.currentUser;
+            if (!user) {
+                output.textContent += 'ERROR: Not logged in! Please log in to your app first, then come back here.\n';
+                return;
+            }
+
+            const userEmail = user.email.toLowerCase();
+            output.textContent += `Logged in as: ${userEmail}\n\n`;
+
+         
+            output.textContent += '=== Cleaning CompatRequests ===\n';
+            const q1 = query(collection(db, "CompatRequests"), where("fromEmail", "==", userEmail));
+            const snap1 = await getDocs(q1);
+            output.textContent += `Found ${snap1.size} total CompatRequests\n`;
+
+            const compatByEmail = new Map();
+            for (const docSnap of snap1.docs) {
+                const data = docSnap.data();
+                const toEmail = data.toEmail;
+                const requestId = docSnap.id;
+                
+                if (!compatByEmail.has(toEmail)) {
+                    compatByEmail.set(toEmail, { id: requestId, data: data });
+                } else {
+                    const existing = compatByEmail.get(toEmail);
+                    const existingTime = existing.data.createdAt?.toMillis() || 0;
+                    const newTime = data.createdAt?.toMillis() || 0;
+                    
+                    if (newTime > existingTime) {
+                        compatByEmail.set(toEmail, { id: requestId, data: data });
+                    }
+                }
+            }
+
+            const toDeleteCompat = [];
+            for (const docSnap of snap1.docs) {
+                const data = docSnap.data();
+                const toEmail = data.toEmail;
+                const requestId = docSnap.id;
+                const keeper = compatByEmail.get(toEmail);
+                
+                if (keeper.id !== requestId) {
+                    toDeleteCompat.push(deleteDoc(doc(db, "CompatRequests", requestId)));
+                    output.textContent += `Deleting duplicate CompatRequest to ${toEmail} (ID: ${requestId})\n`;
+                }
+            }
+
+            if (toDeleteCompat.length > 0) {
+                await Promise.all(toDeleteCompat);
+                output.textContent += `Deleted ${toDeleteCompat.length} duplicate CompatRequests\n\n`;
+            } else {
+                output.textContent += `No duplicate CompatRequests found\n\n`;
+            }
+
+          
+            output.textContent += '=== Cleaning Outgoing MeetingRequests ===\n';
+            const q2 = query(collection(db, "MeetingRequests"), where("fromEmail", "==", userEmail));
+            const snap2 = await getDocs(q2);
+            output.textContent += `Found ${snap2.size} total outgoing MeetingRequests\n`;
+
+            const meetingByEmail = new Map();
+            for (const docSnap of snap2.docs) {
+                const data = docSnap.data();
+                const toEmail = data.toEmail;
+                const requestId = docSnap.id;
+                
+                if (!meetingByEmail.has(toEmail)) {
+                    meetingByEmail.set(toEmail, { id: requestId, data: data });
+                } else {
+                    const existing = meetingByEmail.get(toEmail);
+                    const existingTime = existing.data.createdAt?.toMillis() || 0;
+                    const newTime = data.createdAt?.toMillis() || 0;
+                    if (newTime > existingTime) {
+                        meetingByEmail.set(toEmail, { id: requestId, data: data });
+                    }
+                }
+            }
+
+            const toDeleteMeeting = [];
+            for (const docSnap of snap2.docs) {
+                const data = docSnap.data();
+                const toEmail = data.toEmail;
+                const requestId = docSnap.id;
+                const keeper = meetingByEmail.get(toEmail);
+                
+                if (keeper.id !== requestId) {
+                    toDeleteMeeting.push(deleteDoc(doc(db, "MeetingRequests", requestId)));
+                    output.textContent += `Deleting duplicate MeetingRequest to ${toEmail} (ID: ${requestId})\n`;
+                }
+            }
+
+            if (toDeleteMeeting.length > 0) {
+                await Promise.all(toDeleteMeeting);
+                output.textContent += `Deleted ${toDeleteMeeting.length} duplicate MeetingRequests\n\n`;
+            } else {
+                output.textContent += `No duplicate MeetingRequests found\n\n`;
+            }
+            output.textContent += '=== Cleaning Incoming MeetingRequests ===\n';
+            const q3 = query(collection(db, "MeetingRequests"), where("toEmail", "==", userEmail));
+            const snap3 = await getDocs(q3);
+            output.textContent += `Found ${snap3.size} total incoming MeetingRequests\n`;
+
+            const incomingByEmail = new Map();
+            for (const docSnap of snap3.docs) {
+                const data = docSnap.data();
+                const fromEmail = data.fromEmail;
+                const requestId = docSnap.id;
+                
+                if (!incomingByEmail.has(fromEmail)) {
+                    incomingByEmail.set(fromEmail, { id: requestId, data: data });
+                } else {
+                    const existing = incomingByEmail.get(fromEmail);
+                    const existingTime = existing.data.createdAt?.toMillis() || 0;
+                    const newTime = data.createdAt?.toMillis() || 0;
+                    
+                    if (newTime > existingTime) {
+                        incomingByEmail.set(fromEmail, { id: requestId, data: data });
+                    }
+                }
+            }
+
+            const toDeleteIncoming = [];
+            for (const docSnap of snap3.docs) {
+                const data = docSnap.data();
+                const fromEmail = data.fromEmail;
+                const requestId = docSnap.id;
+                const keeper = incomingByEmail.get(fromEmail);
+                
+                if (keeper.id !== requestId) {
+                    toDeleteIncoming.push(deleteDoc(doc(db, "MeetingRequests", requestId)));
+                    output.textContent += `Deleting duplicate incoming MeetingRequest from ${fromEmail} (ID: ${requestId})\n`;
+                }
+            }
+
+            if (toDeleteIncoming.length > 0) {
+                await Promise.all(toDeleteIncoming);
+                output.textContent += `Deleted ${toDeleteIncoming.length} duplicate incoming MeetingRequests\n\n`;
+            } else {
+                output.textContent += `No duplicate incoming MeetingRequests found\n\n`;
+            }
+
+            output.textContent += '\nCLEANUP COMPLETE! You can now go back to your app and refresh.\n';
+        });
+    </script>
+</body>
+</html>
