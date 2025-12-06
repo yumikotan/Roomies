@@ -1,0 +1,21 @@
+{
+  "name": "roomiesbackend",
+  "version": "1.0.0",
+  "description": "Backend logic for Roomies app using Firebase (Auth + Firestore)",
+  "type": "module",
+  "main": "index.js",
+  "scripts": {
+    "start": "node test/testRegister.js"
+  },
+  "keywords": [
+    "firebase",
+    "backend",
+    "roomies"
+  ],
+  "author": "Yumiko",
+  "license": "ISC",
+  "dependencies": {
+    "firebase": "^12.5.0",
+    "firebase-admin": "^13.6.0"
+  }
+}
