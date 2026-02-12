@@ -14,15 +14,9 @@
         import { getAuth } from "https://www.gstatic.com/firebasejs/10.13.2/firebase-auth.js";
         import { getFirestore, collection, query, where, getDocs, deleteDoc, doc } from "https://www.gstatic.com/firebasejs/10.13.2/firebase-firestore.js";
 
-        const firebaseConfig = {
-            apiKey: "AIzaSyCOoxwqHOpS6KugNWT495end_l1f5WHRMY",
-            authDomain: "roomies-db.firebaseapp.com",
-            projectId: "roomies-db",
-            storageBucket: "roomies-db.firebasestorage.app",
-            messagingSenderId: "122024765550",
-            appId: "1:122024765550:web:3813e98b3b87fdfb99c36f",
-            measurementId: "G-YGCE88MFQW"
-        };
+        // Load config from window or use default (set window.FIREBASE_CONFIG_DB before loading)
+        // Or create cleanupDuplicates.secret.js with: export default { apiKey: "...", ... }
+        const firebaseConfig = window.FIREBASE_CONFIG_DB || (await import('./cleanupDuplicates.secret.js')).default;
 
         const app = initializeApp(firebaseConfig);
         const auth = getAuth(app);

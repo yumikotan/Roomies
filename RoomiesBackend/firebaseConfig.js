@@ -1,15 +1,19 @@
 import { initializeApp, getApps, getApp } from "firebase/app";
 import { getFirestore } from "firebase/firestore";
 import { getAuth } from "firebase/auth";
+import dotenv from "dotenv";
+
+// Load environment variables
+dotenv.config();
 
 const firebaseConfig = {
-  apiKey: "AIzaSyDskrxKhHOiiSXsJoSwyACGauTW6boSHa4",
-  authDomain: "roomies-979da.firebaseapp.com",
-  projectId: "roomies-979da",
-  storageBucket: "roomies-979da.appspot.com", 
-  messagingSenderId: "1085428143975",
-  appId: "1:1085428143975:web:a4428c3ccac5cc943801c2",
-  measurementId: "G-12MEM1LVG2"
+  apiKey: process.env.FIREBASE_API_KEY,
+  authDomain: process.env.FIREBASE_AUTH_DOMAIN,
+  projectId: process.env.FIREBASE_PROJECT_ID,
+  storageBucket: process.env.FIREBASE_STORAGE_BUCKET, 
+  messagingSenderId: process.env.FIREBASE_MESSAGING_SENDER_ID,
+  appId: process.env.FIREBASE_APP_ID,
+  measurementId: process.env.FIREBASE_MEASUREMENT_ID
 };
 
 // Initialize Firebase

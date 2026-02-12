@@ -3,16 +3,14 @@ import { getAuth } from "https://www.gstatic.com/firebasejs/10.13.2/firebase-aut
 import { getFirestore } from "https://www.gstatic.com/firebasejs/10.13.2/firebase-firestore.js";
 import { getFunctions } from "https://www.gstatic.com/firebasejs/10.13.2/firebase-functions.js";
 
+// Load config from window.FIREBASE_CONFIG (set via script tag in HTML) or from secret file
+// Create firebaseConfig.secret.js with: export default { apiKey: "...", ... }
+const firebaseConfig = window.FIREBASE_CONFIG || (await import('./firebaseConfig.secret.js')).default;
 
-const firebaseConfig = {
-  apiKey: "AIzaSyDskrxKhHOiiSXsJoSwyACGauTW6boSHa4",
-  authDomain: "roomies-979da.firebaseapp.com",
-  projectId: "roomies-979da",
-  storageBucket: "roomies-979da.firebasestorage.app",
-  messagingSenderId: "1085428143975",
-  appId: "1:1085428143975:web:a4428c3ccac5cc948301c2",
-  measurementId: "G-12MEM1LVG2"
-};
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+const db = getFirestore(app);
+const functions = getFunctions(app);
 
 const app = initializeApp(firebaseConfig);
 
